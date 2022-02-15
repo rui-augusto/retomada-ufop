@@ -3,15 +3,18 @@ import { Link } from 'react-router-dom'
 import "./style.css"
 /*firebase import */
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase-config'
+import { auth, database} from '../firebase-config'
+import { ref, set } from "firebase/database";
+
 
 export const Register = () => {
     
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [samePassword, setSamePassword] = useState(false)
+    const [role, setRole] = useState("entrevistador"); /* começa com o valor da primeira option*/
 
     useEffect(() => {
         comparePasswords();
@@ -26,19 +29,26 @@ export const Register = () => {
         }        
     } 
 
-    async function registerUser(email, password){
+    async function registerUser(name, email, password, role){
         try {
             const user = await createUserWithEmailAndPassword(
                 auth,
                 email,
                 password);
+
+            set(ref(database, 'users/' + user.user.uid), {
+                name: name,
+                email: email,
+                role: role 
+            });
+            console.log(user.user.uid);
         } catch (error){
             console.log(error.message);
         }
     }
 
     const handleRegisterInput = () => {
-        registerUser(email, password);
+        registerUser(name, email, password, role);
     }
 
     return (
@@ -48,6 +58,9 @@ export const Register = () => {
                     className = "inputFormat" 
                     type = "text" 
                     placeholder = "Nome"
+                    onChange = {(event) => {
+                        setName(event.target.value);
+                    }}
                     /><br/>
                 <input 
                     className = "inputFormat" 
@@ -73,10 +86,13 @@ export const Register = () => {
                         setRePassword(event.target.value);
                     }}
                     /><br/>
-                <select className = "inputFormat">
+                <select value = {role} onChange = {(event) => {
+                    setRole(event.target.value);
+                    }}
+                    className = "inputFormat">
                     <option defaultValue = "entrevistador">Entrevistador</option>
-                    <option value="analise">Equipe de Análise</option>
-                    <option value="coordenacao">Coordenação</option>
+                    <option value = "analista">Equipe de Análise</option>
+                    <option value = "coordenacao">Coordenação</option>
                 </select><br/>
                 <button onClick = {handleRegisterInput} className = "buttonFormat">Registrar</button>
                 <Link to = '/'>Já tenho conta</Link>
