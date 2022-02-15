@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import "./style.css"
-
-import { useUser } from '../contexts/user'
-
+/*firebase import */
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase-config'
 
 export const Register = () => {
     
+    const [email, setEmail] = useState("");
+
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
     const [samePassword, setSamePassword] = useState(false)
@@ -23,6 +25,22 @@ export const Register = () => {
             setSamePassword(true);
         }        
     } 
+
+    async function registerUser(email, password){
+        try {
+            const user = await createUserWithEmailAndPassword(
+                auth,
+                email,
+                password);
+        } catch (error){
+            console.log(error.message);
+        }
+    }
+
+    const handleRegisterInput = () => {
+        registerUser(email, password);
+    }
+
     return (
         <div className = "fullscreenArea">
             <div className = "mainContent">
@@ -35,6 +53,9 @@ export const Register = () => {
                     className = "inputFormat" 
                     type = "text" 
                     placeholder = "E-mail"
+                    onChange = {(event) => {
+                        setEmail(event.target.value);
+                    }}
                     /><br/>
                 <input 
                     className = "inputFormat" 
@@ -53,11 +74,11 @@ export const Register = () => {
                     }}
                     /><br/>
                 <select className = "inputFormat">
-                    <option selected value = "entrevistador">Entrevistador</option>
+                    <option defaultValue = "entrevistador">Entrevistador</option>
                     <option value="analise">Equipe de Análise</option>
                     <option value="coordenacao">Coordenação</option>
                 </select><br/>
-                <button className = "buttonFormat" type = "submit">Registrar</button>
+                <button onClick = {handleRegisterInput} className = "buttonFormat">Registrar</button>
                 <Link to = '/'>Já tenho conta</Link>
             </div>
         </div>
