@@ -48,7 +48,9 @@ export const Register = () => {
     }
 
     const handleRegisterInput = () => {
-        registerUser(name, email, password, role);
+        if (samePassword){
+            registerUser(name, email, password, role);
+        }
     }
 
     return (

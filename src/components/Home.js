@@ -1,7 +1,13 @@
+import { useUser } from "../context/user";
+
 export const Home = () => {
+
+    const { user } = useUser();
+    console.log(user);
+
     return (
         <div>
-            Bem vindo! Você foi autorizado!
+            <h1>Você foi autorizado.</h1>
         </div>
     );
 }

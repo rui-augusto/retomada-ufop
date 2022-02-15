@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import { useUser } from "../context/user";
 import { useNavigate } from 'react-router-dom'
 
 import { AiOutlineUser } from 'react-icons/ai';
@@ -11,25 +12,15 @@ import { auth } from '../firebase-config'
 export const Login = () => {
     const navigate = useNavigate();
 
+    const context = useUser();
+    const { userId } = useUser();
+
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
 
 
-    async function loginUser(email, password){
-        try {
-            const user = await signInWithEmailAndPassword(
-              auth,
-              email,
-              password
-            );
-            navigate(`/home`)
-          } catch (error) {
-            console.log(error.message);
-          }
-    }
-
-    const handleInput = () => {
-        loginUser(loginEmail, loginPassword);
+    async function loginUser(){
+        await context.loginUser(loginEmail, loginPassword, navigate);
     }
 
     return (
@@ -52,7 +43,7 @@ export const Login = () => {
                         setLoginPassword(event.target.value);
                     }}
                     /><br/>
-                <button onClick = {handleInput} className = "buttonFormat" type = "submit">Login</button>
+                <button onClick = {loginUser} className = "buttonFormat" type = "submit">Login</button>
                 <Link to = "/register">Crie seu usuário</Link>
             </div>
         </div>
