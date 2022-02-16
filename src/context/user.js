@@ -12,7 +12,7 @@ export function UserProvider({children}){
     const [user, setUser] = useState({});
     const [userID, setUserID] = useState("");
 
-    async function registerUser(name, email, password, role){
+    async function registerUser(name, email, password, role, navigate){
         try {
             const res = await createUserWithEmailAndPassword(
                 auth,
@@ -25,6 +25,7 @@ export function UserProvider({children}){
                 role: role 
             });
             console.log(res.user.uid);
+            navigate(`../`);
         }catch (error){
             console.log(error.message);
         }
@@ -41,6 +42,7 @@ export function UserProvider({children}){
             navigate(`/home/${res.user.uid}`);
         }catch(error){
             console.log(error.message);
+            alert("Usuário ou senha incorreto!");
         }
     }
 

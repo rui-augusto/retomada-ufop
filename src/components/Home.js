@@ -18,7 +18,7 @@ export const Home = () => {
     }
     return (
         <div>
-            <h1>Você foi autorizado, {user.name}.</h1>
+            <h1>Você foi autorizado, {user.name}. [{user.role}]</h1>
             <button onClick = {handleInput}>Link</button>
         </div>
     );

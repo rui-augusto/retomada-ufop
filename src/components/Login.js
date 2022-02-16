@@ -1,19 +1,16 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import { useUser } from "../context/user";
+import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'
+import { useUser } from "../context/user";
 
 import { AiOutlineUser } from 'react-icons/ai';
 import "./style.css"
-/*firebase import */
-import {  signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../firebase-config'
 
 export const Login = () => {
     const navigate = useNavigate();
 
     const context = useUser();
-    const { userId } = useUser();
+    // const { userId } = useUser();
 
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
@@ -21,6 +18,7 @@ export const Login = () => {
 
     async function loginUser(){
         await context.loginUser(loginEmail, loginPassword, navigate);
+        console.log(context);
     }
 
     return (

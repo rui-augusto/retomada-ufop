@@ -1,47 +1,25 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useUser } from "../context/user";
+import { useNavigate } from 'react-router-dom'
+
 import { Link } from 'react-router-dom'
 import "./style.css"
-/*firebase import */
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth, database} from '../firebase-config'
-import { ref, set } from "firebase/database";
 
 
 export const Register = () => {
-    
+
+    const context = useUser();
+    const navigate = useNavigate();
+
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [rePassword, setRePassword] = useState("");
-    const [samePassword, setSamePassword] = useState(false)
     const [role, setRole] = useState("entrevistador"); /* começa com o valor da primeira option*/
 
-    // useEffect(() => {
-    //     comparePasswords();
-    // }, [password, rePassword])
-
-
-    async function registerUser(name, email, password, role){
-        try {
-            const user = await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password);
-
-            set(ref(database, 'users/' + user.user.uid), {
-                name: name,
-                email: email,
-                role: role 
-            });
-            console.log(user.user.uid);
-        } catch{
-            console.log("As senhas estão diferentes");
-        }
-    }
-
-    const handleRegisterInput = () => {
+    const registerUser = () => {
         if (rePassword == password){
-            registerUser(name, email, password, role);
+            context.registerUser(name, email, password, role, navigate);
         }
         else{
             alert("Senhas diferentes");
@@ -83,6 +61,7 @@ export const Register = () => {
                         setRePassword(event.target.value);
                     }}
                     /><br/>
+
                 <select value = {role} onChange = {(event) => {
                     setRole(event.target.value);
                     }}
@@ -91,7 +70,8 @@ export const Register = () => {
                     <option value = "analista">Equipe de Análise</option>
                     <option value = "coordenacao">Coordenação</option>
                 </select><br/>
-                <button onClick = {handleRegisterInput} className = "buttonFormat">Registrar</button>
+
+                <button onClick = {registerUser} className = "buttonFormat">Registrar</button>
                 <Link to = '/'>Já tenho conta</Link>
             </div>
         </div>
