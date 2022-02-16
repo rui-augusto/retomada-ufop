@@ -16,18 +16,10 @@ export const Register = () => {
     const [samePassword, setSamePassword] = useState(false)
     const [role, setRole] = useState("entrevistador"); /* começa com o valor da primeira option*/
 
-    useEffect(() => {
-        comparePasswords();
-    }, [password, rePassword])
+    // useEffect(() => {
+    //     comparePasswords();
+    // }, [password, rePassword])
 
-    const comparePasswords = () => {
-        if (rePassword != password){
-            console.log("Senhas diferentes");
-        }
-        else{
-            setSamePassword(true);
-        }        
-    } 
 
     async function registerUser(name, email, password, role){
         try {
@@ -42,14 +34,17 @@ export const Register = () => {
                 role: role 
             });
             console.log(user.user.uid);
-        } catch (error){
-            console.log(error.message);
+        } catch{
+            console.log("As senhas estão diferentes");
         }
     }
 
     const handleRegisterInput = () => {
-        if (samePassword){
+        if (rePassword == password){
             registerUser(name, email, password, role);
+        }
+        else{
+            alert("Senhas diferentes");
         }
     }
 

@@ -8,6 +8,6 @@ export const MainRoutes = () => {
     return useRoutes([
         {path: '/', element: <Login/>},
         {path: '/register', element: <Register/>},
-        {path: '/home:uid', element: <Home/>}
+        {path: '/home/:uid', element: <Home/>}
     ]);
 }
