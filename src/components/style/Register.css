@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+.fullscreenRegisterArea{
+    height: 93vh;
+    display: flex;
+    background-color: rgba(29, 25, 25, 0.801);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mainRegisterContent{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 40px 0;
+    width: 40%;
+    border-radius: 20px;
+    flex-direction: column;
+    background-color: rgba(44, 44, 44, 0.774);
+}
+
+
+.line{
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding:5 10px;
+    border-radius: 20px;
+    margin: 10px;
+    margin-top: 30px;
+}
+
+.input-register{
+    background-color: rgb(255, 255, 255);
+    height: 35px;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+}
+
+.input-register input{  
+    flex: 1;
+    border: 0;
+    outline: 0;
+    padding: 0 10px;
+    background-color: transparent;
+    margin-left:10px;
+    cursor:text;
+}
+
+.input-register select{
+    flex: 1;
+    border: 0;
+    outline: 0;
+    padding: 0 10px;
+    background-color: transparent;
+    margin-left:30px;
+    cursor:pointer;
+}
+
+.buttonFormat-register{
+    margin-top: 5%;
+    border-radius: 10px;
+    width: 30%;
+    height: 30px;
+    background-color: rgba(156, 18, 52, 0.822);
+    color: rgba(248, 248, 248, 0.801);
+    border: none;
+    cursor: pointer;
+    font-weight:400;
+}
+
+.buttonFormat-register:hover{
+    background-color: rgb(231, 218, 218);
+    color: rgba(156, 18, 52, 0.822);
+    
+}
+.linkregister{
+    margin-top: 6px;
+    padding: 15px;
+    color: rgb(189, 184, 184);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.linkregister a{
+    color: rgb(189, 184, 184);
+}

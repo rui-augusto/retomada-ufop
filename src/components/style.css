@@ -4,6 +4,24 @@
     box-sizing: border-box;
 }
 
+body{
+    font-family: 'Open Sans', sans-serif;
+}
+
+.header-content{
+    padding: 1px 1%;
+    margin: 6px;
+    margin-top: 15px;
+    font-style: italic;
+    font-weight: 500;
+    display: flex;
+    justify-content:space-between;
+    font-size: small;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: rgb(255, 255, 255);
+    color: rgb(97, 95, 95);
+}
+
 .fullscreenArea{
     width: 100vw;
     height: 100vh;

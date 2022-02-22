@@ -3,11 +3,13 @@ import { useRoutes } from 'react-router-dom';
 import { Login } from "../components/Login";
 import { Register } from "../components/Register";
 import { Home } from "../components/Home";
+import { Quest } from "../components/questionarios/Quest"
 
 export const MainRoutes = () => {
     return useRoutes([
-        {path: '/', element: <Login/>},
-        {path: '/register', element: <Register/>},
-        {path: '/home/:uid', element: <Home/>}
+        {path: '/', element: <Login />},
+        {path: '/register', element: <Register />},
+        {path: '/home/:uid', element: <Home />},
+        {path: '/questionario', element: <Quest />}
     ]);
 }

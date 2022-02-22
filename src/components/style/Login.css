@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+.imgUFOP {
+    height: 190px;
+    margin: 20px 20px;
+}
+.fullscreenArea{
+    height: 93vh;
+    display: flex;
+    background-color: rgba(29, 25, 25, 0.801);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.title{
+    padding: 1px 1%;
+    margin: 6px;
+    margin-top: 15px;
+    font-style: italic;
+    font-weight: 500;
+    display: flex;
+    justify-content:space-between;
+    font-size: small;
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: rgb(255, 255, 255);
+    color: rgb(97, 95, 95);
+}
+
+.mainLoginContent{
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 40px 0;
+    width: 40%;
+    border-radius: 20px;
+    flex-direction: column;
+    background-color: rgba(44, 44, 44, 0.774);
+}
+
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: -1cm;
+}
+
+.lineone{
+    background-color: rgba(29, 25, 25, 0.801);
+    border-bottom: 1px solid rgba(29, 25, 25, 0.801);
+    padding:5 15px;
+    border-radius: 20px;
+    margin: 10px;
+    margin-top: 50px;
+}
+
+.email {
+    background-color: #EEE;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;;
+    border-radius: 20px;
+}
+
+.linetwo{
+    background-color:#EEE;
+    border-bottom: 1px solid #EEE;
+    padding:5 15px;
+    border-radius: 20px;
+}
+
+.password{
+    background-color: #EEE;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;;
+    border-radius: 20px;
+}
+
+.inputLoginFormat{
+    flex: 1;
+    border: 0;
+    outline: 0;
+    padding: 0 10px;
+    background-color: transparent;
+    margin-left:10px;
+    cursor:text;
+    
+}
+
+.inputLoginFormat::placeholder{
+    color: #B3B3B3;
+}
+
+.buttonLoginFormat{
+    margin-top: 5%;
+    border-radius: 10px;
+    width: 50%;
+    height: 30px;
+    background-color: rgba(156, 18, 52, 0.822);
+    color: rgba(248, 248, 248, 0.801);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.buttonLoginFormat:hover{
+    background-color: rgb(231, 218, 218);
+    color: rgba(156, 18, 52, 0.822);
+    
+}
+
+.link{
+    cursor:default;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    font-size:medium;
+    color: rgb(189, 184, 184);
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.link a{
+    color: rgb(189, 184, 184);
+}
+
+
+
