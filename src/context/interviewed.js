@@ -6,6 +6,15 @@ const InterviewedContext = createContext({});
 
 export function InterviewedProvider({children}){
     const [interviewed, setInterviewed] = useState({});
+    const [primeiraParte, setPrimeiraParte] = useState({});
+
+    async function receiveFirstData(primeiraParte){
+        setPrimeiraParte(primeiraParte);
+    }
+
+    const show = () => {
+        console.log(primeiraParte);
+    }
 
     async function registerInterviewed(name, primeiraParte, segundaParte, terceiraParte){
         console.log(segundaParte);

@@ -1,14 +1,16 @@
-import { useForm } from "react-hook-form";
-import { useState, useEffect } from 'react';
+// QUESTIONARIO PARA QUEM TESTOU POSITIVO RECENTEMENTE
+
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { useInterviewed } from "../../context/interviewed";
 
-import "./Quest.css";
+import "../style/Quest.css";
 
 export const Quest = () => {
 
     const context = useInterviewed();
 
-    // DEFINICAO DO useFOrm
+    // DEFINICAO DO useForm
     useForm({
         mode: 'onSubmit',
         reValidateMode: 'onChange',
@@ -20,8 +22,7 @@ export const Quest = () => {
         shouldUnregister: false,
         shouldUseNativeValidation: false,
         delayError: undefined
-    })
-
+    });
 
     const {
         register: register1,
@@ -45,8 +46,8 @@ export const Quest = () => {
     const [outraRelacao, setOutraRelacao] = useState(false);
 
     // OBJETOS QUE GUARDAM CADA PARTE DO QUESTIONARIO
-    // false ---> NÃO CONCLÚIDO
-    // true  ---> CONCLUÍDO
+    // false ---> NÃO CONCLUIDO
+    // true  ---> CONCLUIDO
     const [primeiraParte, setPrimeiraParte] = useState(false);
     const [objPrimeiraParte, setObjPrimeiraParte] = useState({});
     const [segundaParte, setSegundaParte] = useState(false);
@@ -56,11 +57,22 @@ export const Quest = () => {
 
     // CONTATOS PROXIMOS
     const [houveContato, setHouveContato] = useState(false);
+    const [esconderTercParte, setEsconderTercParte] = useState(false);
     const [contatosProximos, setContatosProximos] = useState([]);
-    
+
+    // INSTRUÇÕES
+    const [mostrarInstrucoes, setMostrarInstrucoes] = useState(false);
+    const [instrucaoEspecial, setInstrucaoEspecial] = useState(false);
+
+    const semContato = () => {
+        setEsconderTercParte(true);
+        setTerceiraParte(true);
+    }
+
     const seContato = () => {
         setHouveContato(true);
     }
+
     // FUNCOES QUE ANALISAM AS RESPOSTAS E DITAM A SEQUÊNCIA DO QUESTIONARIO
     const analyzeOccupation = (event) => {
         if (event.target.value == "estudante"){
@@ -110,18 +122,19 @@ export const Quest = () => {
     // FUNCAO QUE ENVIA TODOS OS DADOS AO FIREBASE
      const submitData = () => {
         context.registerInterviewed(objPrimeiraParte.nome, objPrimeiraParte, objSegundaParte, objTerceiraParte);
+        setMostrarInstrucoes(true);
     }
 
     return (
-        <div>
+        <div className = "fullArea">
             { !primeiraParte &&
-            <div>
+            <div className = "formArea">
                 <form onSubmit = {handleSubmit1(onFirstSubmit)}>
-                <h1>PRIMEIRA PARTE [ BÁSICAS DO ENTREVISTADO ]</h1>
+                <h1 className>PRIMEIRA PARTE [ BÁSICAS DO ENTREVISTADO ]</h1>
                 <br/><hr/><br/>
                 <input {...register1("nome", {required: true})} type = "text" placeholder = "Nome"/>
                 <input {...register1("nomeMae", {required: true})} type = "text" placeholder = "Nome da mãe"/>
-                <input {...register1("endereco")} type = "text" placeholder = "Endereco"/>
+                <input {...register1("endereco")} type = "text" placeholder = "Endereço"/>
                 
                 Genero
                 <input {...register1("genero")} type="radio" value="masculino" />
@@ -149,6 +162,7 @@ export const Quest = () => {
                 <select {...register1("ocupacao")} onChange = {analyzeOccupation}>
                     <option value="">Ocupacao...</option>
                     <option value="estudante">Estudante</option>
+                    <option value="docente">Docente</option>
                     <option value="tecnicoAdm">Técnico Admnistrativo em Educação</option>
                     <option value="prestadorServico">Prestador de serviços</option>
                 </select>
@@ -304,39 +318,67 @@ export const Quest = () => {
                     </div>
                 }
                 { primeiraParte && segundaParte && !terceiraParte &&
-
                     <div>
-                        <h1>SEGUNDA PARTE [ CONTATOS PRÓXIMOS ]</h1>
-                        <button>Não houve contato</button>
+                        <h1>TERCEIRA PARTE [ CONTATOS PRÓXIMOS ]</h1>
+                        <button onClick = {semContato}>Não houve contato</button>
                         <form onSubmit = {handleSubmit3(onThirdSubmit)}>
                             <button onClick = {seContato}>Adicionar contato próximo</button>
-                            <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
-                            <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
-                            <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
-
-                            <select {...register3("relacao")}>
-                                <option value="">Relação com o caso...</option>
-                                <option value="domiciliar">Domiciliar</option>
-                                <option value="familiar">Familiar (extradomiciliar)</option>
-                                <option value="laboral">Laboral</option>
-                                <option value="estudantil">Estudantil</option>
-                                <option value="eventoSocial">Evento social</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                            { outraRelacao &&
+                            {!esconderTercParte && houveContato &&
                                 <div>
-                                    <input {...register3("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                    <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
+                                    <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
+                                    <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
+
+                                    <select {...register3("relacao")} onClick = {analyzeRelation}>
+                                        <option value="">Relação com o caso...</option>
+                                        <option value="domiciliar">Domiciliar</option>
+                                        <option value="familiar">Familiar (extradomiciliar)</option>
+                                        <option value="laboral">Laboral</option>
+                                        <option value="estudantil">Estudantil</option>
+                                        <option value="eventoSocial">Evento social</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                    { outraRelacao &&
+                                        <div>
+                                        <input {...register3("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                        </div>
+                                    }
+                                    Data do último contato
+                                    <input {...register3("dataUltimoContato")} type = "date"/>
+                                    <button type = "submit">Finalizar</button>
                                 </div>
                             }
-                            Data do último contato
-                            <input {...register3("dataUltimoContato")} type = "date"/>
-                        <button type = "submit">Finalizar</button>
                         </form>
-
                     </div>
                 }
                 { terceiraParte &&
                     <button onClick = {submitData}>Enviar dados</button>
+                }
+                {mostrarInstrucoes &&
+                    <div>
+                        {instrucaoEspecial &&
+                            <div>
+                                <p>Buscar um atendimento em serviço de saúde o mais rápido possível!</p>
+                            </div>
+                        }
+                        <p>
+                            <ul>
+                                <li>Utilize máscara o tempo todo;</li>
+                                <li>Se for preciso cozinhar, use máscara de proteção, cobrindo boca e nariz todo o tempo;</li>
+                                <li>Depois de usar o banheiro, nunca deixe de lavar as mãos com água e sabão e sempre limpe vaso, pia e demais superfícies com álcool ou água sanitária para desinfecção do ambiente;</li>
+                                <li>Separe toalhas de banho, garfos, facas, colheres, copos e outros objetos apenas para seu uso;</li>
+                                <li>O lixo produzido precisa ser separado e descartado o quanto antes;</li>
+                                <li>Sofás e cadeiras também não podem ser compartilhados e precisam ser limpos frequentemente com água sanitária ou álcool 70%;</li>
+                                <li>Mantenha a janela aberta para circulação de ar do ambiente usado para isolamento e a porta fechada, limpe a maçaneta frequentemente com álcool 70% ou água sanitária;</li>
+                                <li>Caso o paciente não more sozinho, os demais moradores devem dormir em outro cômodo, longe da pessoa infectada, seguindo também as seguintes recomendações:</li>
+                                <ul>
+                                    <li>Manter a distância mínima de 1 metro entre o paciente e os demais moradores;</li>
+                                    <li>Limpe os móveis da casa frequentemente com água sanitária ou álcool 70%;</li>
+                                    <li>Se uma pessoa da casa tiver diagnóstico positivo, todos os moradores ficam em isolamento por 14 dias também.</li>
+                                </ul>
+                            </ul>
+                        </p>
+                    </div>
                 }
         </div>
     );
@@ -345,7 +387,7 @@ export const Quest = () => {
 // ALTERACOES RESTANTES
 
 /*
-    1. MODULARIZAR O CODIGO: CRIAR UM COMPONENTE PARA CADA PARTE DO QUESTIONARIO
+    1. MODULARIZAR O CODIGO: CRIAR UM COMPONENTE PARA CADA PARTE DO QUESTIONARIO # problemas com os states
     2. REVER TERCEIRA PARTE (BOTÃO DE ADICIONAR/NAO ADICIONAR)
     3. REVER FUNCOES CONDICIONAIS
     3. ESTILIZAR A PAGINA

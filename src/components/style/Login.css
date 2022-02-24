@@ -2,11 +2,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overflow-y: hidden;
 }
 
-body {
-    font-family: 'Open Sans', sans-serif;
-}
 .imgUFOP {
     height: 190px;
     margin: 20px 20px;

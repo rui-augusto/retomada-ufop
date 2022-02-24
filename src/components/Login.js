@@ -34,6 +34,7 @@ export const Login = () => {
                             <input
                                 className="inputLoginFormat"
                                 type="e-mail"
+                                required
                                 placeholder="E-mail"
                                 onChange={(event) => {
                                     setLoginEmail(event.target.value);
@@ -47,6 +48,7 @@ export const Login = () => {
                             <input
                                 className="inputLoginFormat"
                                 type="password"
+                                required
                                 placeholder="Senha"
                                 onChange={(event) => {
                                     setLoginPassword(event.target.value);

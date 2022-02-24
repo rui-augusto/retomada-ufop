@@ -25,6 +25,7 @@ export function UserProvider({children}){
                 role: role 
             });
             console.log(res.user.uid);
+            alert("Usuário criado com sucesso!")
             navigate(`../`);
         }catch (error){
             console.log(error.message);
@@ -42,7 +43,7 @@ export function UserProvider({children}){
             navigate(`/home/${res.user.uid}`);
         }catch(error){
             console.log(error.message);
-            alert("Usuário ou senha incorreto!");
+            alert("E-mail ou senha incorreto!");
         }
     }
 
