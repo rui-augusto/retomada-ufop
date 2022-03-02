@@ -56,7 +56,7 @@ export const Quest3 = () => {
             <form onSubmit = {handleSubmit(submitData)}>
                 Realizou teste?
                 <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "sim"/>
-                <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "nao"/>
+                <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "nao"/><br/>
 
                 {fezTeste &&
                     <div>

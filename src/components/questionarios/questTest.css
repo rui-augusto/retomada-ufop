@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overflow: visible;
+    overflow-y: visible;
 }
 
 .fullArea{
@@ -69,11 +69,12 @@
 }
 .inputquest{
     background-color: rgb(241, 239, 239);
-    width: 200px;
+    height: 43px;
+    width: 20%;
     border-radius:20px;
     border: none;
     outline: none;
-    margin: 10px 20px;
+    margin: 10px 20px 15px;
     padding: 15px;
     
 }
@@ -136,18 +137,14 @@
     margin: 0px 20px;
     padding: 15px;
 }
-.colunaSaudeGenero{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 20px;
-    margin-top: 2%;
-    margin-bottom: 2%;
-}
 .gender {
     height: 15%;
     margin-bottom: 20px;
+    background-color:rgb(241, 239, 239);
+    border-radius:20px;
+    padding: 20px;
     display: flex;
+    flex-direction: column;
     align-items:center;
     font-family: 'Courier New', Courier, monospace;
     margin: 10px 10px;
@@ -159,7 +156,11 @@
 
 .profsaude{
     margin: 10px 10px;
+    background-color:rgb(241, 239, 239);
+    border-radius:20px;
+    padding: 20px;
     display: flex;
+    flex-direction: column;
     align-items:center;
     font-family: 'Courier New', Courier, monospace;
 }
@@ -181,8 +182,9 @@
     margin-bottom: 5%;
     flex-basis: 100%;
     margin-top: 20px;
-    margin-left: 10px;
+    margin-left: -15px;
     display: flex;
+    flex-direction: column;
     font-family: 'Courier New', Courier, monospace;
     align-items: center;
 }
@@ -193,20 +195,24 @@
     margin-left: 450px;
 }
 .btn-starquest button{
-    margin-left: 20px;
-    width: 90px;
-    border-radius: 20px;
+    width: 200%;
+    border-radius: 10px;
     height: 30px;
-    background-color: rgba(156, 18, 52, 0.918);
-    color: rgb(221, 217, 217);
+    background-color: rgba(156, 18, 52, 0.822);
+    color: rgba(248, 248, 248, 0.801);
     border: none;
     cursor: pointer;
     font-weight: bold;
 }
 
+.btn-starquest:hover{
+    background-color: rgb(219, 219, 219);
+    color: rgba(156, 18, 52, 0.822);
+    
+}
+
                                  /*segunda parte */
 .formAreaQuest{
-    margin-top: 30px;
     width: 70%;
     border-radius: 20px;
     display: flex;
@@ -410,7 +416,6 @@
 /*terceira parte*/
 
 .formquestcontato{
-    margin-bottom: 5%;
     margin-top: 20px;
     display: flex;
     align-items: center;
@@ -447,48 +452,38 @@
     color: rgb(72, 73, 75);
 }
 .btns{
-    margin-bottom: 5%;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 .btn-contato{
     border-radius: 20px;
-    width: 40%;
+    width: 20%;
     height: 30px;
     background-color: rgba(156, 12, 48, 0.87);
     color: rgba(248, 248, 248, 0.801);
     border: none;
     cursor: pointer;
     font-weight: bold;
-    border-bottom: 10px;
 }
 .btn-semContato{
     border-radius: 20px;
-    width: 40%;
+    width: 20%;
     height: 30px;
     background-color: rgba(156, 12, 48, 0.87);
     color: rgba(248, 248, 248, 0.801);
     border: none;
     cursor: pointer;
     font-weight: bold;
-    border-bottom: 10px;
 }
 
 .btn-finalizar{
     border-radius: 20px;
-    width: 8em;
+    width: 20%;
     height: 30px;
     background-color: rgba(156, 12, 48, 0.87);
     color: rgba(248, 248, 248, 0.801);
     border: none;
     cursor: pointer;
     font-weight: bold;
-    border-bottom: 10px;
-}
-
-.finalCheckbox{
-    width: 65px;
-    color: red;
-    border-radius: 20px;
 }

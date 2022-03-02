@@ -16,10 +16,9 @@ export function InterviewedProvider({children}){
         console.log(primeiraParte);
     }
 
-    async function registerInterviewed(name, primeiraParte, segundaParte, terceiraParte){
-        console.log(segundaParte);
+    async function registerPositiveInterviewed(cpf, primeiraParte, segundaParte, terceiraParte){
         try{
-            set(ref(database, 'entrevistados/' + name), {
+            set(ref(database, 'RespostasMonitoramentoConfirmados/' + cpf), {
                 primeiraParte: primeiraParte,
                 segundaParte: segundaParte,
                 terceiraParte: terceiraParte
@@ -29,8 +28,26 @@ export function InterviewedProvider({children}){
         }
     }
 
+    // async function registerCloseContacts(cpf, closedContactsAnswers){
+    //     try{
+    //         set(ref(database, 'RespostasMonitoramentoConfirmados/' + cpf), {
+                
+    //         });
+    //     }
+    // }
+
+    async function registerConfirmedCase(objCasoConfirmado, cpf){
+        try{
+            set(ref(database, 'TesteDosConfirmadosConfirmados/' + cpf), {
+                primeiraParte: objCasoConfirmado
+            });
+        }catch(error){
+            console.log(error.message);
+        }
+    }
+
     return (
-        <InterviewedContext.Provider value={{interviewed, registerInterviewed}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase}}>
             {children}
         </InterviewedContext.Provider>
     )

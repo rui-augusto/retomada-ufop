@@ -7,6 +7,8 @@ import { Quest } from "../components/questionarios/Quest";
 import { Quest2 } from "../components/questionarios/Quest2";
 import { Quest3 } from "../components/questionarios/Quest3";
 
+import {TesteQuestionario} from "../components/questionarios/testeQuestionario";
+
 export const MainRoutes = () => {
     return useRoutes([
         {path: '/', element: <Login />},
@@ -14,6 +16,7 @@ export const MainRoutes = () => {
         {path: '/home/:uid', element: <Home />},
         {path: '/questionario', element: <Quest />},
         {path: 'questionario2', element: <Quest2 />},
-        {path: 'questionario3', element: <Quest3 />}
+        {path: 'questionario3', element: <Quest3 />},
+        {path: 'teste', element: <TesteQuestionario />}
     ]);
 }

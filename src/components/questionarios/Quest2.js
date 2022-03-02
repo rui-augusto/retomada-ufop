@@ -27,7 +27,6 @@ export const Quest2 = () => {
     const [estudante, setEstudante] = useState(false);
     const [docente, setDocente] = useState(false);
     const [fezTeste, setFezTeste] = useState(false);
-    const [mudarQuest, setMudarQuest] = useState(false);
 
     const analyzeRelation = (event) => {
         if (event.target.value == "outro"){
@@ -64,14 +63,6 @@ export const Quest2 = () => {
         }
     }
 
-    const changeQuest = () => {
-        setMudarQuest(true);
-    }
-
-    const continueQuest = () => {
-        setMudarQuest(false);
-    }
-
     const submitData = (data) => {
         console.log(data);
     }
@@ -105,6 +96,12 @@ export const Quest2 = () => {
                     <input {...register("relacaoUfop")} onClick = {analyzeUfop} type="radio" value="nao" />
                     {fazParteUfop &&
                         <div>
+                            <select {...register("campus")}>
+                                <option value = "">Campus...</option>
+                                <option value = "ouroPreto">Ouro Preto</option>
+                                <option value = "mariana">Mariana</option>
+                                <option value = "joaoMonlevade">João Monlevade</option>
+                            </select>
                             <select {...register("ocupacao")} onChange = {analyzeOccupation}>
                                 <option value = "">Ocupacao...</option>
                                 <option value = "estudante">Estudante</option>
@@ -156,6 +153,16 @@ export const Quest2 = () => {
                             }
                         </div>
                     }
+                    <br/>Apresentou algum desses sintomas?
+                    <input {...register("sintomas")} type = "checkbox" value = "febre" />
+                    <input {...register("sintomas")} type = "checkbox" value = "dispineia" />
+                    <input {...register("sintomas")} type = "checkbox" value = "dorGarganta" />
+                    <input {...register("sintomas")} type = "checkbox" value = "dorCabeca" />
+                    <input {...register("sintomas")} type = "checkbox" value = "tosse" />
+                    <input {...register("sintomas")} type = "checkbox" value = "coriza" />
+                    <input {...register("sintomas")} type = "checkbox" value = "perdaOlfato" />
+                    <input {...register("sintomas")} type = "checkbox" value = "perdaPaladar" />
+                    <input {...register("sintomas")} type = "checkbox" value = "nenhum" /><br/>
 
                     Realizou teste?
                     <input {...register("realizouTeste")} onClick = {analyzeTest} type="radio" value="sim" />
@@ -171,25 +178,8 @@ export const Quest2 = () => {
                                     <option value = "naoSabe">Não sei...</option>
                             </select>
                             Resultado do teste:
-                            Positivo<input {...register("resultadoTeste")} onClick = {changeQuest}type = "radio" value = "positivo"/>
+                            Positivo<input {...register("resultadoTeste")} type = "radio" value = "positivo"/>
                             Negativo<input {...register("resultadoTeste")} type = "radio" value = "negativo"/><br/>
-                            {mudarQuest &&
-                                <div>
-                                    <button type = "submit">Mudar questionário</button>
-                                    <button onClick = {continueQuest}>Continuar aqui</button>
-                                </div>    
-                            }
-                            Sintomas
-                            <input {...register("sintomas")} type = "checkbox" value = "febre" />
-                            <input {...register("sintomas")} type = "checkbox" value = "dispineia" />
-                            <input {...register("sintomas")} type = "checkbox" value = "dorGarganta" />
-                            <input {...register("sintomas")} type = "checkbox" value = "dorCabeca" />
-                            <input {...register("sintomas")} type = "checkbox" value = "tosse" />
-                            <input {...register("sintomas")} type = "checkbox" value = "coriza" />
-                            <input {...register("sintomas")} type = "checkbox" value = "perdaOlfato" />
-                            <input {...register("sintomas")} type = "checkbox" value = "perdaPaladar" />
-                            <input {...register("sintomas")} type = "checkbox" value = "nenhum" />
-                            {/* CONSERTAR A ORDEM (OS SINTOMAS DEVEM APARECER MESMO NAO TENDO REALIZADO TESTE) */}
                         </div>
                     }
                     <button type = "submit">Finalizar Questionário</button>
