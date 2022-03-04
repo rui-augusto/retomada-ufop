@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useInterviewed } from "../../context/interviewed";
 
+import "./Quest3.css";
+
 export const Quest3 = () => {
     
     useForm({
@@ -48,59 +50,100 @@ export const Quest3 = () => {
     const submitData = (data) => {
         analyzeContat(data);
         console.log(data);
+
     }
+
 
 
     return (
         <div>
-            <form onSubmit = {handleSubmit(submitData)}>
-                Realizou teste?
-                <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "sim"/>
-                <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "nao"/><br/>
-
-                {fezTeste &&
-                    <div>
-                        <select {...register("testeRealizado")}>
-                                <option value = "">Teste Realizado...</option>
-                                <option value = "anticorpo">Teste Rápido - Anticorpo</option>
-                                <option value = "antigeno">Teste Rápido - Antigeno</option>
-                                <option value = "sorologico">Sorológico</option>
-                                <option value = "pcr">PCR</option>
-                                <option value = "naoSabe">Não sei...</option>
-                        </select>
-                        Resultado do teste:
-                        Positivo<input {...register("resultadoTeste")} type = "radio" value = "positivo"/>
-                        Negativo<input {...register("resultadoTeste")} type = "radio" value = "negativo"/><br/>
+            <div className="fullArea">
+                <form className='formAreaQuest'onSubmit = {handleSubmit(submitData)}>
+                    
+                    <div className="Description-quest">
+                        <h3>APÊNDICE</h3> <p>Instrumento da Pesquisa</p>                       
                     </div>
-                }
-                Sintomas:
-                <input {...register("sintomas")} type = "checkbox" value = "dorCabeca"/>
-                <input {...register("sintomas")} type = "checkbox" value = "tosse"/>
-                <input {...register("sintomas")} type = "checkbox" value = "coriza"/>
-                <input {...register("sintomas")} type = "checkbox" value = "perdaOlfato"/>
-                <input {...register("sintomas")} type = "checkbox" value = "perdaPaladar"/>
+                       
+                    <div className="Info-quest">
+                        <p>Questionário telefônico dos Casos Confirmados</p>
+                        <p>Monitoramento</p>
+                    </div>
+            
+                    <div className='testeRealizado'>
+                        <div>
+                            Realizou teste? &nbsp;
+                            <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "sim"/> Sim &nbsp;
+                            <input {...register("realizouTeste")} onClick = {analyzeTest} type = "radio" value = "nao"/> Não 
+                        </div>
+                    </div>
 
-                Outro(s) sintoma(s): <input {...register("outroSintoma")} type = "text" placeholder = "Sintoma(s)..."/>
+                    {fezTeste &&
+                        <div className='fezTeste'>
+                            <div>
+                                <select {...register("testeRealizado")}>
+                                        <option value = "">Teste Realizado...</option>
+                                        <option value = "anticorpo">Teste Rápido - Anticorpo</option>
+                                        <option value = "antigeno">Teste Rápido - Antigeno</option>
+                                        <option value = "sorologico">Sorológico</option>
+                                        <option value = "pcr">PCR</option>
+                                        <option value = "naoSabe">Não sei...</option>
+                                </select>
+                            </div>
 
-                Melhora ou piora?
+                            <div>
+                                Resultado do teste: &nbsp;
+                                <input {...register("resultadoTeste")} type = "radio" value = "positivo"/> Positivo &nbsp;
+                                <input {...register("resultadoTeste")} type = "radio" value = "negativo"/> Negativo
+                            </div>
+                        </div>
+                    }
+                    
+                    <div className="sintomas">
+                        Apresentou algum desses sintomas?
+                        <div className="inputSintomas">
+                                <div className="espacamento">
+                                    <div className="espacamentointerior"><input {...register("sintoma01")} type="checkbox" /> dor de cabeça &nbsp;</div>
+                                    <div className="espacamentointerior"><input {...register("sintoma02")} type="checkbox" /> tosse &nbsp;</div>
+                                    <div className="espacamentointerior"><input {...register("sintoma03")} type="checkbox" /> coriza &nbsp;</div>
+                                </div>
+                                <div className="espacamento">
+                                    <div className="espacamentointerior"><input {...register("sintoma04")} type="checkbox" /> perda do olfato &nbsp;</div>
+                                    <div className="espacamentointerior"><input {...register("sintoma05")} type="checkbox" /> perda do paladar &nbsp;</div>
+                                    <div className="espacamentointerior"><input {...register("sintoma06")} type="checkbox" /> nenhum &nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
 
-                <input {...register("situacaoSintomas")} type = "radio" value = "melhora" />
-                <input {...register("situacaoSintomas")} type = "radio" value = "piora" />
-                <input {...register("situacaoSintomas")} type = "radio" value = "semMudancas" />
+                    <div className='outros'>
+                        Outro(s) sintoma(s): &nbsp;
+                        <input {...register("outroSintoma")} type = "text" placeholder = "Sintoma(s)..."/>
+                    </div>
 
-                Teve contato?
+                    <div className='situacaoProximo'>
+                        Melhora ou piora?  &nbsp;
 
-                <input {...register("contatoProximo")} type = "radio" value = "sim" />
-                <input {...register("contatoProximo")} type = "radio" value = "nao" />
-                <button type = "submit">Finalizar</button>
-            </form>
+                        <input {...register("situacaoSintomas")} type = "radio" value = "melhora" /> &nbsp;Melhora  &nbsp;
+                        <input {...register("situacaoSintomas")} type = "radio" value = "piora" />&nbsp; Piora  &nbsp;
+                        <input {...register("situacaoSintomas")} type = "radio" value = "semMudancas" /> &nbsp; Sem mudanças 
+                    </div>
 
+                    <div className='outros'>
+                        Teve contato? &nbsp;
+                        <input {...register("contatoProximo")} type = "radio" value = "sim" /> &nbsp; Sim &nbsp;
+                        <input {...register("contatoProximo")} type = "radio" value = "nao" /> &nbsp; Não 
+                    </div>
+                    <div className='btn'>
+                        <button className='btn-proximos' type = "submit">Finalizar</button>
+                    </div>
+                </form>
+            </div>
             {seContato &&
                 <div>
                     <form onSubmit = {handleSubmit1(submitData)}>
                         <input {...register1("nomeCP")} type = "text" placeholder = "Nome do contato" />
                         <input {...register1("telCP")} type = "number" />
-                        <button type = "submit">Enviar</button>
+                        
+                        <button className='btn-proximos' type = "submit">Enviar</button>
                     </form>
                 </div>
             }

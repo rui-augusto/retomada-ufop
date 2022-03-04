@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.fullArea{
+    height: 100vh;
+    display: flex;
+    background-color: rgba(29, 25, 25, 0.801);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.testeRealizado{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fezTeste{
+    display: flex;
+    
+    font-family: 'Courier New', Courier, monospace;
+    margin: 10px 10px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.fezTeste select{
+    background-color: rgb(241, 239, 239);
+    border-radius:20px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.outros{
+    display: flex;
+    font-family: 'Courier New', Courier, monospace;
+    justify-content: center;
+    align-items: center;
+}
+.outros input{
+    background-color: rgb(241, 239, 239);
+    border-radius:20px;
+    border: none;
+    outline: none;
+    padding: 15px;
+}
+.situacaoProximo{
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    font-family: 'Courier New', Courier, monospace;
+    justify-content: center;
+    align-items: center;
+}
+.btn{
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+.btn-proximos{
+    width: 15%;
+    border-radius: 20px;
+    height: 30px;
+    background-color: rgba(156, 18, 52, 0.918);
+    color: rgb(221, 217, 217);
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+.inputSintomas1{
+    margin-left: 20%;
+    margin-top: 8px;
+    width: 100%;
+}

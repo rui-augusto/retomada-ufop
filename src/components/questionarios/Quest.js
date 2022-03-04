@@ -37,6 +37,7 @@ export const Quest = () => {
     } = useForm();
     
     // STATES USADOS PARA AS PERGUNTAS QUE DEPENDEM DE OUTRAS PERGUNTAS
+    const [femaleGender, setFemaleGender] = useState(false);
     const [estudante, setEstudante] = useState(false);
     const [docente, setDocente] = useState(false);
     const [pSaude, setPSaude] = useState(false);
@@ -95,10 +96,6 @@ export const Quest = () => {
         console.log(objTerceiraParte);
     }
 
-    const finalCheckboxContent = (event) => {
-        console.log(event.target.checked); // true or false
-    }
-
     // FUNCOES QUE ANALISAM AS RESPOSTAS E DITAM A SEQUÊNCIA DO QUESTIONARIO
     const analyzeOccupation = (event) => {
         if (event.target.value == "estudante"){
@@ -133,6 +130,14 @@ export const Quest = () => {
         }
     }
 
+    const analyzeGender = (event) => {
+        if (event.target.value == "feminino"){
+            setFemaleGender(true);
+        }else{
+            setFemaleGender(false);
+        }
+    }
+
     // FUNCAO QUE GUARDA AS INFORMACOES DE CADA PARTE DO QUESTIONARIO
 
     const onFirstSubmit = (data) => {
@@ -148,31 +153,24 @@ export const Quest = () => {
     }
 
     const onThirdSubmit = (data) => {
-        console.log(data);
-        if (data.nome == ""){
-            console.log("realmente nao tem nada");
+        if (data.semContatoProximo){
+            console.log("Não vai ser criado");
+        } else{
+            console.log(data);
+            setObjTerceiraParte(data);
         }
-        else if (data.nome != ""){
-            console.log(data.nome)
-        }
-        setObjTerceiraParte(data);
         setTerceiraParte(true);
-    }
-
-    const mostraDados = () => {
-        console.log("1:", objPrimeiraParte);
-        console.log("2:", objSegundaParte);
-        console.log("3:", objTerceiraParte);
     }
 
     // FUNCAO QUE ENVIA TODOS OS DADOS DO QUESTIONARIO PRINCIPAL AO FIREBASE
     const submitData = () => {
-        context.registerPositiveInterviewed(objPrimeiraParte.cpf, objPrimeiraParte, objSegundaParte, objTerceiraParte);
-        testingData();
+        context.registerPositiveInterviewed(objPrimeiraParte.cpf, objPrimeiraParte, objSegundaParte);
+        dadosConfirmado();
+        dadosContatoProximo();
     }
 
     // FUNCAO QUE ENVIA OS DADOS DO CONFIRMADO AO FIREBASE
-    const testingData = () => {
+    const dadosConfirmado = () => {
         var dataHorarioAgora = new Date().setHours(0,0,0);
 
         var dataInicioSintomas = new Date(objSegundaParte.inicioSintomas).setHours(27,0,0);
@@ -202,11 +200,46 @@ export const Quest = () => {
             sexo: objPrimeiraParte.genero,
             situacao: "em aberto",
             telefone: null,
-            tipoTeste: objSegundaParte.tipoTeste
+            tipoTeste: objSegundaParte.testeRealizado
         }
 
         console.log(objConfirmado);
         context.registerConfirmedCase(objConfirmado, objConfirmado.cpf);
+    }
+
+    const dadosContatoProximo = () => {
+        var dataHorarioAgora = new Date().setHours(0,0,0);
+
+        var dataUltimoContato = new Date(objTerceiraParte.dataUltimoContato).setHours(27,0,0);
+
+        if (objTerceiraParte.telefone1 == undefined){
+            objTerceiraParte.telefone1 = null;
+        }
+        if (objTerceiraParte.telefone2 == undefined){
+            objTerceiraParte.telefone2 = null;
+        }
+
+        const objContatoProximo = {
+            contEntrevistas: 0,
+            contTentativas: 0,
+            dataInclusaoBanco: dataHorarioAgora,
+            dataNascimento: null,
+            dataProximaEntrevista: null,
+            dataUltimaMudancaSituacao: dataHorarioAgora,
+            dataUltimoContato: dataUltimoContato,
+            entrevistador: null,
+            cpfGeradorDoContato: 155,
+            log: "a",
+            logSituacao: "a",
+            nome: objTerceiraParte.nome,
+            obs: "a",
+            relacaoComOCaso: objTerceiraParte.relacao,
+            situacao: "aberto",
+            telefone1: objTerceiraParte.telefone1,
+            telefone2: objTerceiraParte.telefone2
+        }
+        console.log(objContatoProximo);
+        context.registerCloseContacts(objContatoProximo, dataHorarioAgora);
     }
 
     return (
@@ -220,7 +253,7 @@ export const Quest = () => {
                 </div>
                     
                 <div className="Info-quest">
-                    <p>Questionário telefônico dos casos Confirmados</p>
+                    <p>Questionário telefônico dos Casos Confirmados</p>
                     <p>Dados básicos do entrevistado - Parte 1</p>
                 </div>
                     
@@ -249,20 +282,18 @@ export const Quest = () => {
                     <input {...register1("nascimento")} type = "date"/>
                 </div>
 
-                <div className="gender">
-                    Gênero
-                    <div className="genderInput">
-                        <input {...register1("genero")} type="radio" value="masculino"/> M &nbsp; 
-                        <input {...register1("genero")} type="radio" value="feminino" /> F &nbsp; 
-                        <input {...register1("genero")} type="radio" value="outro" /> Outro &nbsp; 
+                <div className="colunaSaudeGenero">
+                    <div className="gender">
+                        Gênero &nbsp; 
+                            <input {...register1("genero")} type="radio" value="masculino" onClick = {analyzeGender}/>&nbsp;  M &nbsp; 
+                            <input {...register1("genero")} type="radio" value="feminino" onClick = {analyzeGender}/>&nbsp;  F &nbsp; 
+                            <input {...register1("genero")} type="radio" value="outro" onClick = {analyzeGender}/>&nbsp;  outro 
                     </div>
-                </div>
-                
-                <div className="profsaude">
-                    Profissional de saúde?
-                    <div className="inputsaude">
-                        <input {...register1("profissionalSaude")} type="radio" value="sim" onClick = {analyzeProfession}/> sim &nbsp;
-                        <input {...register1("profissionalSaude")} type="radio" value="nao" onClick = {analyzeProfession}/> não &nbsp;
+                    
+                    <div className="profsaude">
+                        Profissional de saúde? &nbsp;
+                            <input {...register1("profissionalSaude")} type="radio" value="sim" onClick = {analyzeProfession}/> &nbsp; sim &nbsp;
+                            <input {...register1("profissionalSaude")} type="radio" value="nao" onClick = {analyzeProfession}/> &nbsp; não &nbsp;
                     </div>
                 </div>
                 { pSaude &&
@@ -271,7 +302,7 @@ export const Quest = () => {
 
                 <div className="optionProf">
                     <select {...register1("ocupacao")} onChange = {analyzeOccupation}>
-                        <option value="">Profissão</option>
+                        <option value="">Ocupação</option>
                         <option value="estudante">Estudante</option>
                         <option value="tecnicoAdm">Técnico Admnistrativo em Educação</option>
                         <option value="prestadorServico">Prestador de serviços</option>
@@ -280,7 +311,7 @@ export const Quest = () => {
                 
                 { estudante &&
                     <div className="inputEstudante">
-                        <input {...register1("curso")} type = "text" placeholder = "Nome do Curso"/>
+                        <input {...register1("numMatricula")} type = "number" placeholder = "Número de Matrícula"/>
                     </div>
                 }
                 { docente &&
@@ -459,8 +490,8 @@ export const Quest = () => {
                                     </div>
                                 </div>
                             </div>
-
-                            <div className="situacao">
+                            {femaleGender &&
+                                <div className="situacao">
                                 Situação
                                 <div className="inputSituacao">
                                     <input {...register2("situacao1")} type="radio" /> gestante &nbsp;
@@ -468,7 +499,7 @@ export const Quest = () => {
                                     <input {...register2("situacao3")} type="radio" /> nenhuma &nbsp;
                                 </div>
                             </div>
-
+                            }
                             <div className="estado">
                             Melhora ou piora?
                                 <div className="inputEstado">
@@ -534,7 +565,7 @@ export const Quest = () => {
                                     <input {...register3("dataUltimoContato")} type = "date"/>
                                 </div>
                             </div>
-                            <input className = "finalCheckbox" type = "checkbox" onClick = {finalCheckboxContent}/>
+                            <input {...register3("semContatoProximo")} className = "finalCheckbox" type = "checkbox" />
                             <div className="btns">
                                 <button type = "submit" className="btn-finalizar">Finalizar</button>
                             </div>

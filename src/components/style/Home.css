@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.fullscreenAreaHome{
+    height: 100%;
+    display: flex;
+    background-color: rgba(29, 25, 25, 0.801);
+    align-items: center;
+    flex-direction: column;
+    
+}
+.AreaPesquisa{
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.titulo{
+    padding: 10px;
+    color: rgb(255, 255, 255);
+    font-size:large;
+    font-family:Arial, Helvetica, sans-serif;
+}
+.titulo select{
+    background-color: rgb(255, 255, 255);
+    border-radius:20px;
+    border: none;
+    outline: none;
+    margin: 10px 10px;
+    padding: 15px;
+    align-items: center;
+}
+.BoxPessoas{
+    margin-top: 2%;
+    margin-bottom: 2%;
+    border-radius: 15px;
+    background-color: rgb(148, 14, 43);
+    display: flex;
+    flex-direction:column;
+    min-width: 70%;
+    min-height: 60%;
+    max-width: 70%;
+    max-height: 60%;
+}
+.primeiraLinha{
+    margin-left: 10px;
+    align-items: center;
+    padding: 20px 10px;
+    display: flex;
+    justify-content: row;
+    color: aliceblue;
+}
+.primeiraLinha input{
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    height: 100%;
+    padding: 10px;
+}
+.divisaolinhas{
+    display: flex;
+    width: 33%;
+    justify-content: space-around;
+}
+.segundaLinha{
+    padding: 1%;
+    color: aliceblue;
+    display: flex;
+    width: 100%;
+    
+    justify-content: flex-start;
+}
+.infoNome{
+    width: 14%;
+    margin-left: 15px;
+}
+.infoTelefone{
+    width: 14%;
+}
+.infoMonitorar{
+    width: 14%;
+    margin-left: -20px;
+}
+.infoSituacao{
+    width: 14%;
+}
+.infoProxEntrevista{
+    width: 14%;
+}
+.infoSituacaoEntrevista{
+    width: 14%;
+}
+.BoxNomes{
+    background-color: rgb(196, 192, 192);
+    height: 70%;
+    display: flex;
+    justify-content: space-between;
+   
+    margin-left: 25px;
+    margin-right: 10%;
+    margin-bottom: 3%;
+}
+.chatNomes{
+    background-color: rgb(255, 255, 255);
+    overflow-y: auto;
+    height: 400px;
+}
