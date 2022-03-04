@@ -47,9 +47,9 @@ export const Quest = () => {
     // OBJETOS QUE GUARDAM CADA PARTE DO QUESTIONARIO
     // false ---> NÃO CONCLÚIDO
     // true  ---> CONCLUÍDO
-    const [primeiraParte, setPrimeiraParte] = useState(false);
+    const [primeiraParte, setPrimeiraParte] = useState(true);
     const [objPrimeiraParte, setObjPrimeiraParte] = useState({});
-    const [segundaParte, setSegundaParte] = useState(false);
+    const [segundaParte, setSegundaParte] = useState(true);
     const [objSegundaParte, setObjSegundaParte] = useState({});
     const [terceiraParte, setTerceiraParte] = useState(false);
     const [objTerceiraParte, setObjTerceiraParte] = useState({});
@@ -81,10 +81,6 @@ export const Quest = () => {
     const [houveContato, setHouveContato] = useState(false);
     const [contatosProximos, setContatosProximos] = useState([]);
     
-    const seContato = () => {
-        setHouveContato(true);
-    }
-
     const semContato = () => {
         objTerceiraParte = {
             dataUltimoContato: 0,
@@ -135,6 +131,16 @@ export const Quest = () => {
             setFemaleGender(true);
         }else{
             setFemaleGender(false);
+        }
+    }
+
+    const analyzeCloseContact = (event) => {
+        console.log(event.target.checked);
+        if (event.target.checked == true){
+            console.log("a");
+            setHouveContato(true);
+        }else{
+            setHouveContato(false);
         }
     }
 
@@ -535,41 +541,46 @@ export const Quest = () => {
 
                         <div className="Info-quest">
                         <p>Questionário telefônico dos casos Confirmados</p>
-                        <p>Contatos Próximos - Parte 3</p>
+                        <p>Contatos Próximos [Comunidade UFOP] - Parte 3</p>
                         </div> 
-
-                        <form className='formquestcontato' onSubmit = {handleSubmit3(onThirdSubmit)}>
+                            Houve contato próximo? <input type = "checkbox" onClick = {analyzeCloseContact}/>
+                            {houveContato &&
+                                <div>
+                                    <form className='formquestcontato' onSubmit = {handleSubmit3(onThirdSubmit)}>
                             
-                            <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
-                            <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
-                            <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
-                        
-                    
-                            <select {...register3("relacao")} onClick = {analyzeRelation}>
-                                <option value="">Relação com o caso...</option>
-                                <option value="domiciliar">Domiciliar</option>
-                                <option value="familiar">Familiar (extradomiciliar)</option>
-                                <option value="laboral">Laboral</option>
-                                <option value="estudantil">Estudantil</option>
-                                <option value="eventoSocial">Evento social</option>
-                                <option value="outro">Outro</option>
-                            </select>
-                            { outraRelacao &&
-                                <div className="relacao">
-                                    <input {...register3("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
-                                </div>
+                                        <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
+                                        <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
+                                        <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
+                                    
+                                
+                                        <select {...register3("relacao")} onClick = {analyzeRelation}>
+                                            <option value="">Relação com o caso...</option>
+                                            <option value="domiciliar">Domiciliar</option>
+                                            <option value="familiar">Familiar (extradomiciliar)</option>
+                                            <option value="laboral">Laboral</option>
+                                            <option value="estudantil">Estudantil</option>
+                                            <option value="eventoSocial">Evento social</option>
+                                            <option value="outro">Outro</option>
+                                        </select>
+                                        { outraRelacao &&
+                                            <div className="relacao">
+                                                <input {...register3("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                            </div>
+                                        }
+                                        <div className="dataContato">
+                                            Data do último contato
+                                            <div className="inputDataContato">
+                                                <input {...register3("dataUltimoContato")} type = "date"/>
+                                            </div>
+                                        </div>
+                                        <input {...register3("semContatoProximo")} className = "finalCheckbox" type = "checkbox" />
+                                        <div className="btns">
+                                            <button type = "submit" className="btn-finalizar">Cadastrar</button>
+                                        </div>
+                                    </form>
+                                    <button>Finalizar</button>
+                                </div>    
                             }
-                            <div className="dataContato">
-                                Data do último contato
-                                <div className="inputDataContato">
-                                    <input {...register3("dataUltimoContato")} type = "date"/>
-                                </div>
-                            </div>
-                            <input {...register3("semContatoProximo")} className = "finalCheckbox" type = "checkbox" />
-                            <div className="btns">
-                                <button type = "submit" className="btn-finalizar">Finalizar</button>
-                            </div>
-                        </form>
                     </div>
                 }
                 { terceiraParte &&
