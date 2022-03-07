@@ -59,8 +59,10 @@ export function UserProvider({children}){
         }
     }
 
-    async function userLogout(){
-        
+    async function userLogout(navigate){
+        navigate('/');
+        signOut(auth);
+        // setUser(null);
     }
 
     async function getUserInfo(userId){

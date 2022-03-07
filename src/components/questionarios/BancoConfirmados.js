@@ -22,19 +22,23 @@ export const BancoConfirmados = (props) => {
     // , hour: '2-digit', minute: '2-digit', second: '2-digit'
     
 
+    const [seConfirmado, setSeConfirmado] = useState(false);
     const [seExpirado, setSeExpirado] = useState(false);
     const [situacao, setSituacao] = useState("Expirado");
     const [tentativas, setTentativas] = useState(0);
 
     useEffect(() => {
         if (props.confirmado.objetoDados.situacao == "expirado"){
+            setSeConfirmado(true);
             setSeExpirado(true);
         }
         else if (props.confirmado.objetoDados.situacao == "naoContato"){
             setSituacao("Não Contato");
+            setSeConfirmado(true);
         }
         else if (props.confirmado.objetoDados.situacao == "expiradoInterno"){
             setSituacao("Expirado Interno");
+            setSeConfirmado(true);
         }
 
         setTentativas(props.confirmado.objetoDados.contTentativas);
@@ -54,27 +58,32 @@ export const BancoConfirmados = (props) => {
 
     return(
 
-        <div className="chatListItem">
-            <div className="chatListItem-lines">
-                <div className="chatListItem-line">
-                    <div className="chatListItem-nomePaciente">{props.confirmado.objetoDados.nome}</div> &nbsp;
-                    
-                    <div className="chatListItem-telefonePaciente">999999999</div> &nbsp;
-                    
-                    <div className="chatListItem-monitorarAte">{dataMonitorarAte}</div>
-                    
-                    <div className="chatListItem-situacao">{situacao}</div>
-                    
-                    {seExpirado &&
-                        <button className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
-                    }
-                    {!seExpirado &&
-                        <button onClick = {startQuest}className="chatListItem-btn">ENTREVISTAR</button>
-                    }
-                    
-                    <button onClick = {addTry}className="chatListItem-btn">CONTATO SEM SUCESSO [{tentativas}]</button>
+        <div>
+            {seConfirmado &&
+            <div className="chatListItem">
+
+                <div className="chatListItem-lines">
+                    <div className="chatListItem-line">
+                        <div className="chatListItem-nomePaciente">{props.confirmado.objetoDados.nome}</div> &nbsp;
+                        
+                        <div className="chatListItem-telefonePaciente">999999999</div> &nbsp;
+                        
+                        <div className="chatListItem-monitorarAte">{dataMonitorarAte}</div>
+                        
+                        <div className="chatListItem-situacao">{situacao}</div>
+                        
+                        {seExpirado &&
+                            <button className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
+                        }
+                        {!seExpirado &&
+                            <button onClick = {startQuest}className="chatListItem-btn">ENTREVISTAR</button>
+                        }
+                        
+                        <button onClick = {addTry}className="chatListItem-btn">CONTATO SEM SUCESSO [{tentativas}]</button>
+                    </div>
                 </div>
             </div>
+            }
         </div>
     );
 }

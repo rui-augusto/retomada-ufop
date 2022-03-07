@@ -145,7 +145,6 @@ export const Quest = () => {
     const analyzeCloseContact = (event) => {
         console.log(event.target.checked);
         if (event.target.checked == true){
-            console.log("a");
             setHouveContato(true);
         }else{
             setHouveContato(false);
@@ -164,9 +163,7 @@ export const Quest = () => {
 
     // FUNCOES QUE ANALISAM A FREQUENCIA DAS ENTREVISTAS
 
-    const analyzeFrequency = () => {
-        // FAZER AINDA
-    }
+
 
     // FUNCAO QUE GUARDA AS INFORMACOES DE CADA PARTE DO QUESTIONARIO
 
@@ -201,7 +198,7 @@ export const Quest = () => {
     // FUNCAO QUE ENVIA TODOS OS DADOS DO QUESTIONARIO PRINCIPAL AO FIREBASE
     const submitData = () => {
         context.registerPositiveInterviewed(objPrimeiraParte.cpf, objPrimeiraParte, objSegundaParte);
-        // dadosConfirmado();
+        dadosConfirmado();
         if (houveContato){
             dadosContatoProximo();
         }
@@ -247,13 +244,18 @@ export const Quest = () => {
     // }
 
     const dadosConfirmado = () => {
-        if (situacaoCritica){
-            var freq = 1;
-            var quantidadeEntrevistas = 5;
-            var situacao = "andamento";
+
+        context.changeSituation(objPrimeiraParte.cpf);
+        // const updates = {};
+        
+        // if (situacaoCritica){
+        //     updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento'] = 1;
+        //     updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas'] = 5;
+        // }
+        // updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/situacao'] = "andamento";
             // entrevistas realizadas + 1
             // atualizar ultima mudanca situacao
-        }
+            // cont tentativas = 0
     }
 
     const dadosContatoProximo = () => {

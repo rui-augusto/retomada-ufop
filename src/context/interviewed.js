@@ -1,12 +1,22 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { database } from '../firebase-config'
 import { ref, set, push, child, get, update } from "firebase/database";
+import { useUser } from "../context/user";
+
 
 const InterviewedContext = createContext({});
 
 export function InterviewedProvider({children}){
+
+    const contextUser = useUser();
+
+
     const [interviewed, setInterviewed] = useState({});
     const [primeiraParte, setPrimeiraParte] = useState({});
+
+    const [objConfirmados, setObjConfirmados] = useState({});
+    const [objContProximos, setObjContProximos] = useState({});
+
 
     async function receiveFirstData(primeiraParte){
         setPrimeiraParte(primeiraParte);
@@ -16,6 +26,10 @@ export function InterviewedProvider({children}){
         console.log(primeiraParte);
     }
 
+
+    useEffect(() => {
+        getInfoFromDatabase();
+    }, [contextUser.user]);
 
     //FUNCAO QUE ENVIA OS DADOS DO QUESTIONARIO QUE EH CASO CONFIRMADO
     async function registerPositiveInterviewed(cpf, primeiraParte, segundaParte){
@@ -83,6 +97,11 @@ export function InterviewedProvider({children}){
         return databaseInfo;
     }
 
+    async function getInfoFromDatabase(){
+        setObjConfirmados(await getRefFromDataBase("Confirmados"));
+        setObjContProximos(await getRefFromDataBase("ContatosProximos"));
+    }
+
     async function addTryConfirmado(cpf){
         const databaseInfo = await get(child(ref(database), `/Confirmados/${cpf}/objetoDados/`));
         var tentativas = databaseInfo.val().contTentativas;
@@ -95,11 +114,20 @@ export function InterviewedProvider({children}){
 
         // database.ref(`/Confirmados/${cpf}/objetoDados/`).update(alteracao);
         await update(ref(database), updates);
+    }
 
+    async function changeSituation(cpf){
+        const databaseInfo = getRefFromDataBase(cpf);
+        console.log(databaseInfo);
+
+        const updates = {};
+        updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "andamento";
+
+        await update(ref(database), updates);
     }
 
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryConfirmado}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryConfirmado, changeSituation, objConfirmados, objContProximos, getInfoFromDatabase}}>
             {children}
         </InterviewedContext.Provider>
     )
