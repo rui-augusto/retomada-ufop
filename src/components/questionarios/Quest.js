@@ -3,10 +3,14 @@ import { useState, useEffect } from 'react';
 import { useInterviewed } from "../../context/interviewed";
 
 import "./Quest.css";
+import { useNavigate } from "react-router-dom";
 
 export const Quest = () => {
 
     const context = useInterviewed();
+
+    const navigate = useNavigate();
+
     // DEFINICAO DO useForm
     useForm({
         mode: 'onSubmit',
@@ -51,6 +55,7 @@ export const Quest = () => {
     const [objPrimeiraParte, setObjPrimeiraParte] = useState({});
     const [segundaParte, setSegundaParte] = useState(false);
     const [objSegundaParte, setObjSegundaParte] = useState({});
+    const [objInfoTotal, setObjInfoTotal] = useState({});
     const [terceiraParte, setTerceiraParte] = useState(false);
     const [objTerceiraParte, setObjTerceiraParte] = useState({});
 
@@ -58,6 +63,9 @@ export const Quest = () => {
     const [isObese, setIsObese] = useState(false);
     const [height, setHeight] = useState(0);
     const [weight, setWeight] = useState(0);
+
+    // CONTROLE DE DADOS FIREBASE
+    const [situacaoCritica, setSituacaoCritica] = useState(false);
 
     const infoHeight = (event) => {
         setHeight((event.target.value) / 100);
@@ -144,6 +152,16 @@ export const Quest = () => {
         }
     }
 
+    const analyzeData = () => {
+        if (objSegundaParte.condicao01 == true || objSegundaParte.condicao02 == true || objSegundaParte.condicao03 == true ||
+            objSegundaParte.condicao04 == true || objSegundaParte.condicao05 == true || objSegundaParte.condicao06 == true ||
+            objSegundaParte.condicao07 == true || objSegundaParte.condicao08 == true || objSegundaParte.condicao09 == true ||
+            objSegundaParte.condicao10 == true || objSegundaParte.condicao11 == true || objSegundaParte.situacao1 == true ||
+            objSegundaParte.condicao2 == true){
+                setSituacaoCritica(true);
+            }
+    }
+
     // FUNCOES QUE ANALISAM A FREQUENCIA DAS ENTREVISTAS
 
     const analyzeFrequency = () => {
@@ -174,49 +192,68 @@ export const Quest = () => {
         setTerceiraParte(true);
     }
 
+    // FUNCAO QUE TERMINA O QUESTIONARIO
+
+    const finishQuest = () => {
+        setTerceiraParte(true);
+    }
+
     // FUNCAO QUE ENVIA TODOS OS DADOS DO QUESTIONARIO PRINCIPAL AO FIREBASE
     const submitData = () => {
         context.registerPositiveInterviewed(objPrimeiraParte.cpf, objPrimeiraParte, objSegundaParte);
-        dadosConfirmado();
-        dadosContatoProximo();
+        // dadosConfirmado();
+        if (houveContato){
+            dadosContatoProximo();
+        }
+        navigate("../home/uid");
     }
 
     // FUNCAO QUE ENVIA OS DADOS DO CONFIRMADO AO FIREBASE
+    // const dadosConfirmado = () => {
+    //     var dataHorarioAgora = new Date().setHours(0,0,0);
+
+    //     var dataInicioSintomas = new Date(objSegundaParte.inicioSintomas).setHours(27,0,0);
+
+    //     var dataNascimento = new Date(objPrimeiraParte.nascimento).setHours(27,0,0);
+
+    //     var dataDiagnostico = new Date(objSegundaParte.dataDiagnostico).setHours(27,0,0);
+
+    //     const objConfirmado = {
+    //         contTentativas: 0,
+    //         cpf: objPrimeiraParte.cpf,
+    //         dataInclusaoBanco: dataHorarioAgora,
+    //         dataInicioSintomas: dataInicioSintomas,
+    //         dataNascimento: dataNascimento,
+    //         dataProximaEntrevista: null,
+    //         dataTeste: dataDiagnostico,
+    //         dataUltimaMudancaSituacao: dataHorarioAgora,
+    //         entrevistador: null,
+    //         entrevistasRealizadas: 0,
+    //         frequenciaDiasMonitoramento: 0,
+    //         log: [],
+    //         logSituacao: "Em branco",
+    //         nome: objPrimeiraParte.nome,
+    //         obs: "Em branco",
+    //         origem: "Em branco",
+    //         quantidadeEntrevistas: 0,
+    //         sexo: objPrimeiraParte.genero,
+    //         situacao: "naoContato",
+    //         telefone: null,
+    //         tipoTeste: objSegundaParte.testeRealizado
+    //     }
+
+    //     console.log(objConfirmado);
+    //     context.registerConfirmedCase(objConfirmado, objConfirmado.cpf);
+    // }
+
     const dadosConfirmado = () => {
-        var dataHorarioAgora = new Date().setHours(0,0,0);
-
-        var dataInicioSintomas = new Date(objSegundaParte.inicioSintomas).setHours(27,0,0);
-
-        var dataNascimento = new Date(objPrimeiraParte.nascimento).setHours(27,0,0);
-
-        var dataDiagnostico = new Date(objSegundaParte.dataDiagnostico).setHours(27,0,0);
-
-        const objConfirmado = {
-            contTentativas: 0,
-            cpf: objPrimeiraParte.cpf,
-            dataInclusaoBanco: dataHorarioAgora,
-            dataInicioSintomas: dataInicioSintomas,
-            dataNascimento: dataNascimento,
-            dataProximaEntrevista: null,
-            dataTeste: dataDiagnostico,
-            dataUltimaMudancaSituacao: dataHorarioAgora,
-            entrevistador: null,
-            entrevistasRealizadas: 0,
-            frequenciaDiasMonitoramento: 0,
-            log: [],
-            logSituacao: "Em branco",
-            nome: objPrimeiraParte.nome,
-            obs: "Em branco",
-            origem: "Em branco",
-            quantidadeEntrevistas: 0,
-            sexo: objPrimeiraParte.genero,
-            situacao: "em aberto",
-            telefone: null,
-            tipoTeste: objSegundaParte.testeRealizado
+        if (situacaoCritica){
+            var freq = 1;
+            var quantidadeEntrevistas = 5;
+            var situacao = "andamento";
+            // entrevistas realizadas + 1
+            // atualizar ultima mudanca situacao
         }
-
-        console.log(objConfirmado);
-        context.registerConfirmedCase(objConfirmado, objConfirmado.cpf);
     }
 
     const dadosContatoProximo = () => {
@@ -508,9 +545,9 @@ export const Quest = () => {
                                 <div className="situacao">
                                 Situação
                                 <div className="inputSituacao">
-                                    <input {...register2("situacao1")} type="radio" /> gestante &nbsp;
-                                    <input {...register2("situacao2")} type="radio" /> puerpério &nbsp;
-                                    <input {...register2("situacao3")} type="radio" /> nenhuma &nbsp;
+                                    <input {...register2("situacao1")} type="checkbox" /> gestante &nbsp;
+                                    <input {...register2("situacao2")} type="checkbox" /> puerpério &nbsp;
+                                    <input {...register2("situacao3")} type="checkbox" /> nenhuma &nbsp;
                                 </div>
                             </div>
                             }
@@ -598,7 +635,7 @@ export const Quest = () => {
                                 }
                             
                             <div className="realinharBotao">
-                                <button type = "submit" className="btn-finalizar" >Finalizar</button>
+                                <button onClick = {finishQuest}className="btn-finalizar" >Finalizar</button>
                             </div>
                         </div>
                     </div>

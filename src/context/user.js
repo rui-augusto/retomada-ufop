@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 //firebase imports
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth, database } from '../firebase-config'
 import { ref, set, child, get } from "firebase/database";
 // troquei doc por child
@@ -11,6 +11,17 @@ export function UserProvider({children}){
 
     const [user, setUser] = useState({});
     const [userID, setUserID] = useState("");
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user){
+                setUser(user);
+                console.log(user);
+            } else{
+                console.log("ninguem conectado");
+            }
+        });
+    }, []);
 
     async function registerUser(name, email, password, role, navigate){
         try {
@@ -32,6 +43,7 @@ export function UserProvider({children}){
         }
     }
 
+
     async function loginUser(email, password, navigate){
         try{
             const res = await signInWithEmailAndPassword(
@@ -47,6 +59,10 @@ export function UserProvider({children}){
         }
     }
 
+    async function userLogout(){
+        
+    }
+
     async function getUserInfo(userId){
         // setUserId(userId);
         const userInfo = await get(child(ref(database), `users/${userId}`)); /* esta retornando todos os users*/
@@ -59,7 +75,7 @@ export function UserProvider({children}){
     }
     
       return (
-        <UserContext.Provider value={{user, userID, registerUser, loginUser, getUserInfo}}>
+        <UserContext.Provider value={{user, userID, registerUser, loginUser, userLogout, getUserInfo}}>
             {children}
         </UserContext.Provider>
     )

@@ -3,6 +3,7 @@ import { useInterviewed } from "../context/interviewed";
 import React, { useState, useEffect} from 'react';
 
 import { BancoConfirmados } from "./questionarios/BancoConfirmados";
+import { BancoContatosProximos } from "./questionarios/BancoContatosProximos"
 
 import "./style/Home.css"
 
@@ -11,8 +12,10 @@ export const Home = () => {
 
     // getRefFromDataBase()
 
-    const [teste, setTeste] = useState({});
-    const [teste2, setTeste2] = useState([]);
+    const [objConfirmados, setObjConfirmados] = useState({});
+    const [lstConfirmados, setLstConfirmados] = useState([]);
+    const [objContProximos, setObjContProximos] = useState({});
+    const [lstContProximos, setLstContProximos] = useState([]);
 
     const contextUser = useUser();
     console.log(contextUser);
@@ -22,14 +25,31 @@ export const Home = () => {
     // const [listaConfirmados, setListaConfirmados] = useState([]);
     // const [chatlist, setChatList] = useState([]);
 
+
+    useEffect(async () => {
+        setObjConfirmados(await contextInterviewed.getRefFromDataBase("Confirmados"));
+        setObjContProximos(await contextInterviewed.getRefFromDataBase("ContatosProximos"));
+        console.log("obj: ", objConfirmados);
+        setLstConfirmados(Object.values(objConfirmados));
+        setLstContProximos(Object.values(objContProximos));
+        console.log("2 :", lstConfirmados);
+    }, []);
+
     const funcaoAux = async () => {
         // console.log(contextInterviewed.getRefFromDataBase());
-        setTeste(await contextInterviewed.getRefFromDataBase());    }
-    
-    const funcaoAux2 = () => {
-        setTeste2(Object.values(teste));
-        console.log("2 :", teste2);
+        setObjConfirmados(await contextInterviewed.getRefFromDataBase("Confirmados"));
+        setObjContProximos(await contextInterviewed.getRefFromDataBase("ContatosProximos"));
+
+        setLstConfirmados(Object.values(objConfirmados));
+        setLstContProximos(Object.values(objContProximos));
+        console.log("2 :", lstConfirmados);
     }
+    
+    // const funcaoAux2 = () => {
+    //     setLstConfirmados(Object.values(objConfirmados));
+    //     setLstContProximos(Object.values(objContProximos));
+    //     console.log("2 :", lstConfirmados);
+    // }
 
     return (
         
@@ -38,7 +58,7 @@ export const Home = () => {
             
                 <div className="titulo"><h2>Bem-vindo(a), {contextUser.user.name}.</h2></div>
                 <div className="titulo"><button onClick = {funcaoAux}>APLICAR</button></div>
-                <div className="titulo"><button onClick = {funcaoAux2}>APLICAR2</button></div>
+                {/* <div className="titulo"><button onClick = {funcaoAux2}>APLICAR2</button></div> */}
 
                 
                 <div className="titulo"> 
@@ -56,7 +76,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Banco de Confirmados</h3></div>
-                    <div className="divisaolinhas">Total de ---- pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {lstConfirmados.length} pessoas visíveis no banco</div> 
 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
@@ -68,16 +88,12 @@ export const Home = () => {
                     <div className="infoSituacao">Situação</div>
                 </div>
                 <div className="chatNomes">
-                    {teste2.map((item, key)=>(
+                    {lstConfirmados.map((item, key)=>(
                         <BancoConfirmados
                             confirmado={item}
                             key={key}
                         />
-                    ))} 
-                    {teste2.map((item, key) => {
-                        console.log(item.objetoDados);
-                        <div>{item.objetoDados.contTentativas}</div>
-                    })}
+                    ))}
 
                 </div>
             </div>
@@ -97,11 +113,12 @@ export const Home = () => {
                     <div className="infoMonitorar">Monitorar até</div>
                 </div>
                 <div className="chatNomes">
-                    {/* {chatlist.map((item, key)=>(
-                        <BancoContatosProximos 
+                    {lstContProximos.map((item, key)=>(
+                        <BancoContatosProximos
+                            contatoProximo={item} 
                             key={key}
                         />
-                    ))} */}
+                    ))}
                 </div>
             </div>
 

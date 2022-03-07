@@ -20,7 +20,7 @@ export function InterviewedProvider({children}){
     //FUNCAO QUE ENVIA OS DADOS DO QUESTIONARIO QUE EH CASO CONFIRMADO
     async function registerPositiveInterviewed(cpf, primeiraParte, segundaParte){
         try{
-            set(ref(database, 'RespostasMonitoramentoConfirmados/' + cpf), {
+            set(ref(database, 'RespostasQuestionario3/' + cpf), {
                 primeiraParte: primeiraParte,
                 segundaParte: segundaParte
             });
@@ -70,8 +70,8 @@ export function InterviewedProvider({children}){
         }
     }
 
-    async function getRefFromDataBase(){
-        const databaseInfo = await get(child(ref(database), `/Confirmados`));
+    async function getRefFromDataBase(referencia){
+        const databaseInfo = await get(child(ref(database), referencia));
         if (databaseInfo){
             setInterviewed(databaseInfo.val());
             console.log(databaseInfo.val());
@@ -84,10 +84,17 @@ export function InterviewedProvider({children}){
     }
 
     async function addTryConfirmado(cpf){
-        const databaseInfo = await update(child(ref(database), `/Confirmados/${cpf}/objetoDados/`));
-        var tentativa = databaseInfo.contTentativas + 1;
-        child(ref(database), `/Confirmados/${cpf}/objetoDados/`)
-            .update({ contTentativas: tentativa});
+        const databaseInfo = await get(child(ref(database), `/Confirmados/${cpf}/objetoDados/`));
+        var tentativas = databaseInfo.val().contTentativas;
+
+        const updates = {};
+        updates['/Confirmados/' + cpf + '/objetoDados/contTentativas'] = tentativas + 1;
+        if (tentativas + 1 == "3"){
+            updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "expirado";
+        }
+
+        // database.ref(`/Confirmados/${cpf}/objetoDados/`).update(alteracao);
+        await update(ref(database), updates);
 
     }
 
