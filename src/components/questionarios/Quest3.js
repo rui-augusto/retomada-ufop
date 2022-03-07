@@ -129,8 +129,8 @@ export const Quest3 = () => {
 
                     <div className='outros'>
                         Teve contato? &nbsp;
-                        <input {...register("contatoProximo")} type = "radio" value = "sim" /> &nbsp; Sim &nbsp;
-                        <input {...register("contatoProximo")} type = "radio" value = "nao" /> &nbsp; Não 
+                        <input {...register("contatoProximo")} onClick = {analyzeContat} type = "radio" value = "sim" /> &nbsp; Sim &nbsp;
+                        <input {...register("contatoProximo")} onClick = {analyzeContat} type = "radio" value = "nao" /> &nbsp; Não 
                     </div>
                     <div className='btn'>
                         <button className='btn-proximos' type = "submit">Finalizar</button>

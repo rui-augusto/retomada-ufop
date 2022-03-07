@@ -47,9 +47,9 @@ export const Quest = () => {
     // OBJETOS QUE GUARDAM CADA PARTE DO QUESTIONARIO
     // false ---> NÃO CONCLÚIDO
     // true  ---> CONCLUÍDO
-    const [primeiraParte, setPrimeiraParte] = useState(true);
+    const [primeiraParte, setPrimeiraParte] = useState(false);
     const [objPrimeiraParte, setObjPrimeiraParte] = useState({});
-    const [segundaParte, setSegundaParte] = useState(true);
+    const [segundaParte, setSegundaParte] = useState(false);
     const [objSegundaParte, setObjSegundaParte] = useState({});
     const [terceiraParte, setTerceiraParte] = useState(false);
     const [objTerceiraParte, setObjTerceiraParte] = useState({});
@@ -142,6 +142,12 @@ export const Quest = () => {
         }else{
             setHouveContato(false);
         }
+    }
+
+    // FUNCOES QUE ANALISAM A FREQUENCIA DAS ENTREVISTAS
+
+    const analyzeFrequency = () => {
+        // FAZER AINDA
     }
 
     // FUNCAO QUE GUARDA AS INFORMACOES DE CADA PARTE DO QUESTIONARIO
@@ -359,13 +365,15 @@ export const Quest = () => {
                 }
 
                 <div className="vacina">
+                    <div className="grauVacina">
                     Grau de vacinação: 
-                    <div className="inputvacina">
-                        <input {...register1("vacinado")} type="radio" value="primeira" /> primeira &nbsp;
-                        <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> primeira e segunda &nbsp;
-                        <input {...register1("vacinado")} type="radio" value="doseUnica" /> dose única &nbsp;
-                        <input {...register1("vacinado")} type="radio" value="reforco3Dose" /> reforço terceira dose &nbsp;
-                        <input {...register1("vacinado")} type="radio" value="naoVacinado" /> não é vacinado &nbsp;
+                        <div className="inputvacina">
+                            <input {...register1("vacinado")} type="radio" value="primeira" /> Primeira &nbsp;
+                            <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> Primeira e segunda &nbsp;
+                            <input {...register1("vacinado")} type="radio" value="doseUnica" /> Dose única &nbsp;
+                            <input {...register1("vacinado")} type="radio" value="reforco3Dose" /> Reforço terceira dose &nbsp;
+                            <input {...register1("vacinado")} type="radio" value="naoVacinado" /> Não é vacinado &nbsp;
+                        </div>
                     </div>
                 </div>
 
@@ -507,23 +515,27 @@ export const Quest = () => {
                             </div>
                             }
                             <div className="estado">
-                            Melhora ou piora?
+                                Melhora ou Piora?
                                 <div className="inputEstado">
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register1("situacaoSintomas")} type="radio" value="melhora" /> melhora &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register1("situacaoSintomas")} type="radio" value="piora" /> piora &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register1("situacaoSintomas")} type="radio" value="semMudancas" /> sem mudancas &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register1("situacaoSintomas")} type="radio" value="melhora" /> Melhora &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register1("situacaoSintomas")} type="radio" value="piora" /> Piora &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register1("situacaoSintomas")} type="radio" value="semMudancas" /> Sem mudancas &nbsp; </div>
+                                        </div>
                                     </div>
+                            </div>
 
+                            <div className="estado">
+                                Algum sintoma Grave?
+                                <div className="inputEstado">
                                     <div className="espacamentoEstado">
-                                        <div className="espacamentointerior"><input {...register2("sintomasGrave1")} type="checkbox" /> falta de ar &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register2("sintomasGrave2")} type="checkbox" /> sensação de desmaio &nbsp; </div>
-                                    
-                                        <div className="espacamentointerior"><input {...register2("sintomasGrave3")} type="checkbox" /> confusão &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register2("sintomasGrave4")} type="checkbox" /> febre contínua &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register2("sintomasGrave1")} type="checkbox" /> Falta de ar &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register2("sintomasGrave2")} type="checkbox" /> Sensação de desmaio &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register2("sintomasGrave3")} type="checkbox" /> Confusão &nbsp; </div>
+                                            <div className="espacamentointerior"><input {...register2("sintomasGrave4")} type="checkbox" /> Febre contínua &nbsp; </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>  
 
                             <div className="btn-starquestone">
                                 <button btn-starquestone type = "submit">Próximo</button>
@@ -543,44 +555,52 @@ export const Quest = () => {
                         <p>Questionário telefônico dos casos Confirmados</p>
                         <p>Contatos Próximos [Comunidade UFOP] - Parte 3</p>
                         </div> 
-                            Houve contato próximo? <input type = "checkbox" onClick = {analyzeCloseContact}/>
-                            {houveContato &&
-                                <div>
-                                    <form className='formquestcontato' onSubmit = {handleSubmit3(onThirdSubmit)}>
-                            
-                                        <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
-                                        <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
-                                        <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
-                                    
+                        <div className="AreaForm3">
+
+                            <div className="contato">
+                                Houve contato próximo? &nbsp; <input type = "checkbox" onClick = {analyzeCloseContact}/> &nbsp; Sim
+                            </div>
+                                {houveContato &&
+                                    <div>
+                                        <form className='formquestcontato' onSubmit = {handleSubmit3(onThirdSubmit)}>
                                 
-                                        <select {...register3("relacao")} onClick = {analyzeRelation}>
-                                            <option value="">Relação com o caso...</option>
-                                            <option value="domiciliar">Domiciliar</option>
-                                            <option value="familiar">Familiar (extradomiciliar)</option>
-                                            <option value="laboral">Laboral</option>
-                                            <option value="estudantil">Estudantil</option>
-                                            <option value="eventoSocial">Evento social</option>
-                                            <option value="outro">Outro</option>
-                                        </select>
-                                        { outraRelacao &&
-                                            <div className="relacao">
-                                                <input {...register3("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                            <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
+                                            <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
+                                            <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
+                                        
+                                    
+                                            <select {...register3("relacao")} onClick = {analyzeRelation}>
+                                                <option value="">Relação com o caso...</option>
+                                                <option value="domiciliar">Domiciliar</option>
+                                                <option value="familiar">Familiar (extradomiciliar)</option>
+                                                <option value="laboral">Laboral</option>
+                                                <option value="estudantil">Estudantil</option>
+                                                <option value="eventoSocial">Evento social</option>
+                                                <option value="outro">Outro</option>
+                                            </select>
+                                            { outraRelacao &&
+                                                <div className="relacao">
+                                                    <input {...register3("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                                </div>
+                                            }
+                                            <div className="dataContato">
+                                                Data do último contato
+                                                <div className="inputDataContato">
+                                                    <input {...register3("dataUltimoContato")} type = "date"/>
+                                                </div>
                                             </div>
-                                        }
-                                        <div className="dataContato">
-                                            Data do último contato
-                                            <div className="inputDataContato">
-                                                <input {...register3("dataUltimoContato")} type = "date"/>
+                                            <div className="btns">
+                                                <button type = "submit" className="btn-finalizar">Cadastrar</button>
                                             </div>
-                                        </div>
-                                        <input {...register3("semContatoProximo")} className = "finalCheckbox" type = "checkbox" />
-                                        <div className="btns">
-                                            <button type = "submit" className="btn-finalizar">Cadastrar</button>
-                                        </div>
-                                    </form>
-                                    <button>Finalizar</button>
-                                </div>    
-                            }
+                                        </form>
+                                    </div>    
+                                    
+                                }
+                            
+                            <div className="realinharBotao">
+                                <button type = "submit" className="btn-finalizar" >Finalizar</button>
+                            </div>
+                        </div>
                     </div>
                 }
                 { terceiraParte &&
@@ -596,8 +616,11 @@ export const Quest = () => {
 // ALTERACOES RESTANTES
 
 /*
-    1. MODULARIZAR O CODIGO: CRIAR UM COMPONENTE PARA CADA PARTE DO QUESTIONARIO
-    2. REVER TERCEIRA PARTE (BOTÃO DE ADICIONAR/NAO ADICIONAR)
-    3. REVER FUNCOES CONDICIONAIS
-    3. ESTILIZAR A PAGINA
+    1. MODULARIZAR O CODIGO: CRIAR UM COMPONENTE PARA CADA PARTE DO QUESTIONARIO [ NAO VAI SER FEITO, POR HORA ]
+    2. REVER TERCEIRA PARTE (BOTÃO DE ADICIONAR/NAO ADICIONAR) [ FALTA SÓ A LÓGICA DOS VETORES ]
+    3. REVER FUNCOES CONDICIONAIS [ por hora, ok]
+    3. ESTILIZAR A PAGINA [ feito ]
+    4. REVER A FREQUENCIA DE ENTREVISTAS (CALCULO DEVE SER FEITO)
+    5. PÁGINA HOME AINDA NÃO FUNCIONA
+    6. REVER FLUXO DE DADOS
 */

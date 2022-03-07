@@ -53,7 +53,6 @@ export function UserProvider({children}){
         if(userInfo){
             setUser(userInfo.val());
             console.log(userInfo.val());
-            console.log(user);
         }else {
             console.log('User was not found!');
         }

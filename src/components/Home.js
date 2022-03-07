@@ -2,34 +2,44 @@ import { useUser } from "../context/user";
 import { useInterviewed } from "../context/interviewed";
 import React, { useState, useEffect} from 'react';
 
+import { BancoConfirmados } from "./questionarios/BancoConfirmados";
+
 import "./style/Home.css"
 
 
 export const Home = () => {
 
-    const { user } = useUser();
+    // getRefFromDataBase()
 
-    const context = useInterviewed();
+    const [teste, setTeste] = useState({});
+    const [teste2, setTeste2] = useState([]);
 
-    const [listaConfirmados, setListaConfirmados] = useState([]);
+    const contextUser = useUser();
+    console.log(contextUser);
+    const contextInterviewed = useInterviewed();
+    console.log(contextInterviewed);
 
-    console.log(user);
+    // const [listaConfirmados, setListaConfirmados] = useState([]);
+    // const [chatlist, setChatList] = useState([]);
+
+    const funcaoAux = async () => {
+        // console.log(contextInterviewed.getRefFromDataBase());
+        setTeste(await contextInterviewed.getRefFromDataBase());    }
     
-    const [chatlist, setChatList] = useState([]);
-
-    useEffect(() => {
-        setListaConfirmados(context.getRefFromDataBase());
-        console.log("Deu certo:");
-        console.log(listaConfirmados);
-    }, []);
+    const funcaoAux2 = () => {
+        setTeste2(Object.values(teste));
+        console.log("2 :", teste2);
+    }
 
     return (
         
         <div className='fullscreenAreaHome'>
             <div className="AreaPesquisa">
             
-                <div className="titulo"><h2>Bem-vindo(a), {user.name}.</h2></div>
-                
+                <div className="titulo"><h2>Bem-vindo(a), {contextUser.user.name}.</h2></div>
+                <div className="titulo"><button onClick = {funcaoAux}>APLICAR</button></div>
+                <div className="titulo"><button onClick = {funcaoAux2}>APLICAR2</button></div>
+
                 
                 <div className="titulo"> 
                     <select>
@@ -58,11 +68,17 @@ export const Home = () => {
                     <div className="infoSituacao">Situação</div>
                 </div>
                 <div className="chatNomes">
-                    {/* {chatlist.map((item, key)=>(
+                    {teste2.map((item, key)=>(
                         <BancoConfirmados
+                            confirmado={item}
                             key={key}
                         />
-                    ))} */}
+                    ))} 
+                    {teste2.map((item, key) => {
+                        console.log(item.objetoDados);
+                        <div>{item.objetoDados.contTentativas}</div>
+                    })}
+
                 </div>
             </div>
                     

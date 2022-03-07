@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import { database } from '../firebase-config'
-import { ref, set, push, child, get } from "firebase/database";
+import { ref, set, push, child, get, update } from "firebase/database";
 
 const InterviewedContext = createContext({});
 
@@ -73,8 +73,9 @@ export function InterviewedProvider({children}){
     async function getRefFromDataBase(){
         const databaseInfo = await get(child(ref(database), `/Confirmados`));
         if (databaseInfo){
-            console.log(databaseInfo);
+            setInterviewed(databaseInfo.val());
             console.log(databaseInfo.val());
+            return databaseInfo.val();
         } else{
             console.log("Deu merda");
         }
@@ -82,8 +83,16 @@ export function InterviewedProvider({children}){
         return databaseInfo;
     }
 
+    async function addTryConfirmado(cpf){
+        const databaseInfo = await update(child(ref(database), `/Confirmados/${cpf}/objetoDados/`));
+        var tentativa = databaseInfo.contTentativas + 1;
+        child(ref(database), `/Confirmados/${cpf}/objetoDados/`)
+            .update({ contTentativas: tentativa});
+
+    }
+
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryConfirmado}}>
             {children}
         </InterviewedContext.Provider>
     )
