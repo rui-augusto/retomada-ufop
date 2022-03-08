@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useInterviewed } from "../../context/interviewed";
 import { useNavigate } from 'react-router-dom'
+import SimpleDateTime  from 'react-simple-timestamp-to-date';
 
 
 import './Banco.css'
@@ -9,41 +10,40 @@ import './Banco.css'
 
 export const BancoConfirmados = (props) => {
     
+    const navigate = useNavigate();
+    
     const contextInterviewed = useInterviewed();
 
-    const navigate = useNavigate();
-
-
-    console.log(props);
-    const dataISintomas = new Date(props.confirmado.objetoDados.dataInicioSintomas).setHours(240,0,0);
-    const dataMonitorarAte =  new Intl.DateTimeFormat('pt-BR', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
-    console.log("INICIO SINTOMAS TIMESTAMP + 10" ,dataISintomas);
-    console.log("inicio sintomas + 10 date", dataMonitorarAte);
+    const dtMonitorarAte = props.confirmado.objetoDados.dataInicioSintomas + 864000;
+    // const dataMonitorarAte =  new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
+    // new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
+    // console.log("INICIO SINTOMAS TIMESTAMP + 10" ,dataISintomas);
+    // console.log("inicio sintomas + 10 date", dataMonitorarAte);
     // , hour: '2-digit', minute: '2-digit', second: '2-digit'
     
 
-    const [seConfirmado, setSeConfirmado] = useState(false);
+    const [showConfirmado, setShowConfirmado] = useState(false);
     const [seExpirado, setSeExpirado] = useState(false);
     const [situacao, setSituacao] = useState("Expirado");
     const [tentativas, setTentativas] = useState(0);
 
     useEffect(() => {
         if (props.confirmado.objetoDados.situacao == "expirado"){
-            setSeConfirmado(true);
+            setShowConfirmado(true);
             setSeExpirado(true);
         }
         else if (props.confirmado.objetoDados.situacao == "naoContato"){
             setSituacao("Não Contato");
-            setSeConfirmado(true);
+            setShowConfirmado(true);
         }
         else if (props.confirmado.objetoDados.situacao == "expiradoInterno"){
             setSituacao("Expirado Interno");
-            setSeConfirmado(true);
+            setShowConfirmado(true);
         }
 
         setTentativas(props.confirmado.objetoDados.contTentativas);
 
-    }, []);
+    }, [localStorage.getItem("token")]);
 
     const startQuest = () => {
         navigate("../../questionario");
@@ -51,7 +51,7 @@ export const BancoConfirmados = (props) => {
 
     const addTry = () => {
         // console.log(props.confirmado.objetoDados.cpf);
-        contextInterviewed.addTryConfirmado(props.confirmado.objetoDados.cpf);
+        contextInterviewed.addTryIn("Confirmados", props.confirmado.objetoDados.cpf);
         setTentativas(tentativas+1);
         // console.log(props.confirmado.objetoDados.);
     }
@@ -59,7 +59,7 @@ export const BancoConfirmados = (props) => {
     return(
 
         <div>
-            {seConfirmado &&
+            {showConfirmado &&
             <div className="chatListItem">
 
                 <div className="chatListItem-lines">
@@ -68,7 +68,7 @@ export const BancoConfirmados = (props) => {
                         
                         <div className="chatListItem-telefonePaciente">999999999</div> &nbsp;
                         
-                        <div className="chatListItem-monitorarAte">{dataMonitorarAte}</div>
+                        <div className="chatListItem-monitorarAte"><SimpleDateTime dateFormat="DMY" dateSeparator="/"  showTime = "0">{dtMonitorarAte}</SimpleDateTime></div>
                         
                         <div className="chatListItem-situacao">{situacao}</div>
                         

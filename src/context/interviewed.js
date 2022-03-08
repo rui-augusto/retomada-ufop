@@ -29,7 +29,8 @@ export function InterviewedProvider({children}){
 
     useEffect(() => {
         getInfoFromDatabase();
-    }, [contextUser.user]);
+        registerCloseContacts({});
+    }, [localStorage.getItem("token")]);
 
     //FUNCAO QUE ENVIA OS DADOS DO QUESTIONARIO QUE EH CASO CONFIRMADO
     async function registerPositiveInterviewed(cpf, primeiraParte, segundaParte){
@@ -52,9 +53,13 @@ export function InterviewedProvider({children}){
     // }
 
     //FUNCAO QUE ENVIA OS DADOS REFERENTES A UM CONTATO PROXIMO
-    async function registerCloseContacts(objContatoProximo, dataDeveSerMudada){
+    async function registerCloseContacts(objContatoProximo){
+        const databaseInfo = await getRefFromDataBase("ContatosProximos");
+        const lstContatosProximos = Object.values(databaseInfo);
+        const tamanhoBanco = lstContatosProximos.length + 1;
+        console.log(tamanhoBanco);
         try{
-            set(ref(database, 'ContatosProximos/' + dataDeveSerMudada), {
+            set(ref(database, 'ContatosProximos/' + tamanhoBanco), {
                 objetoDados: objContatoProximo
             });
         }catch(error){
@@ -88,7 +93,6 @@ export function InterviewedProvider({children}){
         const databaseInfo = await get(child(ref(database), referencia));
         if (databaseInfo){
             setInterviewed(databaseInfo.val());
-            console.log(databaseInfo.val());
             return databaseInfo.val();
         } else{
             console.log("Deu merda");
@@ -102,8 +106,8 @@ export function InterviewedProvider({children}){
         setObjContProximos(await getRefFromDataBase("ContatosProximos"));
     }
 
-    async function addTryConfirmado(cpf){
-        const databaseInfo = await get(child(ref(database), `/Confirmados/${cpf}/objetoDados/`));
+    async function addTryIn(where, cpf){
+        const databaseInfo = await get(child(ref(database), `/${where}/${cpf}/objetoDados/`));
         var tentativas = databaseInfo.val().contTentativas;
 
         const updates = {};
@@ -127,7 +131,7 @@ export function InterviewedProvider({children}){
     }
 
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryConfirmado, changeSituation, objConfirmados, objContProximos, getInfoFromDatabase}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, objConfirmados, objContProximos, getInfoFromDatabase}}>
             {children}
         </InterviewedContext.Provider>
     )

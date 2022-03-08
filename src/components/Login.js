@@ -19,7 +19,6 @@ export const Login = () => {
 
     async function loginUser(){
         await context.loginUser(loginEmail, loginPassword, navigate);
-        console.log(context);
     }
 
     return (

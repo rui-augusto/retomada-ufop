@@ -22,6 +22,7 @@ export const TesteQuestionario = () => {
 
     const [objTeste, setObjTeste] = useState({});
     const [bool, setBool] = useState(false);
+    const [date, setDate] = useState(new Date());
 
     const finalSubmit = (data) => {
         console.log(data);
@@ -34,9 +35,7 @@ export const TesteQuestionario = () => {
         console.log(d);
         // console.log(d.getTime());
         // PEGANDO DATA DO INPUT
-        var e = new Date(data.dataTeste).setHours(27,0,0);
-        console.log("DATA DO INPUT: ",e);
-        setObjTeste(data);
+        setDate(data.testeData);
     }
 
     const adicionaItens = () => {
@@ -44,6 +43,7 @@ export const TesteQuestionario = () => {
         console.log(objTeste);
     }
     
+
     return (
         <div>
             <form onSubmit = {handleSubmit(finalSubmit)}>
@@ -58,7 +58,7 @@ export const TesteQuestionario = () => {
             {bool &&
                 <div>
                     TESTANDO KK
-                    <SimpleDateTime format="DMY">{objTeste.dataTeste}</SimpleDateTime>
+                    <SimpleDateTime format="DMY">{date}</SimpleDateTime>
                     <button onClick = {adicionaItens}>Teste</button>
                 </div>
             }

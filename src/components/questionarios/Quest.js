@@ -285,7 +285,7 @@ export const Quest = () => {
             nome: objTerceiraParte.nome,
             obs: "a",
             relacaoComOCaso: objTerceiraParte.relacao,
-            situacao: "aberto",
+            situacao: "naoContato",
             telefone1: objTerceiraParte.telefone1,
             telefone2: objTerceiraParte.telefone2
         }

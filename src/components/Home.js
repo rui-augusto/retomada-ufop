@@ -21,9 +21,7 @@ export const Home = () => {
     const [lstContProximos, setLstContProximos] = useState([]);
 
     const contextUser = useUser();
-    console.log(contextUser);
     const contextInterviewed = useInterviewed();
-    console.log(contextInterviewed);
 
     // const [listaConfirmados, setListaConfirmados] = useState([]);
     // const [chatlist, setChatList] = useState([]);
@@ -35,8 +33,6 @@ export const Home = () => {
         // console.log("obj: ", objConfirmadoAs);
         setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
         setLstContProximos(Object.values(contextInterviewed.objContProximos));
-        console.log("2 :", lstConfirmados);
-        console.log(contextUser.user);
     }, []);
 
     // const funcaoAux = async () => {
