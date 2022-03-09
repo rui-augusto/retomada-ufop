@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.fullscreenArea-questions{
+    display: flex;
+    background-color: rgba(29, 25, 25, 0.801);
+    justify-content: center;
+    min-height: 95vh;
+    align-items: center;
+}
+
+.content-questions{
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+
+}
+
+.line-questions{
+    display: flex;
+    border-radius: 20px;
+    margin: 10px;
+    margin-top: 30px;
+    justify-content:center;
+}
+
+.input-questions{
+    background-color: rgb(255, 255, 255);
+    height: 35px;
+    display: flex;
+    border-radius: 20px;
+    margin-right: 10px;
+    
+}
+.input-questions input{  
+    flex: 1;
+    border: 0;
+    outline: 0;
+    padding: 0 10px;
+    background-color: transparent;
+    margin-left:10px;
+    cursor:text;
+    background-color: transparent;
+}
+.DescriptionArea{
+    margin-top: 40px;
+    margin-bottom: 40px;
+    width: 75%;
+    border-radius: 20px;
+    padding-bottom: 3%;
+    display: flex;
+    background-color: rgb(255, 255, 255);
+    align-content: space-between;
+    flex-direction: column;
+    justify-content: center;
+}
+.Description{
+    display: flex;
+    justify-content:space-around;
+    margin: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    cursor:context-menu;
+}
+.pTextArea{
+    display: flex;
+    justify-content:first baseline ;
+    margin-bottom: 10px;
+    font-style:oblique;
+    justify-content: center;
+}
+.Info{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgb(167, 29, 75);
+    color: rgb(255, 255, 255);
+    padding: 10px;  
+    cursor:context-menu;
+}
+
+.internedcheckArea{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: column;
+    padding: 10px;
+}
+.internedCheckArea-btn{
+    cursor:pointer;
+}
+.textArea{
+    width: 70%;
+    padding-bottom: 10px;
+    color: rgb(63, 65, 66);
+    margin: 10px 15px;
+    display: flex;
+    margin: 10px 160px;
+    flex-direction: column;
+    cursor:context-menu;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+}
+.TextAreaInfo1{
+    padding: 10px;
+    cursor:context-menu;
+}
+.TextAreaInfo{
+    padding: 10px;
+    cursor:context-menu;
+}
+.btn-startArea{
+    margin-top: 50px;
+    display: flex;
+    justify-content:center;
+    height: 30px;
+}
+.btn-start{
+    font-family:Arial, Helvetica, sans-serif;
+    display: flex;
+    background-color: rgb(167, 29, 75);
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 15%; 
+    cursor: pointer;
+}
+.btn-start:hover{
+    background-color: rgba(13, 121, 19, 0.781);
+    color: rgb(255, 255, 255);
+}
+.textAreainfo{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+.textAreainfo textarea{
+    display: block;
+    outline: none;
+    padding: 10px;
+}
+.inputQuest3{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+.inputQuest3 input{
+    outline: none;
+    border: none;
+    background-color: rgba(228, 226, 226, 0.815);
+    padding: 10px;
+    border-radius: 20px;
+    cursor: text;
+}

@@ -153,12 +153,6 @@ export const Quest2 = () => {
                                 </div>
                             </div>
                             
-                    <div className='vinculoUFOP'>
-                        Tem vínculo com a UFOP? &nbsp; 
-                            <input {...register("relacaoUfop")} onClick = {analyzeUfop} type="radio" value="sim" /> sim &nbsp; 
-                            <input {...register("relacaoUfop")} onClick = {analyzeUfop} type="radio" value="nao" /> não &nbsp; 
-                    </div>
-                    {fazParteUfop &&
                         <div className='vinculoUfop'>
                            
                             <select {...register("campus")}>
@@ -219,7 +213,6 @@ export const Quest2 = () => {
 
                             </div>
                         </div>
-                    }
 
                         <div className='TesteRealizado'>
                             Realizou teste?  &nbsp; 

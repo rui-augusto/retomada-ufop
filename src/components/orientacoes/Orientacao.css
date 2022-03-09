@@ -1,0 +1,26 @@
+.Amarelo{
+    background-color: #ffee58;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.Vermelho{
+    background-color: #CC2127;
+    padding: 20px;
+    color: rgb(240, 240, 240);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.Azul{
+    background-color: rgb(122, 204, 236);
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    border-radius: 10px;
+}
+.Cinza{
+    background-color: rgb(172, 172, 172);
+    padding: 20px;
+    border-radius: 10px;
+    color: rgb(43, 40, 40);
+}
+

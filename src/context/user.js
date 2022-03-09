@@ -52,7 +52,7 @@ export function UserProvider({children}){
             password
             );
             getUserInfo(res.user.uid);
-            localStorage.setItem("token", res.user.accessToken);
+            localStorage.setItem("id", res.user.uid);
             navigate(`/home/${res.user.uid}`);
         }catch(error){
             console.log(error.message);

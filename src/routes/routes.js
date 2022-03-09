@@ -8,6 +8,7 @@ import { Quest2 } from "../components/questionarios/Quest2";
 import { Quest3 } from "../components/questionarios/Quest3";
 
 import {TesteQuestionario} from "../components/questionarios/testeQuestionario";
+import {Bloco} from "../components/orientacoes/Bloco";
 
 export const MainRoutes = () => {
     return useRoutes([
@@ -17,6 +18,6 @@ export const MainRoutes = () => {
         {path: '/questionario', element: <Quest />},
         {path: 'questionario2', element: <Quest2 />},
         {path: 'questionario3', element: <Quest3 />},
-        {path: 'teste', element: <TesteQuestionario />}
+        {path: 'teste', element: <Bloco />}
     ]);
 }

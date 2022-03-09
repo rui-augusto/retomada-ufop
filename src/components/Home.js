@@ -17,8 +17,8 @@ export const Home = () => {
     const navigate = useNavigate();
 
 
-    const [lstConfirmados, setLstConfirmados] = useState([]);
-    const [lstContProximos, setLstContProximos] = useState([]);
+    // const [lstConfirmados, setLstConfirmados] = useState([]);
+    // const [lstContProximos, setLstContProximos] = useState([]);
 
     const contextUser = useUser();
     const contextInterviewed = useInterviewed();
@@ -31,8 +31,10 @@ export const Home = () => {
         // setObjConfirmados(await contextInterviewed.getRefFromDataBase("Confirmados"));
         // setObjContProximos(await contextInterviewed.getRefFromDataBase("ContatosProximos"));
         // console.log("obj: ", objConfirmadoAs);
-        setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
-        setLstContProximos(Object.values(contextInterviewed.objContProximos));
+        await contextInterviewed.getInfoFromDatabase();
+        // setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
+        // setLstContProximos(Object.values(contextInterviewed.objContProximos));
+        await contextUser.getUserInfo(localStorage.getItem("id"));
     }, []);
 
     // const funcaoAux = async () => {
@@ -58,8 +60,8 @@ export const Home = () => {
 
     const updateData = async () => {
         await contextInterviewed.getInfoFromDatabase();
-        setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
-        setLstContProximos(Object.values(contextInterviewed.objContProximos));
+        // setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
+        // setLstContProximos(Object.values(contextInterviewed.objContProximos));
     }
 
     return (
@@ -68,9 +70,6 @@ export const Home = () => {
             <div className="AreaPesquisa">
             
                 <div className="titulo"><h2>Bem-vindo(a), {contextUser.user.name}.</h2><button onClick = {logout}>Sair</button></div>
-                <div className="titulo"><button onClick = {updateData}>ATUALIZAR</button></div>
-                {/* <div className="titulo"><button onClick = {funcaoAux2}>APLICAR2</button></div> */}
-
                 
                 <div className="titulo"> 
                     <select>
@@ -87,7 +86,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Banco de Confirmados</h3></div>
-                    <div className="divisaolinhas">Total de {lstConfirmados.length} pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {contextInterviewed.lstConfirmados.length} pessoas visíveis no banco</div> 
 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
@@ -99,13 +98,12 @@ export const Home = () => {
                     <div className="infoSituacao">Situação</div>
                 </div>
                 <div className="chatNomes">
-                    {lstConfirmados.map((item, key)=>(
+                    {contextInterviewed.lstConfirmados.map((item, key)=>(
                         <BancoConfirmados
                             confirmado={item}
                             key={key}
                         />
                     ))}
-
                 </div>
             </div>
                     
@@ -114,7 +112,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Banco de Contatos Próximos</h3></div>
-                    <div className="divisaolinhas">Total de ---- pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {contextInterviewed.lstContProximos.length - 1} pessoas visíveis no banco</div> 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
 
@@ -122,9 +120,10 @@ export const Home = () => {
                     <div className="infoNome">Nome</div>
                     <div className="infoTelefone">Telefone</div>
                     <div className="infoMonitorar">Monitorar até</div>
+                    <div className="infoSituacao">Situação</div>
                 </div>
                 <div className="chatNomes">
-                    {lstContProximos.map((item, key)=>(
+                    {contextInterviewed.lstContProximos.map((item, key)=>(
                         <BancoContatosProximos
                             contatoProximo={item} 
                             key={key}

@@ -43,7 +43,7 @@ export const BancoConfirmados = (props) => {
 
         setTentativas(props.confirmado.objetoDados.contTentativas);
 
-    }, [localStorage.getItem("token")]);
+    }, []);
 
     const startQuest = () => {
         navigate("../../questionario");

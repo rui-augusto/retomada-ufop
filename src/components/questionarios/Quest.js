@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { useState, useEffect } from 'react';
 import { useInterviewed } from "../../context/interviewed";
 
+// componentes
+import { Bloco } from "../orientacoes/Bloco";
+
 import "./Quest.css";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +40,8 @@ export const Quest = () => {
 
     const {
         register: register3,
-        handleSubmit: handleSubmit3
+        handleSubmit: handleSubmit3,
+        reset: reset
     } = useForm();
     
     // STATES USADOS PARA AS PERGUNTAS QUE DEPENDEM DE OUTRAS PERGUNTAS
@@ -63,6 +67,7 @@ export const Quest = () => {
     const [isObese, setIsObese] = useState(false);
     const [height, setHeight] = useState(0);
     const [weight, setWeight] = useState(0);
+    const [ehCritico, setEhCritico] = useState(false);
 
     // CONTROLE DE DADOS FIREBASE
     const [situacaoCritica, setSituacaoCritica] = useState(false);
@@ -152,11 +157,11 @@ export const Quest = () => {
     }
 
     const analyzeData = () => {
-        if (objSegundaParte.condicao01 == true || objSegundaParte.condicao02 == true || objSegundaParte.condicao03 == true ||
-            objSegundaParte.condicao04 == true || objSegundaParte.condicao05 == true || objSegundaParte.condicao06 == true ||
-            objSegundaParte.condicao07 == true || objSegundaParte.condicao08 == true || objSegundaParte.condicao09 == true ||
-            objSegundaParte.condicao10 == true || objSegundaParte.condicao11 == true || objSegundaParte.situacao1 == true ||
-            objSegundaParte.condicao2 == true){
+        if (objSegundaParte.condicao01 || true && objSegundaParte.condicao02 || true && objSegundaParte.condicao03 || true &&
+            objSegundaParte.condicao04 || true && objSegundaParte.condicao05 || true && objSegundaParte.condicao06 || true &&
+            objSegundaParte.condicao07 || true && objSegundaParte.condicao08 || true && objSegundaParte.condicao09 || true &&
+            objSegundaParte.condicao10 || true && objSegundaParte.condicao11 || true && objSegundaParte.situacao1 || true &&
+            objSegundaParte.condicao2 || true){
                 setSituacaoCritica(true);
             }
     }
@@ -180,29 +185,23 @@ export const Quest = () => {
     }
 
     const onThirdSubmit = (data) => {
-        if (data.semContatoProximo){
-            console.log("Não vai ser criado");
-        } else{
-            console.log(data);
-            setObjTerceiraParte(data);
-        }
-        setTerceiraParte(true);
+        dadosContatoProximo(data);
+        // alert("Contato Próximo cadastrado com sucesso!");
+        reset();
     }
 
     // FUNCAO QUE TERMINA O QUESTIONARIO
 
     const finishQuest = () => {
         setTerceiraParte(true);
+        analyzeData();
+        submitData();
     }
 
     // FUNCAO QUE ENVIA TODOS OS DADOS DO QUESTIONARIO PRINCIPAL AO FIREBASE
     const submitData = () => {
         context.registerPositiveInterviewed(objPrimeiraParte.cpf, objPrimeiraParte, objSegundaParte);
         dadosConfirmado();
-        if (houveContato){
-            dadosContatoProximo();
-        }
-        navigate("../home/uid");
     }
 
     // FUNCAO QUE ENVIA OS DADOS DO CONFIRMADO AO FIREBASE
@@ -244,7 +243,6 @@ export const Quest = () => {
     // }
 
     const dadosConfirmado = () => {
-
         context.changeSituation(objPrimeiraParte.cpf);
         // const updates = {};
         
@@ -258,170 +256,196 @@ export const Quest = () => {
             // cont tentativas = 0
     }
 
-    const dadosContatoProximo = () => {
-        var dataHorarioAgora = new Date().setHours(0,0,0);
-
-        var dataUltimoContato = new Date(objTerceiraParte.dataUltimoContato).setHours(27,0,0);
-
-        if (objTerceiraParte.telefone1 == undefined){
-            objTerceiraParte.telefone1 = null;
+    const dadosContatoProximo = async (data) => {
+        console.log("DADOS CONTATO PROXIMO: ", data);
+        var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
+        console.log(dataHorarioAgora);
+        var dataUltimoContato = new Date(data.dataUltimoContato).setHours(27,0,0) / 1000;
+        if (data.telefone2 == ""){
+            data.telefone2 = null;
         }
-        if (objTerceiraParte.telefone2 == undefined){
-            objTerceiraParte.telefone2 = null;
-        }
+
+        var contadorContatosProximos = await context.countingCloseContacts();
+        console.log(contadorContatosProximos);
 
         const objContatoProximo = {
-            contEntrevistas: 0,
+            contEntrevistas: 3,
             contTentativas: 0,
             dataInclusaoBanco: dataHorarioAgora,
-            dataNascimento: null,
-            dataProximaEntrevista: null,
+            dataNascimento: 0,
+            dataProximaEntrevista: "NULL",
             dataUltimaMudancaSituacao: dataHorarioAgora,
             dataUltimoContato: dataUltimoContato,
-            entrevistador: null,
-            cpfGeradorDoContato: 155,
-            log: "a",
-            logSituacao: "a",
-            nome: objTerceiraParte.nome,
-            obs: "a",
-            relacaoComOCaso: objTerceiraParte.relacao,
-            situacao: "naoContato",
-            telefone1: objTerceiraParte.telefone1,
-            telefone2: objTerceiraParte.telefone2
+            entrevistador: "NULL",
+            fezTeste: "NULL",
+            idUnicoGeradorDoContato: objPrimeiraParte.cpf,
+            idUnico: contadorContatosProximos,
+            log: "Sem registro de ligação",
+            logSituacao: "NULL",
+            nome: data.nome,
+            obs: "NULL",
+            pessoaFoiVacinada: "NULL",
+            pessoaQuantidadeVacinas: "NULL",
+            relacaoComOCaso: data.relacao,
+            residenteAcimaDe60FoiVacinado: "NULL",
+            residenteAcimaDe60QuantidadeDeDoses: "NULL",
+            resultadoTeste: "NULL",
+            semSintoma: "NULL",
+            sintoma1: "não",
+            sintoma2: "não",
+            sintoma3: "não",
+            sintoma4: "não",
+            sintoma5: "não",
+            sintoma6: "não",
+            sintoma7: "não",
+            situacao: "aberto",
+            telefone1: data.telefone1,
+            telefone2: data.telefone2,
+            temResidenteAcimaDe60: null,
+            tipoTeste: null
         }
-        console.log(objContatoProximo);
-        context.registerCloseContacts(objContatoProximo, dataHorarioAgora);
+
+        context.registerCloseContacts(objContatoProximo);
     }
 
     return (
 
         <div className="fullArea">
             { !primeiraParte &&
-            <div className="formArea" id="formAreaid">
+                <div className="formArea" id="formAreaid">
                 <div className="Description-quest">
                     <h3>APÊNDICE</h3>
                     <p>Instrumento da Pesquisa</p>                       
                 </div>
                     
                 <div className="Info-quest">
-                    <p>Questionário telefônico dos Casos Confirmados</p>
-                    <p>Dados básicos do entrevistado - Parte 1</p>
+                    <p>Monitoramento de casos confirmados para o COVID-19</p>
+                    <p>Dados básicos do entrevistado - Parte 1 de 3</p>
                 </div>
                     
                 <form onSubmit = {handleSubmit1(onFirstSubmit)} className='firstform'>
-                <br/><br/>
-                <input className="inputquest"{...register1("nome", {required: true})} type = "text" placeholder = "Nome"/>
-                <input className="inputquest"{...register1("nomeMae", {required: true})} type = "text" placeholder = "Nome da mãe"/>
-                <input className="inputquest"{...register1("endereco")} type = "text" placeholder = "Endereco"/>
+                    <br/><br/>
+                    <input className="inputquest"{...register1("nome", {required: true})} type = "text" placeholder = "Nome"/>
+                    <input className="inputquest"{...register1("nomeMae", {required: true})} type = "text" placeholder = "Nome da mãe"/>
+                    <input className="inputquest"{...register1("endereco")} type = "text" placeholder = "Endereço"/>
 
-                <select className='inputquest' {...register1("raca")} >
-                    <option value="">Cor</option>
-                    <option value="branca">Branca</option>
-                    <option value="preta">Preta</option>
-                    <option value="amarela">Amarela</option>
-                    <option value="parda">Parda</option>
-                    <option value="indigena">Indigena</option>
-                </select>
-
-                <input className="inputquest" {...register1("cpf")} type = "number" placeholder = "CPF"/>
-
-                <input className="inputquest"{...register1("altura", {required: true})} onChange = {infoHeight} type = "number" placeholder = "Altura"/>
-                <input className="inputquest"{...register1("peso", {required: true})} onChange = {infoWeight} type = "number" placeholder = "Peso"/>
-
-                <div className="birthdate">
-                    Data de nascimento
-                    <input {...register1("nascimento")} type = "date"/>
-                </div>
-
-                <div className="colunaSaudeGenero">
-                    <div className="gender">
-                        Gênero &nbsp; 
-                            <input {...register1("genero")} type="radio" value="masculino" onClick = {analyzeGender}/>&nbsp;  M &nbsp; 
-                            <input {...register1("genero")} type="radio" value="feminino" onClick = {analyzeGender}/>&nbsp;  F &nbsp; 
-                            <input {...register1("genero")} type="radio" value="outro" onClick = {analyzeGender}/>&nbsp;  outro 
-                    </div>
-                    
-                    <div className="profsaude">
-                        Profissional de saúde? &nbsp;
-                            <input {...register1("profissionalSaude")} type="radio" value="sim" onClick = {analyzeProfession}/> &nbsp; sim &nbsp;
-                            <input {...register1("profissionalSaude")} type="radio" value="nao" onClick = {analyzeProfession}/> &nbsp; não &nbsp;
-                    </div>
-                </div>
-                { pSaude &&
-                    <input className="checkprof" {...register1("profissao")} type = "text" placeholder = "Profissão" />
-                }
-
-                <div className="optionProf">
-                    <select {...register1("ocupacao")} onChange = {analyzeOccupation}>
-                        <option value="">Ocupação</option>
-                        <option value="estudante">Estudante</option>
-                        <option value="tecnicoAdm">Técnico Admnistrativo em Educação</option>
-                        <option value="prestadorServico">Prestador de serviços</option>
+                    <select className='inputquest' {...register1("raca")} >
+                        <option value="">Cor</option>
+                        <option value="branca">Branca</option>
+                        <option value="preta">Preta</option>
+                        <option value="amarela">Amarela</option>
+                        <option value="parda">Parda</option>
+                        <option value="indigena">Indigena</option>
                     </select>
-                </div>
-                
-                { estudante &&
-                    <div className="inputEstudante">
-                        <input {...register1("numMatricula")} type = "number" placeholder = "Número de Matrícula"/>
-                    </div>
-                }
-                { docente &&
-                    <div className="inputProfissao">
 
-                        <select {...register1("unidade")}>
-                            <option value="">Unidade...</option>
-                            <option value="reitoria">Reitoria</option>
-                            <option value="proReitoria">Pró-Reitoria de Graduação</option>
-                            <option value="proReitoriaPesquisa">Pró-Reitoria de pesquisa, pós-graduação e inovação</option>
-                            <option value="proReitoriaExtensao">Pró-Reitoria de extensão e cultura</option>
-                            <option value="proReitoriaComunitario">Pró-Reitoria de assuntos comunitários e estudantis</option>
-                            <option value="proReitoriaPlanejamento">Pró-Reitoria de planejamento e administração</option>
-                            <option value="proReitoriaFinancas">Pró-Reitoria de finanças</option>
-                            <option value="proReitoriaGestao">Pró-Reitoria de gestão de pessoas</option>
-                            <option value="prefeituraCampus">Prefeitura do Campus</option>
-                            <option value="dirComunicacao">Diretoria de comunicação institucional</option>
-                            <option value="dirRelacoesInternacionais">Diretoria de relações internacionais</option>
-                            <option value="dirTecnologia">Diretoria de tecnologia e informação</option>
-                            <option value="dirBiblioteca">Diretoria de bibliotecas e informação</option>
-                            <option value=""></option>
-                        </select>
-                       
-                        <select {...register1("setor")}>
-                            <option value = "">Setor...</option>
-                            <option value = "cead">CEAD</option>
-                            <option value = "edtm">EDTM</option>
-                            <option value = "eef">Escola de Educação Física</option>
-                            <option value = "ef">Escola de Farmácia</option>
-                            <option value = "eminas">Escola de Minas</option>
-                            <option value = "emedicina">Escola de Medicina</option>
-                            <option value = "en">Escola de Nutrição</option>
-                            <option value = "iceb">ICEB</option>
-                            <option value = "ifac">IFAC</option>
-                            <option value = "ichs">ICHS</option>
-                            <option value = "icea">ICEA</option>
-                        </select>
-                    </div>
-                }
+                    <div className="separacaoInput">
+                    
+                    <input className="inputquest" {...register1("cpf")} type = "number" placeholder = "CPF"/>
+                    
 
-                <div className="vacina">
-                    <div className="grauVacina">
-                    Grau de vacinação: 
-                        <div className="inputvacina">
-                            <input {...register1("vacinado")} type="radio" value="primeira" /> Primeira &nbsp;
-                            <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> Primeira e segunda &nbsp;
-                            <input {...register1("vacinado")} type="radio" value="doseUnica" /> Dose única &nbsp;
-                            <input {...register1("vacinado")} type="radio" value="reforco3Dose" /> Reforço terceira dose &nbsp;
-                            <input {...register1("vacinado")} type="radio" value="naoVacinado" /> Não é vacinado &nbsp;
+                    <input className="inputquest"{...register1("altura", {required: true})} onChange = {infoHeight} type = "number" placeholder = "Altura"/>
+                    <input className="inputquest"{...register1("peso", {required: true})} onChange = {infoWeight} type = "number" placeholder = "Peso"/>
+
+                    <div className="birthdate">
+                        Data de nascimento
+                        <input {...register1("nascimento")} type = "date"/>
+                    </div>
+
+                    </div>
+
+                <div >
+
+                    <div className="colunaSaudeGenero">
+                            <div className="gender">
+                                Com qual gênero se identifica? &nbsp; 
+                                    <input {...register1("genero")} type="radio" value="masculino" onClick = {analyzeGender}/>&nbsp;  M &nbsp; 
+                                    <input {...register1("genero")} type="radio" value="feminino" onClick = {analyzeGender}/>&nbsp;  F &nbsp; 
+                                    <input {...register1("genero")} type="radio" value="outro" onClick = {analyzeGender}/>&nbsp;  Outro 
+                            </div>
+                            
+                            <div className="profsaude">
+                                Profissional de saúde? &nbsp;
+                                    <input {...register1("profissionalSaude")} type="radio" value="sim" onClick = {analyzeProfession}/> &nbsp; Sim &nbsp;
+                                    <input {...register1("profissionalSaude")} type="radio" value="nao" onClick = {analyzeProfession}/> &nbsp; Não &nbsp;
+                            </div>
+                        </div>
+                        { pSaude &&
+                            <input className="checkprof" {...register1("profissao")} type = "text" placeholder = "Profissão" />
+                        }
+
+                        <div className="optionProf">
+                            <select {...register1("ocupacao")} onChange = {analyzeOccupation}>
+                                <option value="">Ocupação</option>
+                                <option value="estudante">Estudante</option>
+                                <option value="tecnicoAdm">Técnico Admnistrativo em Educação</option>
+                                <option value="prestadorServico">Prestador de serviços</option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                    
+                    { estudante &&
+                        <div className="inputEstudante">
+                            <input {...register1("numMatricula")} type = "number" placeholder = "Número de Matrícula"/>
+                        </div>
+                    }
+                    { docente &&
+                        <div className="inputProfissao">
 
-                <div className="btn-starquest">
-                    <button type = "submit">Próximo</button>
-                </div>
-                
+                            <select {...register1("unidade")}>
+                                <option value="">Unidade...</option>
+                                <option value="reitoria">Reitoria</option>
+                                <option value="proReitoria">Pró-Reitoria de Graduação</option>
+                                <option value="proReitoriaPesquisa">Pró-Reitoria de pesquisa, pós-graduação e inovação</option>
+                                <option value="proReitoriaExtensao">Pró-Reitoria de extensão e cultura</option>
+                                <option value="proReitoriaComunitario">Pró-Reitoria de assuntos comunitários e estudantis</option>
+                                <option value="proReitoriaPlanejamento">Pró-Reitoria de planejamento e administração</option>
+                                <option value="proReitoriaFinancas">Pró-Reitoria de finanças</option>
+                                <option value="proReitoriaGestao">Pró-Reitoria de gestão de pessoas</option>
+                                <option value="prefeituraCampus">Prefeitura do Campus</option>
+                                <option value="dirComunicacao">Diretoria de comunicação institucional</option>
+                                <option value="dirRelacoesInternacionais">Diretoria de relações internacionais</option>
+                                <option value="dirTecnologia">Diretoria de tecnologia e informação</option>
+                                <option value="dirBiblioteca">Diretoria de bibliotecas e informação</option>
+                                <option value=""></option>
+                            </select>
+                        
+                            <select {...register1("setor")}>
+                                <option value = "">Setor...</option>
+                                <option value = "cead">CEAD</option>
+                                <option value = "edtm">EDTM</option>
+                                <option value = "eef">Escola de Educação Física</option>
+                                <option value = "ef">Escola de Farmácia</option>
+                                <option value = "eminas">Escola de Minas</option>
+                                <option value = "emedicina">Escola de Medicina</option>
+                                <option value = "en">Escola de Nutrição</option>
+                                <option value = "iceb">ICEB</option>
+                                <option value = "ifac">IFAC</option>
+                                <option value = "ichs">ICHS</option>
+                                <option value = "icea">ICEA</option>
+                            </select>
+                        </div>
+                    }
+
+                    <div className="vacina">
+                        <div className="grauVacina">
+                        Vacina: 
+                            <div className="inputvacina">
+                                <input {...register1("vacinado")} type="radio" value="primeira" /> Primeira dose &nbsp;
+                                <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> Primeira e segunda dose&nbsp;
+                                <input {...register1("vacinado")} type="radio" value="doseUnica" /> Dose única &nbsp; 
+                                <input {...register1("vacinado")} type="radio" value="reforco3Dose" /> Reforço terceira dose &nbsp;
+                                <input {...register1("vacinado")} type="radio" value="naoVacinado" /> Não é vacinado &nbsp;
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="btn-starquest">
+                        <button className="btn-start1" type = "submit">Próximo</button>
+                    
+                    </div>
                 </form>
-            </div>
+
+                </div>
             }
                 {/* FIM DA PRIMEIRA PARTE DO QUESTIONARIO */}
                 {   primeiraParte && !segundaParte &&
@@ -432,8 +456,8 @@ export const Quest = () => {
                         </div>
                        
                         <div className="Info-quest">
-                            <p>Questionário telefônico dos casos Confirmados</p>
-                            <p>Saúde do entrevistado - Parte 2</p>
+                            <p>Monitoramento de casos confirmados para o COVID-19</p>
+                            <p>Saúde do entrevistado - Parte 2 de 3</p>
                         </div>
             
                         <form className='formquest' onSubmit = {handleSubmit2(onSecondSubmit)}>
@@ -489,31 +513,31 @@ export const Quest = () => {
                                 </div>
                             </div>
                             <div className="sintomas">
-                                sintomas
+                                Sintomas
                                 <div className="inputSintomas">
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="febre" /> febre &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="dispineia" /> dispineia &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="dorGarganta" /> dor de garganta &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma01")} type="checkbox" /> Febre &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma02")} type="checkbox" /> Dispineia &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma03")} type="checkbox" /> Dor de garganta &nbsp;</div>
                                     </div>
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="dorCabeca" /> dor de cabeça &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="tosse" /> tosse &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="coriza" /> coriza &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma04")} type="checkbox" /> Dor de cabeça &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma05")} type="checkbox" /> Tosse &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma06")} type="checkbox" /> Coriza &nbsp;</div>
                                     </div>
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="perdaOlfato" /> perda do olfato &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="perdaPaladar" /> perda do paladar &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("sintomas")} type="checkbox" value="nenhum" /> nenhum &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma07")} type="checkbox" /> Perda do olfato &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma08")} type="checkbox" /> Perda do paladar &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("sintoma09")} type="checkbox" /> Nenhum &nbsp;</div>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="internado"> 
-                                internado? &nbsp;
+                                Esteve internado? &nbsp;
                                 <div>
-                                    <input {...register2("internado")} type="radio" value="sim" /> sim &nbsp;
-                                    <input {...register2("internado")} type="radio" value="nao" /> não &nbsp; 
+                                    <input {...register2("internado")} type="radio" value="sim" /> Sim &nbsp;
+                                    <input {...register2("internado")} type="radio" value="nao" /> Não &nbsp; 
                                 </div>
                             </div>
 
@@ -523,23 +547,23 @@ export const Quest = () => {
                                 <div className="inputCondicoes">
                                     <div className="espacamento">
                                     {/* <input {...register2("condicoes")} type="checkbox" value="obesidade" />  CALCULO DEVE SER FEITO*/}
-                                        <div className="espacamentointerior"><input {...register2("condicao01")} type="checkbox" checked = {isObese}/> obesidade &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("condicao02")} type="checkbox" />  diabetes &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register2("condicao03")} type="checkbox" /> câncer &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("condicao04")} type="checkbox" /> doença no fígado &nbsp;</div>
+                                        <div className="espacamentoObesidade"><input {...register2("condicao01")} type="checkbox" checked = {isObese}/> obesidade &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("condicao02")} type="checkbox" /> Diabetes &nbsp; </div>
+                                        <div className="espacamentointerior"><input {...register2("condicao03")} type="checkbox" /> Câncer &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("condicao04")} type="checkbox" /> Doença no fígado &nbsp;</div>
                                     </div>
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("condicao05")} type="checkbox" /> doença nos rins &nbsp;</div>
-                                        <div className="espacamentointerior"><input {...register2("condicao06")} type="checkbox" /> anemia &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register2("condicao07")} type="checkbox" /> indígena &nbsp; </div>
+                                        <div className="espacamentointerior"><input {...register2("condicao05")} type="checkbox" /> Doença nos rins &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("condicao06")} type="checkbox" /> Anemia &nbsp; </div>
+                                        <div className="espacamentointerior"><input {...register2("condicao07")} type="checkbox" /> Indígena &nbsp; </div>
                                     </div>
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("condicao08")} type="checkbox" /> doença cardíaca &nbsp; </div>
-                                        <div className="espacamentointerior"><input {...register2("condicao09")} type="checkbox" /> doença pulmonar &nbsp; </div> 
-                                        <div className="espacamentointerior"><input {...register2("condicao10")} type="checkbox" /> tranplante de órgão &nbsp; </div>  
+                                        <div className="espacamentointerior"><input {...register2("condicao08")} type="checkbox" /> Doença cardíaca &nbsp; </div>
+                                        <div className="espacamentointerior"><input {...register2("condicao09")} type="checkbox" /> Doença pulmonar &nbsp; </div> 
+                                        <div className="espacamentointerior"><input {...register2("condicao10")} type="checkbox" /> Tranplante de órgão &nbsp; </div>  
                                     </div>
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("condicao11")} type="checkbox" /> doença cerebro vascular &nbsp; </div>
+                                        <div className="espacamentointerior"><input {...register2("condicao11")} type="checkbox" /> Doença cerebro vascular &nbsp; </div>
                                     </div>
                                 </div>
                             </div>
@@ -547,9 +571,9 @@ export const Quest = () => {
                                 <div className="situacao">
                                 Situação
                                 <div className="inputSituacao">
-                                    <input {...register2("situacao1")} type="checkbox" /> gestante &nbsp;
-                                    <input {...register2("situacao2")} type="checkbox" /> puerpério &nbsp;
-                                    <input {...register2("situacao3")} type="checkbox" /> nenhuma &nbsp;
+                                    <input {...register2("situacao1")} type="radio" /> Gestante &nbsp;
+                                    <input {...register2("situacao2")} type="radio" /> Puerpério &nbsp;
+                                    <input {...register2("situacao3")} type="radio" /> Nenhuma &nbsp;
                                 </div>
                             </div>
                             }
@@ -576,14 +600,15 @@ export const Quest = () => {
                                 </div>
                             </div>  
 
-                            <div className="btn-starquestone">
-                                <button btn-starquestone type = "submit">Próximo</button>
+                            <div className="btn-starquest">
+                                <button className="btn-start1" type = "submit">Próximo</button>
                             </div>
 
                         </form>
                     </div>
                 }
                 { primeiraParte && segundaParte && !terceiraParte &&
+                
                     <div className="formAreaQuest">
                                    
                         <div className="Description-quest">
@@ -591,9 +616,10 @@ export const Quest = () => {
                         </div>
 
                         <div className="Info-quest">
-                        <p>Questionário telefônico dos casos Confirmados</p>
-                        <p>Contatos Próximos [Comunidade UFOP] - Parte 3</p>
+                        <p>Monitoramento de casos confirmados para o COVID-19</p>
+                        <p>Contatos Próximos - Parte 3 de 3</p>
                         </div> 
+
                         <div className="AreaForm3">
 
                             <div className="contato">
@@ -603,8 +629,10 @@ export const Quest = () => {
                                     <div>
                                         <form className='formquestcontato' onSubmit = {handleSubmit3(onThirdSubmit)}>
                                 
+                                            Possui vínculo com a UFOP? &nbsp; <input {...register3("vinculoUFOP")} type = "checkbox" required/> &nbsp; Sim
+
                                             <input {...register3("nome")} type = "text" placeholder = "nome do contato"/>
-                                            <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1"/>
+                                            <input {...register3("telefone1")} type = "number" placeholder = "telefone de contato 1" required/>
                                             <input {...register3("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
                                         
                                     
@@ -623,7 +651,7 @@ export const Quest = () => {
                                                 </div>
                                             }
                                             <div className="dataContato">
-                                                Data do último contato
+                                                Data do último contato com o caso confirmado
                                                 <div className="inputDataContato">
                                                     <input {...register3("dataUltimoContato")} type = "date"/>
                                                 </div>
@@ -637,15 +665,14 @@ export const Quest = () => {
                                 }
                             
                             <div className="realinharBotao">
-                                <button onClick = {finishQuest}className="btn-finalizar" >Finalizar</button>
+                                <button onClick={finishQuest} className="btn-finalizar" >Finalizar</button>
                             </div>
                         </div>
                     </div>
                 }
                 { terceiraParte &&
                     <div>
-                        FIM DO QUESTIONÁRIO!
-                        <button onClick = {submitData}>Enviar dados</button>
+                        <Bloco cpf = {objPrimeiraParte.cpf} ehCritico={ehCritico}/>
                     </div>
                 }
         </div>

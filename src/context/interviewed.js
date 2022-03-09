@@ -16,6 +16,8 @@ export function InterviewedProvider({children}){
 
     const [objConfirmados, setObjConfirmados] = useState({});
     const [objContProximos, setObjContProximos] = useState({});
+    const [lstConfirmados, setLstConfirmados] = useState([]);
+    const [lstContProximos, setLstContProximos] = useState([]);
 
 
     async function receiveFirstData(primeiraParte){
@@ -30,7 +32,7 @@ export function InterviewedProvider({children}){
     useEffect(() => {
         getInfoFromDatabase();
         registerCloseContacts({});
-    }, [localStorage.getItem("token")]);
+    }, [contextUser.user]);
 
     //FUNCAO QUE ENVIA OS DADOS DO QUESTIONARIO QUE EH CASO CONFIRMADO
     async function registerPositiveInterviewed(cpf, primeiraParte, segundaParte){
@@ -44,28 +46,32 @@ export function InterviewedProvider({children}){
         }
     }
 
-    // async function registerCloseContacts(cpf, closedContactsAnswers){
-    //     try{
-    //         set(ref(database, 'RespostasMonitoramentoConfirmados/' + cpf), {
-                
-    //         });
-    //     }
-    // }
+    //FUNCAO QUE CONTA A QUANTIDADE DE CADASTRADOS COMO CONTATOS PROXIMOS
+    async function countingCloseContacts(){
+        const databaseInfo = await getRefFromDataBase("ContatosProximos");
+        const lstContatosProximos = Object.values(databaseInfo);
+        const tamanhoBanco = lstContatosProximos.length + 1;
+        return tamanhoBanco;
+    }
 
     //FUNCAO QUE ENVIA OS DADOS REFERENTES A UM CONTATO PROXIMO
     async function registerCloseContacts(objContatoProximo){
         const databaseInfo = await getRefFromDataBase("ContatosProximos");
-        const lstContatosProximos = Object.values(databaseInfo);
+        const lstContatosProximos = await Object.values(databaseInfo);
         const tamanhoBanco = lstContatosProximos.length + 1;
-        console.log(tamanhoBanco);
+        console.log("Tem que ser cadastrado no valor: ", tamanhoBanco);
+        // tentar mudar depois para que a funcao acima seja reutilizada (mesma coisa)
         try{
             set(ref(database, 'ContatosProximos/' + tamanhoBanco), {
                 objetoDados: objContatoProximo
             });
+            // alert("Contato Próximo cadastrado com sucesso!");
         }catch(error){
+            // alert("Ocorreu um erro durante o cadastro. Favor tentar novamente.");
             console.log(error.message);
         }
     }
+
 
     // FUNCAO QUE ENVIA OS DADOS REFERENTES A UM CONTATO QUE EH CASO CONFIRMADO
     async function registerConfirmedCase(objCasoConfirmado, cpf){
@@ -103,7 +109,9 @@ export function InterviewedProvider({children}){
 
     async function getInfoFromDatabase(){
         setObjConfirmados(await getRefFromDataBase("Confirmados"));
+        setLstConfirmados(Object.values(objConfirmados));
         setObjContProximos(await getRefFromDataBase("ContatosProximos"));
+        setLstContProximos(Object.values(objContProximos));
     }
 
     async function addTryIn(where, cpf){
@@ -131,7 +139,7 @@ export function InterviewedProvider({children}){
     }
 
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, objConfirmados, objContProximos, getInfoFromDatabase}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts}}>
             {children}
         </InterviewedContext.Provider>
     )
