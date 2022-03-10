@@ -10,7 +10,7 @@ export const RoteiroQ2 = () => {
     const navigate = useNavigate();
 
     const mudaPagina = () => {
-        navigate("../questionario2");
+        navigate("../monitoramentoContatosProximos");
     }
 
     const { user } = useUser();

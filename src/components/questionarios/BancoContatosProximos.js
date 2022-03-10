@@ -1,12 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom'
 import { useInterviewed } from "../../context/interviewed";
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
 import './Banco.css'
 
 
 export const BancoContatosProximos = (props) => {
+
+    const navigate = useNavigate();
+
 
     const contextInterviewed = useInterviewed();
     const [showContato, setShowContato] = useState(true);
@@ -43,6 +46,10 @@ export const BancoContatosProximos = (props) => {
         // console.log(props.confirmado.objetoDados.);
     }
 
+    const startQuest = () => {
+        navigate("../../roteiroQuestionarioContatosProximos");
+    }
+
     return(
         <div className="chatListItem">
             {showContato &&
@@ -60,7 +67,7 @@ export const BancoContatosProximos = (props) => {
                                 <button className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
                             }
                             {!seExpirado &&
-                                <button className="chatListItem-btn">ENTREVISTAR</button>
+                                <button onClick = {startQuest}className="chatListItem-btn">ENTREVISTAR</button>
                             }
                             
                             <button onClick = {addTry}className="chatListItem-btn">CONTATO SEM SUCESSO [{tentativas}]</button>

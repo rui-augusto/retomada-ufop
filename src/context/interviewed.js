@@ -35,11 +35,10 @@ export function InterviewedProvider({children}){
     }, [contextUser.user]);
 
     //FUNCAO QUE ENVIA OS DADOS DO QUESTIONARIO QUE EH CASO CONFIRMADO
-    async function registerPositiveInterviewed(cpf, primeiraParte, segundaParte){
+    async function registerPositiveInterviewed(cpf, dadosQuest){
         try{
             set(ref(database, 'RespostasQuestionario3/' + cpf), {
-                primeiraParte: primeiraParte,
-                segundaParte: segundaParte
+                objetoDados: dadosQuest
             });
         }catch(error){
             console.log(error.message);
@@ -59,7 +58,6 @@ export function InterviewedProvider({children}){
         const databaseInfo = await getRefFromDataBase("ContatosProximos");
         const lstContatosProximos = await Object.values(databaseInfo);
         const tamanhoBanco = lstContatosProximos.length + 1;
-        console.log("Tem que ser cadastrado no valor: ", tamanhoBanco);
         // tentar mudar depois para que a funcao acima seja reutilizada (mesma coisa)
         try{
             set(ref(database, 'ContatosProximos/' + tamanhoBanco), {
@@ -128,18 +126,35 @@ export function InterviewedProvider({children}){
         await update(ref(database), updates);
     }
 
-    async function changeSituation(cpf){
-        const databaseInfo = getRefFromDataBase(cpf);
-        console.log(databaseInfo);
+    async function getInfoOfConfirmedCase(cpf, info){
+        const situacaoInfo = await get(child(ref(database), `Confirmados/${cpf}/objetoDados/${info}`));
+        return situacaoInfo.val();
+    }
 
+    async function changeSituation(cpf){
         const updates = {};
-        updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "andamento";
+        
+        var situacaoInfo = await getInfoOfConfirmedCase(cpf, "situacao");
+        if (situacaoInfo == "expirado" || situacaoInfo == "expiradoInterno"){
+            updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "encerrado";
+        }
+        else{
+            updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "andamento";
+        }
 
         await update(ref(database), updates);
     }
 
+    async function updateConfirmedCase(cpf, updates){
+        var contTentativasInfo = getInfoOfConfirmedCase(cpf, "contTentativas");
+        // var contTentativas = contTentativasInfo.val() + 1;
+        // var entrevistasRealizadasInfo;
+        await update(ref(database), updates);
+    }
+
+
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts, updateConfirmedCase}}>
             {children}
         </InterviewedContext.Provider>
     )

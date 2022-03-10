@@ -8,7 +8,8 @@ import { Quest2 } from "../components/questionarios/Quest2";
 import { Quest3 } from "../components/questionarios/Quest3";
 
 import {TesteQuestionario} from "../components/questionarios/testeQuestionario";
-import {Bloco} from "../components/orientacoes/Bloco";
+import {RoteiroQ1} from "../components/roteiros/RoteiroQ1";
+import {RoteiroQ2} from "../components/roteiros/RoteiroQ2";
 
 export const MainRoutes = () => {
     return useRoutes([
@@ -16,8 +17,10 @@ export const MainRoutes = () => {
         {path: '/register', element: <Register />},
         {path: '/home/:uid', element: <Home />},
         {path: '/questionario', element: <Quest />},
-        {path: 'questionario2', element: <Quest2 />},
+        {path: 'monitoramentoContatosProximos', element: <Quest2 />},
         {path: 'questionario3', element: <Quest3 />},
-        {path: 'teste', element: <Bloco />}
+        {path: 'roteiroQuestionarioConfirmados', element: <RoteiroQ1 />},
+        {path: 'roteiroQuestionarioContatosProximos', element: <RoteiroQ2 />},
+        {path: 'teste', element: <TesteQuestionario />}
     ]);
 }

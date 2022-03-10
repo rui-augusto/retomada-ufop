@@ -13,7 +13,6 @@ export const RoteiroFinalQ1 = (props) => {
     const navigate = useNavigate();
 
     const { user } = useUser();
-    console.log(props);
     const backToHome = () => {
         navigate(`../home/${user.uid}`);
     }

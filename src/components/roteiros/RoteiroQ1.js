@@ -1,5 +1,5 @@
 import "./Roteiro.css"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from "../../context/user";
 import { useNavigate } from 'react-router-dom';
 
@@ -58,7 +58,7 @@ export const RoteiroQ1 = () => {
                                 type="text"
                                 name="nome"
                                 onChange={handleInputChange}
-                                value={formValues.name}
+                                value={user.name}
                                 placeholder="Nome do Entrevistador"
                                 />
                             </div>

@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom'
 
 import { BancoConfirmados } from "./questionarios/BancoConfirmados";
 import { BancoContatosProximos } from "./questionarios/BancoContatosProximos"
+import { BancoMonitoramentoConfirmados } from "./questionarios/BancoMonitoramentoConfirmados";
+// import { BancoMonitoramentoContProximos } from "./questionarios/BancoMonitoramentoContProximos";
 
 import "./style/Home.css"
 
@@ -148,11 +150,12 @@ export const Home = () => {
                     <div className="infoSituacaoEntrevista">Situação Entrevistas</div>
                 </div>
                 <div className="chatNomes">
-                    {/* {chatlist.map((item, key)=>(
+                    {contextInterviewed.lstConfirmados.map((item, key)=>(
                         <BancoMonitoramentoConfirmados
+                            confirmado={item}
                             key={key}
                         />
-                    ))} */}
+                    ))}
                 </div>
             </div>
 

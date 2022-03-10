@@ -9,13 +9,12 @@ export const RoteiroFinalQ2 = () => {
 
     const navigate = useNavigate();
 
-    const mudaPagina = () => {
-        navigate("../home/:uid");
-    }
-
+    
     const { user } = useUser();
-    console.log(user);
-
+    
+    const mudaPagina = () => {
+        navigate(`/home/${user.uid}`);
+    }
     const [pageState, setPageState] = useState(true);
 
     const[formValues, setFormValues] = useState({});

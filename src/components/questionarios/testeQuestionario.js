@@ -23,26 +23,22 @@ export const TesteQuestionario = () => {
     const [objTeste, setObjTeste] = useState({});
     const [bool, setBool] = useState(false);
     const [date, setDate] = useState(new Date());
-
     const finalSubmit = (data) => {
         console.log(data);
         setObjTeste(data);
         setBool(true);
-        console.log(data);
-        console.log(data.dataTeste);
         // PEGANDO DATA E HORARIO ATUAL
         var d = new Date().setHours(27,0,0);
         console.log(d);
         // console.log(d.getTime());
         // PEGANDO DATA DO INPUT
-        setDate(data.testeData);
     }
 
     const adicionaItens = () => {
         objTeste.teste = "teste ao fim"
         console.log(objTeste);
     }
-    
+
 
     return (
         <div>

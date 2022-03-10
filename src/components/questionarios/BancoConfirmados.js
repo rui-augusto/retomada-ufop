@@ -39,6 +39,7 @@ export const BancoConfirmados = (props) => {
         else if (props.confirmado.objetoDados.situacao == "expiradoInterno"){
             setSituacao("Expirado Interno");
             setShowConfirmado(true);
+            setSeExpirado(true);
         }
 
         setTentativas(props.confirmado.objetoDados.contTentativas);
@@ -46,7 +47,7 @@ export const BancoConfirmados = (props) => {
     }, []);
 
     const startQuest = () => {
-        navigate("../../questionario");
+        navigate("../../roteiroQuestionarioConfirmados");
     }
 
     const addTry = () => {
@@ -73,7 +74,7 @@ export const BancoConfirmados = (props) => {
                         <div className="chatListItem-situacao">{situacao}</div>
                         
                         {seExpirado &&
-                            <button className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
+                            <button onClick = {startQuest} className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
                         }
                         {!seExpirado &&
                             <button onClick = {startQuest}className="chatListItem-btn">ENTREVISTAR</button>

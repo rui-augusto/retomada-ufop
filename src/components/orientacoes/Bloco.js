@@ -7,8 +7,8 @@ import "../roteiros/Roteiro.css";
 export const Bloco = (props) => {
 
     const[alerted, setAlerted] = useState(false);
+    console.log(props);
     return( 
-
         <div className="fullscreenArea-questions">
             {!alerted &&
                 <form className="content-questions" >
@@ -28,7 +28,7 @@ export const Bloco = (props) => {
                             <div className="TextAreaInfo"> </div>
                                 <br/>
 
-                            {props.ehCritico &&
+                            {props.orientacao &&
                                 <div className="Vermelho">  
                                     <h3>4.1 </h3><br/><li>Buscar um atendimento em serviço de saúde! Faça isso o mais rápido possível. </li><br/>
                                 </div> 
