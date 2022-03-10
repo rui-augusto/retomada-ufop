@@ -71,7 +71,11 @@ export const Home = () => {
         <div className='fullscreenAreaHome'>
             <div className="AreaPesquisa">
             
-                <div className="titulo"><h2>Bem-vindo(a), {contextUser.user.name}.</h2><button onClick = {logout}>Sair</button></div>
+                <div className="titulo">
+                    <h2>Bem-vindo(a), {contextUser.user.name}.</h2>
+                    <button onClick = {logout}>Sair</button>
+                    <button onClick = {updateData}>Atualizar</button>
+                    </div>
                 
                 <div className="titulo"> 
                     <select>

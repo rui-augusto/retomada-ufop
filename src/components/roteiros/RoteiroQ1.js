@@ -2,6 +2,8 @@ import "./Roteiro.css"
 import { useState, useEffect } from 'react';
 import { useUser } from "../../context/user";
 import { useNavigate } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+
 
 
 
@@ -13,8 +15,30 @@ export const RoteiroQ1 = () => {
         navigate("../questionario");
     }
 
+    // DEFINICAO DO useForm
+    useForm({
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
+        defaultValues: {},
+        resolver: undefined,
+        context: undefined,
+        criteriaMode: "firstError",
+        shouldFocusError: true,
+        shouldUnregister: false,
+        shouldUseNativeValidation: false,
+        delayError: undefined
+    });
+
+    const {
+        register, handleSubmit
+    } = useForm();
+
     const { user } = useUser();
     console.log(user);
+
+    //
+    const [recusa, setRecusa] = useState(false);
+
 
     const [pageState, setPageState] = useState(true);
 
@@ -34,11 +58,12 @@ export const RoteiroQ1 = () => {
 
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-        const data = Object.fromEntries(formData);
-    
+    const recusaEntrevista = (event) => {
+        if (event.target.checked == true){
+            setRecusa(true);
+        } else{
+            setRecusa(false);
+        }
     };
 
 
@@ -48,7 +73,7 @@ export const RoteiroQ1 = () => {
 
             {pageState &&
 
-            <body className="fullscreenArea-questions" onSubmit={handleSubmit}> 
+            <body className="fullscreenArea-questions"> 
                 <form className="content-questions" >
                     <div className="InputArea">
 
@@ -57,7 +82,6 @@ export const RoteiroQ1 = () => {
                                 <input 
                                 type="text"
                                 name="nome"
-                                onChange={handleInputChange}
                                 value={user.name}
                                 placeholder="Nome do Entrevistador"
                                 />
@@ -67,8 +91,6 @@ export const RoteiroQ1 = () => {
                                 <input
                                 type="date"
                                 name="data"
-                                onChange={handleInputChange}
-                                value={formValues.date}
                                 placeholder="Data"
                                 />
                             </div>
@@ -77,8 +99,6 @@ export const RoteiroQ1 = () => {
                                 <input
                                 type="time"
                                 name="hora"
-                                onChange={handleInputChange}
-                                value={formValues.time}
                                 placeholder="Hora"
                                 />
                             </div>
@@ -120,14 +140,31 @@ export const RoteiroQ1 = () => {
                                         type='checkbox' 
                                         name='recusa' 
                                         value='recusa'
-                                        onChange={handleInputChange}
+                                        onClick={recusaEntrevista}
                                         />  
                                         &nbsp; Recusa
                                     </label>
-                                
+                                    {recusa &&
+                                        <div>
+                                            <form onSubmit = {handleSubmit(recusaEntrevista)} className='firstform'>
+                                                <div className="btn-startArea"> 
+                                                    <select className='inputquest' {...register("motivoRejeicao")} >
+                                                        <option value="">Motivo rejeicao...</option>
+                                                        <option value=""></option>
+                                                        <option value=""></option>
+                                                        <option value=""></option>
+                                                        <option value=""></option>
+                                                        <option value=""></option>
+                                                    </select>
+                                                    <input {...register("obs")} type = "textArea"/>
+                                                    <button className="btn-start" type="submit" onClick={recusaEntrevista}>Próximo</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    }
                             
                             </div>
-
+                            {!recusa &&
                             <div className="btn-startArea"> 
                                 <button 
                                     className="btn-start" 
@@ -136,6 +173,7 @@ export const RoteiroQ1 = () => {
                                     Próximo
                                 </button>
                             </div>
+                            }
                     </div>
 
 

@@ -147,9 +147,24 @@ export function InterviewedProvider({children}){
 
     async function updateConfirmedCase(cpf, updates){
         var contTentativasInfo = getInfoOfConfirmedCase(cpf, "contTentativas");
-        // var contTentativas = contTentativasInfo.val() + 1;
-        // var entrevistasRealizadasInfo;
+        var contTentativas = contTentativasInfo + 1;
+        var entrevistasRealizadasInfo = getInfoOfConfirmedCase(cpf, "entrevistasRealizadas");
+        var entrevistasRealizadas = entrevistasRealizadasInfo + 1;
         await update(ref(database), updates);
+        const acressUpdate = {};
+        acressUpdate['/Confirmados/' + cpf + '/objetoDados/contTentativas'] = contTentativas;
+        acressUpdate['/Confirmados/' + cpf + '/objetoDados/entrevistasRealizadas'] = entrevistasRealizadas;
+        await update(ref(database), acressUpdate);
+    }
+
+    async function refusalQuest(cpf, objRecusa){
+        try{
+            set(ref(database, 'Recusas/' + cpf), {
+                objetoDados: objRecusa
+            });
+        }catch(error){
+            console.log(error.message);
+        }
     }
 
 

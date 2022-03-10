@@ -21,6 +21,6 @@ export const MainRoutes = () => {
         {path: 'questionario3', element: <Quest3 />},
         {path: 'roteiroQuestionarioConfirmados', element: <RoteiroQ1 />},
         {path: 'roteiroQuestionarioContatosProximos', element: <RoteiroQ2 />},
-        {path: 'teste', element: <TesteQuestionario />}
+        {path: 'teste', element: <RoteiroQ1 />}
     ]);
 }

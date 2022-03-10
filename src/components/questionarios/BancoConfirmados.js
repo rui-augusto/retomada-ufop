@@ -13,6 +13,7 @@ export const BancoConfirmados = (props) => {
     const navigate = useNavigate();
     
     const contextInterviewed = useInterviewed();
+    const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
     const dtMonitorarAte = props.confirmado.objetoDados.dataInicioSintomas + 864000;
     // const dataMonitorarAte =  new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
@@ -39,6 +40,9 @@ export const BancoConfirmados = (props) => {
         else if (props.confirmado.objetoDados.situacao == "expiradoInterno"){
             setSituacao("Expirado Interno");
             setShowConfirmado(true);
+            setSeExpirado(true);
+        }
+        else if (dataHorarioAgora > dtMonitorarAte){
             setSeExpirado(true);
         }
 

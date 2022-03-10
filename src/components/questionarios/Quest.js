@@ -153,13 +153,12 @@ export const Quest = () => {
     }
 
     // FUNCOES QUE ANALISAM A FREQUENCIA DAS ENTREVISTAS
-    const analyzeFrequency = () => {
-        if (objSegundaParte.condicao01 == true || objSegundaParte.condicao02 == "sim" || objSegundaParte.condicao03 == "true" ||
-            objSegundaParte.condicao04 == true || objSegundaParte.condicao05 == true || objSegundaParte.condicao06 == true ||
-            objSegundaParte.condicao07 == true || objSegundaParte.condicao08 == true || objSegundaParte.condicao09 == true ||
-            objSegundaParte.condicao10 == true || objSegundaParte.condicao11 == true){
-                setFrequencia(1);
-                setQtdEntrevistas(5);
+    function analyzeFrequency(){
+        if (objSegundaParte.condicao01 == "sim" || objSegundaParte.condicao02 == "sim" || objSegundaParte.condicao03 == "sim" ||
+            objSegundaParte.condicao04 == "sim" || objSegundaParte.condicao05 == "sim" || objSegundaParte.condicao06 == "sim" ||
+            objSegundaParte.condicao07 == "sim" || objSegundaParte.condicao08 == "sim" || objSegundaParte.condicao09 == "sim" ||
+            objSegundaParte.condicao10 == "sim" || objSegundaParte.condicao11 == "sim"){
+                return true;
             }
         }
 
@@ -205,7 +204,6 @@ export const Quest = () => {
 
     const dadosConfirmado = () => {
         context.changeSituation(objPrimeiraParte.cpf);
-
         var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
         var date = new Date();
@@ -213,15 +211,16 @@ export const Quest = () => {
         var email = contextUser.user.email;
 
         const updates = {};
-        if (frequencia == 1){
+        if (analyzeFrequency){
             updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 86400;
             updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
+            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
+
         }
-        else if (frequencia == 2){
+        else if (!analyzeFrequency){
             updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 172800;
         }
 
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = frequencia;
 
 
         updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataUltimaMudancaSituacao/'] = dataHorarioAgora;

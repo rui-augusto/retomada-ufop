@@ -35,8 +35,12 @@ export const TesteQuestionario = () => {
     }
 
     const adicionaItens = () => {
-        objTeste.teste = "teste ao fim"
-        console.log(objTeste);
+        if (objTeste.checkteste1 == true){
+            console.log("true");
+        }
+        if (objTeste.checkteste1 == "sim" || objTeste.checkteste3 == true){
+            console.log("sim");
+        }
     }
 
 
