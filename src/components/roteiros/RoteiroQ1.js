@@ -33,8 +33,7 @@ export const RoteiroQ1 = () => {
         register, handleSubmit
     } = useForm();
 
-    const { user } = useUser();
-    console.log(user);
+    const contextUser = useUser();
 
     //
     const [recusa, setRecusa] = useState(false);
@@ -66,6 +65,20 @@ export const RoteiroQ1 = () => {
         }
     };
 
+    const enviaRecusa = (data) => {
+        var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
+        var entrevistador = contextUser.user.email;
+        const obj = {
+            dtInclusaoBanco: dataHorarioAgora,
+            entrevistador: entrevistador,
+            // idUnico: props.cpf,
+            motivoRejeicao: data.motivoRejeicao,
+            // nome: props.nome,
+            obs: data.obs
+            // origem: props.origem,
+            // telefone: props.telefone
+        }
+    }
 
     return( 
 
@@ -82,7 +95,7 @@ export const RoteiroQ1 = () => {
                                 <input 
                                 type="text"
                                 name="nome"
-                                value={user.name}
+                                value={contextUser.user.name}
                                 placeholder="Nome do Entrevistador"
                                 />
                             </div>
@@ -121,7 +134,7 @@ export const RoteiroQ1 = () => {
 
                             <div className="TextAreaInfo"> </div>
                                 <br></br>
-                                Meu nome é {user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto 
+                                Meu nome é {contextUser.user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto 
                                 e estou realizando o rastreamento e monitoramento para COVID-19 na comunidade acadêmica.<br/><br/> 
                                 Como parte das medidas de controle da transmissão da COVID-19, nós recebemos da Universidade a informação que você testou positivo recentemente. <br/><br/>
                                 Podemos conversar? <br/>
@@ -146,7 +159,7 @@ export const RoteiroQ1 = () => {
                                     </label>
                                     {recusa &&
                                         <div>
-                                            <form onSubmit = {handleSubmit(recusaEntrevista)} className='firstform'>
+                                            <form onSubmit = {handleSubmit(enviaRecusa)} className='firstform'>
                                                 <div className="btn-startArea"> 
                                                     <select className='inputquest' {...register("motivoRejeicao")} >
                                                         <option value="">Motivo rejeicao...</option>

@@ -27,7 +27,7 @@ export const BancoMonitoramentoConfirmados =  (props) => {
                         
                         <div className="chatListItem-monitorarAte">28/03</div>
                         
-                        <div className="chatListItem-situacao"></div>
+                        <div className="chatListItem-situacao">{props.confirmado.objetoDados.situacao}</div>
                         
                     </div>
                 </div>
