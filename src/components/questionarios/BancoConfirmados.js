@@ -15,7 +15,7 @@ export const BancoConfirmados = (props) => {
     const contextInterviewed = useInterviewed();
     const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
-    const dtMonitorarAte = props.confirmado.objetoDados.dataInicioSintomas + 864000;
+    const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000).toFixed(0);
     // const dataMonitorarAte =  new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
     // new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
     // console.log("INICIO SINTOMAS TIMESTAMP + 10" ,dataISintomas);
@@ -51,7 +51,7 @@ export const BancoConfirmados = (props) => {
     }, []);
 
     const startQuest = () => {
-        navigate("../../roteiroQuestionarioConfirmados");
+        navigate(`../../roteiroQuestionarioConfirmados/${props.confirmado.objetoDados.cpf}`);
     }
 
     const addTry = () => {
@@ -71,7 +71,7 @@ export const BancoConfirmados = (props) => {
                     <div className="chatListItem-line">
                         <div className="chatListItem-nomePaciente">{props.confirmado.objetoDados.nome}</div> &nbsp;
                         
-                        <div className="chatListItem-telefonePaciente">999999999</div> &nbsp;
+                        <div className="chatListItem-telefonePaciente">{props.confirmado.objetoDados.telefone}</div> &nbsp;
                         
                         <div className="chatListItem-monitorarAte"><SimpleDateTime dateFormat="DMY" dateSeparator="/"  showTime = "0">{dtMonitorarAte}</SimpleDateTime></div>
                         

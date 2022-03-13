@@ -7,14 +7,14 @@ import { useUser } from "../../context/user";
 import { Bloco } from "../orientacoes/Bloco";
 
 import "./Quest.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Quest = () => {
 
     const context = useInterviewed();
     const contextUser = useUser();
     const navigate = useNavigate();
-
+    const {cpf} = useParams();
     // DEFINICAO DO useForm
     useForm({
         mode: 'onSubmit',
@@ -75,6 +75,7 @@ export const Quest = () => {
     const [situacaoCritica, setSituacaoCritica] = useState(false);
     const [orientacaoEspecifica, setOrientacaoEspecifica] = useState(false);
 
+
     // SETTANDO PESO E ALTURA EM STATES
     const infoHeight = (event) => {
         setHeight((event.target.value) / 100);
@@ -93,7 +94,7 @@ export const Quest = () => {
             }
             console.log("imc = ", imc);
         }
-    }, [primeiraParte]);
+    }, [objPrimeiraParte]);
 
     // FUNCOES QUE ANALISAM AS RESPOSTAS E DITAM A SEQUÊNCIA DO QUESTIONARIO
     const analyzeOccupation = (event) => {
@@ -172,9 +173,11 @@ export const Quest = () => {
         // context.registerInterviewed(data.nome, data.altura, data.peso);
     }
     const onSecondSubmit = (data) => {
+        const email = contextUser.user.email;
         console.log(data);
         setObjSegundaParte(data);
-        var obj = Object.assign({}, objPrimeiraParte, data);
+        const obj = Object.assign({}, objPrimeiraParte, data);
+
         setObjDadosFinais(obj);
         setSegundaParte(true);
 
@@ -197,62 +200,78 @@ export const Quest = () => {
     }
 
     // FUNCAO QUE ENVIA TODOS OS DADOS DO QUESTIONARIO PRINCIPAL AO FIREBASE
-    const submitData = () => {
-        context.registerPositiveInterviewed(objPrimeiraParte.cpf, objDadosFinais);
+    const submitData = async () => {
+        await context.registerPositiveInterviewed(objPrimeiraParte.cpf, objDadosFinais);
+
+        const nascimento = new Date(objPrimeiraParte.nascimento).setHours(27,0,0) / 1000;
+        const diagnostico = new Date(objSegundaParte.dataDiagnostico).setHours(27,0,0) / 1000;
+        const inicioSintomas = new Date(objSegundaParte.inicioSintomas).setHours(27,0,0) / 1000;
+        console.log(nascimento, diagnostico, inicioSintomas);
+        const updates = {};
+
+        updates['/RespostasQuestionario3/' + cpf + '/objetoDados/nascimento'] = nascimento;
+        updates['/RespostasQuestionario3/' + cpf + '/objetoDados/dataDiagnostico'] = diagnostico;
+        updates['/RespostasQuestionario3/' + cpf + '/objetoDados/inicioSintomas'] = inicioSintomas;
+
+        context.changeData(updates);
+
         dadosConfirmado();
     }
 
     const dadosConfirmado = () => {
         context.changeSituation(objPrimeiraParte.cpf);
-        var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
+        const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
-        var date = new Date();
+        const date = new Date();
 
-        var email = contextUser.user.email;
+        const email = contextUser.user.email;
 
         const updates = {};
-        if (analyzeFrequency){
-            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 86400;
-            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
-            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
-
-        }
-        else if (!analyzeFrequency){
+        if (objSegundaParte.condicao01 == "sim" || objSegundaParte.condicao02 == "sim" || objSegundaParte.condicao03 == "sim" ||
+            objSegundaParte.condicao04 == "sim" || objSegundaParte.condicao05 == "sim" || objSegundaParte.condicao06 == "sim" ||
+            objSegundaParte.condicao07 == "sim" || objSegundaParte.condicao08 == "sim" || objSegundaParte.condicao09 == "sim" ||
+            objSegundaParte.condicao10 == "sim" || objSegundaParte.condicao11 == "sim"){
+                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 86400;
+                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
+                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
+            }
+        else{
             updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 172800;
         }
 
 
-
+        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/contTentativas/'] = 0;
         updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataUltimaMudancaSituacao/'] = dataHorarioAgora;
 
         updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/entrevistador/'] = email;
+        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/tipoTeste/'] = objSegundaParte.testeRealizado;
 
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/log/'] = `${contextUser.user.nome} entrevistou em ${date}`;
-        context.updateConfirmedCase(objPrimeiraParte.cpf, updates);
+        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/log/'] = `${email} entrevistou em ${date}`;
+        context.changeData(objPrimeiraParte.cpf, updates);
 
     }
 
     const dadosContatoProximo = async (data) => {
         console.log("DADOS CONTATO PROXIMO: ", data);
-        var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
+        const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
         console.log(dataHorarioAgora);
         var dataUltimoContato = new Date(data.dataUltimoContato).setHours(27,0,0) / 1000;
+        var proxEntrevista = dataUltimoContato + 172800;
         if (data.telefone2 == ""){
             data.telefone2 = null;
         }
 
-        var contadorContatosProximos = await context.countingCloseContacts();
+        const contadorContatosProximos = await context.countingCloseContacts();
         console.log(contadorContatosProximos);
 
         const objContatoProximo = {
-            contEntrevistas: 3,
             contTentativas: 0,
             dataInclusaoBanco: dataHorarioAgora,
             dataNascimento: 0,
-            dataProximaEntrevista: "NULL",
+            dataProximaEntrevista: proxEntrevista,
             dataUltimaMudancaSituacao: dataHorarioAgora,
             dataUltimoContato: dataUltimoContato,
-            entrevistador: "NULL",
+            entrevistador: contextUser.user.email,
             fezTeste: "NULL",
             idUnicoGeradorDoContato: objPrimeiraParte.cpf,
             idUnico: contadorContatosProximos,
@@ -260,8 +279,10 @@ export const Quest = () => {
             logSituacao: "NULL",
             nome: data.nome,
             obs: "NULL",
+            origem: "contatoProximo",
             pessoaFoiVacinada: "NULL",
             pessoaQuantidadeVacinas: "NULL",
+            quantidadeEntrevistas: 3,
             relacaoComOCaso: data.relacao,
             residenteAcimaDe60FoiVacinado: "NULL",
             residenteAcimaDe60QuantidadeDeDoses: "NULL",
@@ -274,7 +295,7 @@ export const Quest = () => {
             sintoma5: "não",
             sintoma6: "não",
             sintoma7: "não",
-            situacao: "aberto",
+            situacao: "naoContato",
             telefone1: data.telefone1,
             telefone2: data.telefone2,
             temResidenteAcimaDe60: null,
@@ -297,8 +318,6 @@ export const Quest = () => {
                 <div className="Info-quest">
                     <p>Monitoramento de casos confirmados para o COVID-19</p>
                     <p>Dados básicos do entrevistado - Parte 1 de 3</p>
-                    <button onClick = {dadosConfirmado}>Teste</button>
-
                 </div>
                     
                 <form onSubmit = {handleSubmit1(onFirstSubmit)} className='firstform'>
@@ -306,7 +325,7 @@ export const Quest = () => {
                     <div >
                         <div className="AlinhamentoQuestionarioUm">
                             <input className="inputquest"{...register1("nome", {required: true})} type = "text" placeholder = "Nome"/>
-                            <input className="inputquest" {...register1("cpf")} type = "number" placeholder = "CPF"/>
+                            <input className="inputquest" {...register1("cpf")} value = {cpf} type = "number" placeholder = "CPF"/>
                             <select className='inputquest' {...register1("raca")} >
                                 <option value="">Cor</option>
                                 <option value="branca">Branca</option>
@@ -540,7 +559,7 @@ export const Quest = () => {
                                 <div className="inputCondicoes">
                                     <div className="espacamento">
                                     {/* <input {...register2("condicoes")} type="checkbox" value="obesidade" />  CALCULO DEVE SER FEITO*/}
-                                        <div className="espacamentoObesidade"><input {...register2("condicao01")} type="checkbox" value = "sim" checked = {isObese}/> obesidade &nbsp;</div>
+                                        <div className="espacamentointerior"><input {...register2("condicao01")} type="checkbox" value = "sim" checked = {isObese}/> obesidade &nbsp;</div>
                                         <div className="espacamentointerior"><input {...register2("condicao02")} type="checkbox" value = "sim" /> Diabetes &nbsp; </div>
                                         <div className="espacamentointerior"><input {...register2("condicao03")} type="checkbox" value = "sim" /> Câncer &nbsp;</div>
                                         <div className="espacamentointerior"><input {...register2("condicao04")} type="checkbox" value = "sim" /> Doença no fígado &nbsp;</div>
@@ -675,7 +694,7 @@ export const Quest = () => {
                 }
                 { terceiraParte &&
                     <div>
-                        <Bloco cpf = {objPrimeiraParte.cpf} ehCritico={situacaoCritica} orientacao={orientacaoEspecifica}/>
+                        <Bloco cpf = {objPrimeiraParte.cpf} orientacao={orientacaoEspecifica}/>
                     </div>
                 }
         </div>

@@ -1,54 +1,51 @@
-import React from 'react';
+import React from "react";
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'
-import { useUser } from "../../context/user";
 import { useInterviewed } from "../../context/interviewed";
+import { useUser } from "../../context/user";
+import { useNavigate } from 'react-router-dom'
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
 import './Banco.css'
 
 
-export const BancoContatosProximos = (props) => {
+export const BancoMonitoramentoContProximos = (props) => {
+
+    console.log(props);
 
     const navigate = useNavigate();
 
-    const contextInterviewed = useInterviewed();
+    const context = useInterviewed();
     const contextUser = useUser();
 
     const [showContato, setShowContato] = useState(true);
     const [seExpirado, setSeExpirado] = useState(false);
-    const [situacao, setSituacao] = useState("naoContato");
+    const [situacao, setSituacao] = useState("Expirado");
     const [tentativas, setTentativas] = useState(0);
-    const monitorarAte = (props.contatoProximo.objetoDados.dataUltimoContato + 864000).toFixed(0) ;
-
+    const [proximaEntrevista, setProximaEntrevista] = useState(0);
+    const [monitorarAte, setMonitorarAte] = useState(0);
 
     const [nome, setNome] = useState("");
 
-    // const dtMonitorarAte = props.contatoProximo.objetoDados.dataUltimoContato;
 
     useEffect(() => {
         if (props.contatoProximo.objetoDados.nome == "contador"){
             setShowContato(false);
         }
         else{
-            if (props.contatoProximo.objetoDados.situacao != "naoContato" && props.contatoProximo.objetoDados.situacao != "expirado"){
+            if (props.contatoProximo.objetoDados.situacao != "andamento"){
                 setShowContato(false);
-                if (props.contatoProximo.objetoDados.situacao != "expirado"){
-                    setSituacao("Expirado");
-                } else if (props.contatoProximo.objetoDados.situacao != "naoContato"){
-                    setSituacao("Não Contato");
-                }
+                setSituacao(props.contatoProximo.objetoDados.situacao);
             }
-
             setTentativas(props.contatoProximo.objetoDados.contTentativas);
             setNome(props.contatoProximo.objetoDados.nome);
+            setProximaEntrevista(props.contatoProximo.objetoDados.proximaEntrevista);
         }
-        
-
+        setMonitorarAte((props.contatoProximo.objetoDados.dataUltimoContato).toFixed(0));
+        setProximaEntrevista(props.contatoProximo.objetoDados.dataProximaEntrevista);
     }, []);
 
     const addTry = () => {
         // console.log(props.confirmado.objetoDados.cpf);
-        contextInterviewed.addTryIn("ContatosProximos", props.contatoProximo.objetoDados.idUnico);
+        context.addTryIn("ContatosProximos", props.contatoProximo.objetoDados.idUnico);
         setTentativas(tentativas+1);
         // console.log(props.confirmado.objetoDados.);
     }
@@ -62,24 +59,24 @@ export const BancoContatosProximos = (props) => {
             {showContato &&
                 <div className="chatListItem-lines">
                     <div className="chatListItem-line">
-                        <div className="chatListItem-nomePaciente">{nome}</div>
+                        <div className="chatListItem-nomePaciente">{props.contatoProximo.objetoDados.nome}</div>
                         
                         <div className="chatListItem-telefonePaciente">{props.contatoProximo.objetoDados.telefone1}</div>
                         
                         <div className="chatListItem-monitorarAte"><SimpleDateTime dateFormat="DMY" dateSeparator="/"  showTime = "0">{monitorarAte}</SimpleDateTime></div>
-                        
-                        <div className="chatListItem-situacao">{situacao}</div>
+            
+                        <div className="chatListItem-situacao"><SimpleDateTime dateFormat="DMY" dateSeparator="/"  showTime = "0">{proximaEntrevista}</SimpleDateTime></div>
                         
                         {seExpirado &&
-                                <button className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
-                            }
-                            {!seExpirado &&
-                                <button onClick = {startQuest}className="chatListItem-btn">ENTREVISTAR</button>
-                            }
+                            <button onClick = {startQuest} className="chatListItem-btn">ENTREVISTAR EXPIRADO</button>
+                        }
+                        {!seExpirado &&
+                            <button onClick = {startQuest}className="chatListItem-btn">ENTREVISTAR</button>
+                        }
                             
-                            <button onClick = {addTry}className="chatListItem-btn">CONTATO SEM SUCESSO [{tentativas}]</button>
-                    </div>
+                        <button onClick = {addTry}className="chatListItem-btn">CONTATO SEM SUCESSO [{tentativas}]</button>
                 </div>
+            </div>
             }
         </div>
     );

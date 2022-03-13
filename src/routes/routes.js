@@ -10,17 +10,19 @@ import { Quest3 } from "../components/questionarios/Quest3";
 import {TesteQuestionario} from "../components/questionarios/testeQuestionario";
 import {RoteiroQ1} from "../components/roteiros/RoteiroQ1";
 import {RoteiroQ2} from "../components/roteiros/RoteiroQ2";
+import {RoteiroQ3} from "../components/roteiros/RoteiroQ3";
 
 export const MainRoutes = () => {
     return useRoutes([
         {path: '/', element: <Login />},
         {path: '/register', element: <Register />},
         {path: '/home/:uid', element: <Home />},
-        {path: '/questionario', element: <Quest />},
-        {path: 'monitoramentoContatosProximos', element: <Quest2 />},
-        {path: 'questionario3', element: <Quest3 />},
-        {path: 'roteiroQuestionarioConfirmados', element: <RoteiroQ1 />},
-        {path: 'roteiroQuestionarioContatosProximos', element: <RoteiroQ2 />},
-        {path: 'teste', element: <RoteiroQ1 />}
+        {path: '/questionario/:cpf', element: <Quest />},
+        {path: 'monitoramentoContatosProximos/:id', element: <Quest2 />},
+        {path: 'questionario3/:cpf', element: <Quest3 />},
+        {path: 'roteiroQuestionarioConfirmados/:cpf', element: <RoteiroQ1 />},
+        {path: 'roteiroQuestionarioContatosProximos/:id', element: <RoteiroQ2 />},
+        {path: 'roteiroQuestionarioMonitoramentoConfirmados/:cpf', element: <RoteiroQ3 />},
+        {path: 'teste', element: <TesteQuestionario />},
     ]);
 }

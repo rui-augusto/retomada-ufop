@@ -21,6 +21,7 @@ export const TesteQuestionario = () => {
     const {register, handleSubmit} = useForm();
 
     const [objTeste, setObjTeste] = useState({});
+    const [recusa, setRecusa] = useState(false);
     const [bool, setBool] = useState(false);
     const [date, setDate] = useState(new Date());
     const finalSubmit = (data) => {
@@ -30,6 +31,8 @@ export const TesteQuestionario = () => {
         // PEGANDO DATA E HORARIO ATUAL
         var d = new Date().setHours(27,0,0);
         console.log(d);
+        var dataUltimoContato = new Date(data.date).setHours(27,0,0);
+        console.log(dataUltimoContato);
         // console.log(d.getTime());
         // PEGANDO DATA DO INPUT
     }
@@ -46,23 +49,19 @@ export const TesteQuestionario = () => {
 
     return (
         <div>
-            <form onSubmit = {handleSubmit(finalSubmit)}>
-                <input {...register("checkteste1")} type = "checkbox" value = "sim" />
+            {/* <input {...register("checkteste1")} type = "checkbox" value = "sim" />
                 <input {...register("checkteste2")} type = "checkbox" value = "sim" />
                 <input {...register("checkteste3")} type = "checkbox" value = "sim" />
                 <input {...register("checkteste4")} type = "checkbox" value = "sim" />
 
                 <input {...register("dataTeste")} type = "date" />
+                <button type = "submit">Enviar</button> */}
+
+            
+            <form onSubmit = {handleSubmit(finalSubmit)}>
+                <input {...register("date")} type = "date" />
                 <button type = "submit">Enviar</button>
             </form>
-            {bool &&
-                <div>
-                    TESTANDO KK
-                    <SimpleDateTime format="DMY">{date}</SimpleDateTime>
-                    <button onClick = {adicionaItens}>Teste</button>
-                </div>
-            }
-
         </div>
     );
 }

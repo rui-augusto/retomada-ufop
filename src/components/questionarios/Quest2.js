@@ -1,18 +1,19 @@
 // MONITORAMENTO DE CONTATO PROXIMO
 
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useInterviewed } from "../../context/interviewed";
 import { useUser } from "../../context/user";
 import { BlocoContProximo } from "../orientacoes/BlocoContProximo";
-
+import { useNavigate, useParams } from 'react-router-dom';
 
 import "./Quest2.css";
 
 export const Quest2 = () => {
 
     const context = useInterviewed();
-    const { user } = useUser();
+    const contextUser = useUser();
+    const { id } = useParams();
 
     useForm({
         mode: 'onSubmit',
@@ -30,25 +31,23 @@ export const Quest2 = () => {
     const {register, handleSubmit} = useForm();
 
     const [outraRelacao, setOutraRelacao] = useState(false);
-    const [fazParteUfop, setFazParteUfop] = useState(false);
     const [estudante, setEstudante] = useState(false);
     const [docente, setDocente] = useState(false);
     const [fezTeste, setFezTeste] = useState(false);
     const [entrevistado, setEntrevistado] = useState(false);
+    const [horaInicio, setHoraInicio] = useState(0);
+    const [nomeEntrevistado, setNomeEntrevistado] = useState("");
+
+    useEffect(async () =>{
+        setNomeEntrevistado(await context.getInfoOfClosedContact(id, "nome"));
+        setHoraInicio(new Date().setHours(0,0,0) / 1000);
+    }, []);
 
     const analyzeRelation = (event) => {
         if (event.target.value == "outro"){
             setOutraRelacao(true);
         }else{
             setOutraRelacao(false);
-        }
-    }
-
-    const analyzeUfop = (event) => {
-        if (event.target.value == "sim"){
-            setFazParteUfop(true);
-        } else{
-            setFazParteUfop(false);
         }
     }
 
@@ -74,24 +73,52 @@ export const Quest2 = () => {
     const submitData = (data) => {
         console.log(data);
 
-        var dataHorarioAgora = new Date().setHours(0,0,0);
+        var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
-        var dataUltimoContato = new Date(data.ultimoContato).setHours(27,0,0);
+        var email = contextUser.user.email;
+
+        var idGeradorContato = context.getInfoOfClosedContact(id, "idUnicoGeradorDoContato");
+
+        var where = `${id}-${dataHorarioAgora*1000}`;
 
         const objContatoProximo = {
             dataEntrevista: dataHorarioAgora,
-            dataUltimoContato: dataUltimoContato,
-            entrevistador: user.name,
-            fezTeste: data.fezTeste,
-            horaFim: -1,
-            horaInicio: -1,
-            idUnico: -1,
+            entrevistador: email,
+            horaFim: dataHorarioAgora,
+            horaInicio: horaInicio,
+            idUnico: id,
+            idUnicoGeradorDoContato: idGeradorContato,
+            obs: "null",
         };
 
-        // console.log(objContatoProximo);
-        // context.registerMonitoringCloseContacts(objContatoProximo);
+        const objFinalDados = Object.assign({}, data, objContatoProximo);
+
+        // objFinalDados = Object.assign({}, objFinalDados, nome);
+
+        console.log(context.getInfoOfClosedContact(id, "nome"));
+        console.log(objContatoProximo);
+        context.registerMonitoringCloseContacts(objFinalDados, where);
+        context.addQtdEntrevistaContatoProximo(id);
+
+        dadosContatoProximo();
         setEntrevistado(true);
     }
+
+    const dadosContatoProximo = () => {
+        const updates = {};
+        const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
+        const email = contextUser.user.email;
+        const date = new Date();
+
+        updates['/ContatosProximos/' + id + '/objetoDados/situacao/'] = "andamento";
+        updates['/ContatosProximos/' + id + '/objetoDados/dataUltimaMudancaSituacao/'] = dataHorarioAgora;
+        updates['/ContatosProximos/' + id + '/objetoDados/contTentativas/'] = 0;
+        updates['/ContatosProximos/' + id + '/objetoDados/entrevistador/'] = email;
+        updates['/ContatosProximos/' + id + '/objetoDados/log/'] = `${email} entrevistou em ${date}`;
+
+        context.changeData(updates);
+    }
+
     return (
         <div>
             {!entrevistado &&
@@ -107,7 +134,7 @@ export const Quest2 = () => {
                 
                         <div className='nomeEntrevistado'>
                             Nome do(a) entrevistado(a)
-                            <input className="inputquest" {...register("nome")} type = "text" placeholder = "Nome do entrevistado"/>
+                            <input className="inputquest" {...register("nome")} value = {nomeEntrevistado} type = "text" placeholder = "Nome do entrevistado"/>
                         </div>
 
                         <div className='relacao'>
@@ -129,7 +156,7 @@ export const Quest2 = () => {
                         }
 
                         <div className='dataultimocontato'>
-                            Data do último contato: 
+                            Data do último contato com o positivo: 
                             <input {...register("ultimoContato")} type = "date"/>
                         </div>
 
@@ -173,7 +200,7 @@ export const Quest2 = () => {
                                             <option value = "prestadorServico">Prestador de serviços</option>
                                         </select>
                                     {estudante &&
-                                            <input className="inputquesteCurso"{...register("nomeCurso")} type = "text" placeholder = "Nome do curso"/>
+                                            <input className="inputquesteCurso"{...register("numMatricula")} type = "number" placeholder = "Num. Matrícula"/>
                                     }
                                     {docente &&
                                         <div className='options'>
