@@ -256,7 +256,7 @@ export const Quest = () => {
         const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
         console.log(dataHorarioAgora);
         var dataUltimoContato = new Date(data.dataUltimoContato).setHours(27,0,0) / 1000;
-        var proxEntrevista = dataUltimoContato + 172800;
+        var proxEntrevista = (dataHorarioAgora) + 172800;
         if (data.telefone2 == ""){
             data.telefone2 = null;
         }

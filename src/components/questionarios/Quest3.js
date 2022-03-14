@@ -113,8 +113,8 @@ export const Quest3 = () => {
         
         console.log("DADOS CONTATO PROXIMO: ", data);
         var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
-        var proxEntrevista = dataUltimoContato + 172800;
         var dataUltimoContato = new Date(data.dataUltimoContato).setHours(27,0,0) / 1000;
+        var proxEntrevista = (dataUltimoContato).toFixed(0) + 172800;
         if (data.telefone2 == ""){
             data.telefone2 = null;
         }

@@ -121,8 +121,10 @@ export function InterviewedProvider({children}){
         const entrevistasRealizadas = entrevistasRealizadasInfo + 1;
         const quantidadeEntrevistasInfo = await getInfoOfClosedContact(id, "quantidadeEntrevistas");
         const quantidadeEntrevistas = quantidadeEntrevistasInfo;
-        const proxEntrevistaInfo = await getInfoOfConfirmedCase(id, "dataProximaEntrevista");
+        const proxEntrevistaInfo = await getInfoOfClosedContact(id, "dataProximaEntrevista");
         const proxEntrevista = proxEntrevistaInfo;
+
+        console.log(proxEntrevista);
 
         const updates = {};
         updates['/ContatosProximos/' + id + '/objetoDados/dataProximaEntrevista'] = proxEntrevista + 172800;
