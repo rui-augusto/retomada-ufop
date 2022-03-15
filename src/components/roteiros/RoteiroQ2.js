@@ -91,8 +91,8 @@ export const RoteiroQ2 = () => {
         <div>
 
             <body className="fullscreenArea-questions" onSubmit={handleSubmit}> 
-                    <div className="DescriptionArea">
-                        <form className="content-questions" >
+            
+            <div className="content-questions" >
                             <div className="InputArea">
 
                                 <div className='line-questions'>
@@ -122,13 +122,15 @@ export const RoteiroQ2 = () => {
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+
+                    <div className="DescriptionArea">
                         <div className="Description">
                             <h3>APÊNDICE D</h3> <p>Instrumento da Pesquisa</p>                       
                         </div>
 
                         <div className="Info">
-                            <p>Monitoramento de Contato Próximos </p>
+                            <p>Monitoramento e Ratreamento de Contato Próximos </p>
                             <p>Questionário telefônico</p>
                         </div>
                    
@@ -148,47 +150,57 @@ export const RoteiroQ2 = () => {
                                 <p>Vamos começar?</p>
                             </div>
 
-                            <div className="textArea">
-                                Caso o entrevistado não queira ser entrevistado, assinalar:<br/> &nbsp;                     
+                            <div className="internedcheckArea">
+                                <div>Caso o entrevistado não queira ser entrevistado,
+                                assinalar: &nbsp;                     
+                                </div>
+                            </div>
+                              
+                            <div className="recusa">
+                                <div>
+                                    <label className="internedCheckArea-btn">
+                                    <input 
+                                        type='checkbox' 
+                                        name='recusa' 
+                                        value='recusa'
+                                        onClick = {recusaEntrevista}
+                                        />  
+                                        &nbsp; Recusa
+                                    </label>
+                                </div>
+
+                                <div className="selectRecusa">
+                                    {recusa &&
+                                        <div>
+                                            <form onSubmit = {handleSubmit(enviaRecusa)}>
+                                                <select {...register("motivoRejeicao")} className='inputquest' >
+                                                    <option value="">Motivo rejeicao...</option>
+                                                    <option value="naoEntendeu">Não entendeu a proposta do questionário</option>
+                                                    <option value="pessoaInadequada">Pessoa inadequada para responder o questionário</option>
+                                                    <option value="Horário incoveniente">Horário incoveniente</option>
+                                                    <option value="ofendido">Sentiu-se ofendido</option>
+                                                    <option value="recusaDados">Recusa passar dados</option>
+                                                    <option value="outro">Outro</option>
+                                                </select>
+                                                <input className="observacao"{...register("obs")} type = "textArea" placeholder="Observação"/>
+                                                <button className="btnRecusa">Finalizar</button>
+                                            </form>
+                                        </div>
+                                    }  
+                                </div>
                                 
-                                <label className="internedCheckArea-btn">
-                                <input 
-                                    type='checkbox' 
-                                    name='recusa' 
-                                    value='recusa'
-                                    onClick = {recusaEntrevista}
-                                    />  
-                                    &nbsp; Recusa
-                                </label>
-                                
-                                {recusa &&
-                                    <div>
-                                        <form onSubmit = {handleSubmit(enviaRecusa)}>
-                                            <select {...register("motivoRejeicao")} className='inputquest' >
-                                                <option value="">Motivo rejeicao...</option>
-                                                <option value="naoEntendeu">Não entendeu a proposta do questionário</option>
-                                                <option value="pessoaInadequada">Pessoa inadequada para responder o questionário</option>
-                                                <option value="Horário incoveniente">Horário incoveniente</option>
-                                                <option value="ofendido">Sentiu-se ofendido</option>
-                                                <option value="recusaDados">Recusa passar dados</option>
-                                                <option value="outro">Outro</option>
-                                            </select>
-                                            <input {...register("obs")} type = "textArea"/>
-                                            <button className="btn-start">Finalizar Quest</button>
-                                        </form>
+                                {!recusa &&
+                                    <div className="btn-startArea"> 
+                                        <button 
+                                            className="btn-start" 
+                                            type="submit"
+                                            onClick={mudaPagina}>                               
+                                            Próximo
+                                        </button>
                                     </div>
                                 }
+                                
                             </div>
-                            {!recusa &&
-                                <div className="btn-startArea"> 
-                                    <button 
-                                        className="btn-start" 
-                                        type="submit"
-                                        onClick={mudaPagina}>                               
-                                        Próximo
-                                    </button>
-                                </div>
-                            }
                     </div>
 
             </body> 

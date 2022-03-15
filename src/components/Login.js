@@ -25,7 +25,7 @@ export const Login = () => {
         <div className="fullscreenArea">
            
             <div className="mainLoginContent">
-                <img className="imgUFOP" src="https://neccint.files.wordpress.com/2011/08/ufop-logo.jpg"></img>
+                <img className="imgUFOP" src="https://neccint.files.wordpress.com/2011/08/ufop-logo.jpg" alt="logoUFOP"></img>
                 <div className='content'>
                     <div className='lineone'>
                         <div className='email'>
@@ -58,7 +58,7 @@ export const Login = () => {
                     <button onClick={loginUser} className="buttonLoginFormat" type="submit">Entrar</button>
 
                     <div className='link'>
-                        Não possui conta?&nbsp; <a><Link to="/register">Crie seu usuário</Link></a>
+                        Não possui conta?&nbsp; <a href = "#"><Link to="/register">Crie seu usuário</Link></a>
                     </div>
 
                 </div>

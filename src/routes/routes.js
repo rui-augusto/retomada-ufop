@@ -23,6 +23,6 @@ export const MainRoutes = () => {
         {path: 'roteiroQuestionarioConfirmados/:cpf', element: <RoteiroQ1 />},
         {path: 'roteiroQuestionarioContatosProximos/:id', element: <RoteiroQ2 />},
         {path: 'roteiroQuestionarioMonitoramentoConfirmados/:cpf', element: <RoteiroQ3 />},
-        {path: 'teste', element: <TesteQuestionario />},
+        {path: 'teste', element: <TesteQuestionario />}
     ]);
 }

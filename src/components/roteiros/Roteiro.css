@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 .fullscreenArea-questions{
+    flex-direction: column;
     display: flex;
     background-color: rgba(29, 25, 25, 0.801);
     justify-content: center;
@@ -155,4 +156,47 @@
     padding: 10px;
     border-radius: 20px;
     cursor: text;
+}
+.inputObs{
+    outline: none;
+    border: none;
+    height: 47px;
+    width: 40%;
+    background-color: rgba(233, 232, 232, 0.945);
+    padding: 10px;
+    border-radius: 20px;
+    cursor: text;
+    color: red;
+}
+.recusa{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+}
+.selectRecusa{
+    margin-top: 10px;
+    display: flex;
+}
+.observacao{
+    background-color: rgb(233, 234, 235);
+    outline: none;
+    border: none;
+    padding: 15px;
+    border-radius: 20px;
+    width: 50%;
+}
+.btnRecusa{
+    margin-top: 20px;
+    
+    font-family:Arial, Helvetica, sans-serif;
+    background-color: rgb(167, 29, 75);
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+    width: 30%;
 }

@@ -1,6 +1,6 @@
 import { useUser } from "../context/user";
 import { useInterviewed } from "../context/interviewed";
-import React, { useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import { useNavigate } from 'react-router-dom'
 
 

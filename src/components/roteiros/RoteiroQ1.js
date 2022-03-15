@@ -143,10 +143,10 @@ export const RoteiroQ1 = () => {
                                 &nbsp; Recusa
                             </label>
                             {recusa &&
-                                <div>
+                                <div className="recusa">
                                     <form onSubmit = {handleSubmit(enviaRecusa)}>
                                         <select {...register("motivoRejeicao")} className='inputquest' >
-                                            <option value="">Motivo rejeicao...</option>
+                                            <option value="">Motivo da rejeição...</option>
                                             <option value="naoEntendeu">Não entendeu a proposta do questionário</option>
                                             <option value="pessoaInadequada">Pessoa inadequada para responder o questionário</option>
                                             <option value="Horário incoveniente">Horário incoveniente</option>
@@ -154,8 +154,9 @@ export const RoteiroQ1 = () => {
                                             <option value="recusaDados">Recusa passar dados</option>
                                             <option value="outro">Outro</option>
                                         </select>
-                                        <input {...register("obs")} type = "textArea"/>
-                                        <button className="btn-start">Finalizar Quest</button>
+                                        <input className="inputObs"{...register("obs")} type = "textArea" placeholder="Observação.."/>
+                                        <div className="btn">
+                                        <button className="btn-finalizar">Finalizar</button></div>
                                     </form>
                                 </div>
                             }

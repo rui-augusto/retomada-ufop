@@ -18,7 +18,7 @@ export const Register = () => {
     const [role, setRole] = useState("entrevistador"); /* começa com o valor da primeira option*/
 
     const registerUser = () => {
-        if (rePassword == password){
+        if (rePassword === password){
             context.registerUser(name, email, password, role, navigate);
         }
         else{
