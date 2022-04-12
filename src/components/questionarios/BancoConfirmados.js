@@ -51,7 +51,7 @@ export const BancoConfirmados = (props) => {
     }, []);
 
     const startQuest = () => {
-        navigate(`../../roteiroQuestionarioConfirmados/${props.confirmado.objetoDados.cpf}`);
+        navigate(`../../roteiroQuestionarioConfirmados/${props.confirmado.objetoDados.cpf}/${props.confirmado.objetoDados.nome}`);
     }
 
     const addTry = () => {

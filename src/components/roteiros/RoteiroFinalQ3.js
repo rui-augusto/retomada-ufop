@@ -14,7 +14,6 @@ export const RoteiroFinalQ3 = () => {
     }
 
     const { user } = useUser();
-    console.log(user);
 
     const [pageState, setPageState] = useState(true);
 
