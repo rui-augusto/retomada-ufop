@@ -195,6 +195,7 @@ export function InterviewedProvider({children}){
 
     //funcao pra alterar as datas para timestamp
     async function changeData(updates){
+        console.log(`com a chamada da função changeData tem-se ${updates}`)
         await update(ref(database), updates);
     }
 

@@ -16,6 +16,10 @@ export const BancoMonitoramentoConfirmados =  (props) => {
     const [seExpirado, setSeExpirado] = useState(false);
     const [proximaEntrevista, setProximaEntrevista] = useState(0);
 
+    if (props.confirmado.objetoDados.dataInicioSintomas == undefined)
+    {
+        console.log(props);
+    }
 
     const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000).toFixed(0);
     useEffect(() => {

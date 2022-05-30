@@ -11,6 +11,7 @@ import {TesteQuestionario} from "../components/questionarios/testeQuestionario";
 import {RoteiroQ1} from "../components/roteiros/RoteiroQ1";
 import {RoteiroQ2} from "../components/roteiros/RoteiroQ2";
 import {RoteiroQ3} from "../components/roteiros/RoteiroQ3";
+import {Cadastro} from "../components/Cadastro";
 
 export const MainRoutes = () => {
     return useRoutes([
@@ -23,6 +24,8 @@ export const MainRoutes = () => {
         {path: 'roteiroQuestionarioConfirmados/:cpf/:nome', element: <RoteiroQ1 />},
         {path: 'roteiroQuestionarioContatosProximos/:id', element: <RoteiroQ2 />},
         {path: 'roteiroQuestionarioMonitoramentoConfirmados/:cpf', element: <RoteiroQ3 />},
-        {path: 'teste', element: <TesteQuestionario />}
+        {path: 'teste', element: <TesteQuestionario />},
+        {path: 'cadastro', element: <Cadastro />}
+        // {path: '*', element: <Register />}
     ]);
 }

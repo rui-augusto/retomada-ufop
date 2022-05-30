@@ -213,7 +213,9 @@ export const Quest = () => {
 
         await context.changeData(updates);
 
-        dadosConfirmado();
+        await dadosConfirmado();
+
+        await context.addQtdEntrevistaConfirmado(cpf);
     }
 
     const dadosConfirmado = async () => {

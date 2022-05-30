@@ -15,6 +15,16 @@ export const BancoConfirmados = (props) => {
     const contextInterviewed = useInterviewed();
     const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
+    if (props.confirmado.objetoDados.dataInicioSintomas == undefined){
+        console.log(props);
+    }
+
+    // console.log (props.confirmado.objetoDados.cpf);
+    // console.log(" + ");
+    // console.log(props.confirmado.objetoDados.dataInicioSintomas);
+
+    // if (props.confirmado.objetoDados.dataInicioSintomas == undefined){
+    // }
     const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000).toFixed(0);
     // const dataMonitorarAte =  new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
     // new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
