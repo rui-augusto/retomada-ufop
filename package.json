@@ -1,10 +1,7 @@
 {
   "name": "login",
   "version": "0.1.0",
-<<<<<<< HEAD
   "homepage": "https://celebrated-chimera-2cae8c.netlify.app/",
-=======
->>>>>>> parent of ce070f6 (corrigindo datas monitoramento)
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",

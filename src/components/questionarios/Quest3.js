@@ -192,7 +192,6 @@ export const Quest3 = () => {
                             <div>
                                 <select {...register1("testeRealizado")}>
                                         <option value = "">Teste Realizado...</option>
-                                        <option value = "anticorpo">Teste Rápido - Anticorpo</option>
                                         <option value = "antigeno">Teste Rápido - Antigeno</option>
                                         <option value = "sorologico">Sorológico</option>
                                         <option value = "pcr">PCR</option>

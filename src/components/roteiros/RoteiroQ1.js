@@ -1,5 +1,5 @@
 import "./Roteiro.css"
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUser } from "../../context/user";
 import { useInterviewed } from "../../context/interviewed";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,10 +25,14 @@ export const RoteiroQ1 = () => {
     const {register, handleSubmit} = useForm();
 
     const navigate = useNavigate();
-    const {cpf} = useParams();
-    
+    const {cpf, nome} = useParams();
+
+    // const [dataHoje, setDataHoje] = useState(new Date());
+    // const [horarioAgora, setHorarioAgora] = useState();
+
+
     const mudaPagina = () => {
-        navigate(`../questionario/${cpf}`);
+        navigate(`../questionario/${cpf}/${nome}`);
     }
 
     const contextUser = useUser();

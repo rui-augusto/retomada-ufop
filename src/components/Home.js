@@ -14,47 +14,17 @@ import "./style/Home.css"
 
 export const Home = () => {
 
-    // getRefFromDataBase()
-
     const navigate = useNavigate();
-
-
-    // const [lstConfirmados, setLstConfirmados] = useState([]);
-    // const [lstContProximos, setLstContProximos] = useState([]);
-
     const contextUser = useUser();
     const contextInterviewed = useInterviewed();
 
-    // const [listaConfirmados, setListaConfirmados] = useState([]);
-    // const [chatlist, setChatList] = useState([]);
-
-
     useEffect(async () => {
-        // setObjConfirmados(await contextInterviewed.getRefFromDataBase("Confirmados"));
-        // setObjContProximos(await contextInterviewed.getRefFromDataBase("ContatosProximos"));
-        // console.log("obj: ", objConfirmadoAs);
         await contextInterviewed.getInfoFromDatabase();
-        // setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
-        // setLstContProximos(Object.values(contextInterviewed.objContProximos));
         await contextUser.getUserInfo(localStorage.getItem("id"));
     }, []);
 
-    // const funcaoAux = async () => {
-    //     // console.log(contextInterviewed.getRefFromDataBase());
-    //     setObjConfirmados(await contextInterviewed.getRefFromDataBase("Confirmados"));
-    //     setObjContProximos(await contextInterviewed.getRefFromDataBase("ContatosProximos"));
-
-    //     setLstConfirmados(Object.values(objConfirmados));
-    //     setLstContProximos(Object.values(objContProximos));
-    //     console.log("2 :", lstConfirmados);
-    // }
-    
-    // const funcaoAux2 = () => {
-    //     setLstConfirmados(Object.values(objConfirmados));
-    //     setLstContProximos(Object.values(objContProximos));
-    //     console.log("2 :", lstConfirmados);
-    // }
-
+    // console.log(contextInterviewed.lstConfirmados);
+    // console.log(contextInterviewed.lstContProximos);
 
     const logout = async () => {
         await contextUser.userLogout(navigate);
@@ -63,8 +33,6 @@ export const Home = () => {
     const updateData = async () => {
         await contextInterviewed.getInfoFromDatabase();
         window.location.reload();
-        // setLstConfirmados(Object.values(contextInterviewed.objConfirmados));
-        // setLstContProximos(Object.values(contextInterviewed.objContProximos));
     }
 
     return (

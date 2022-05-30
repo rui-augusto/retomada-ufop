@@ -7,14 +7,14 @@ import { useUser } from "../../context/user";
 import { Bloco } from "../orientacoes/Bloco";
 
 import "./Quest.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export const Quest = () => {
 
     const context = useInterviewed();
     const contextUser = useUser();
-    const navigate = useNavigate();
-    const {cpf} = useParams();
+    const { cpf, nome } = useParams();
+    console.log(cpf, nome);
     // DEFINICAO DO useForm
     useForm({
         mode: 'onSubmit',
@@ -173,7 +173,6 @@ export const Quest = () => {
         // context.registerInterviewed(data.nome, data.altura, data.peso);
     }
     const onSecondSubmit = (data) => {
-        const email = contextUser.user.email;
         console.log(data);
         setObjSegundaParte(data);
         const obj = Object.assign({}, objPrimeiraParte, data);
@@ -184,7 +183,6 @@ export const Quest = () => {
     }
 
     const onThirdSubmit = (data) => {
-
         dadosContatoProximo(data);
         // alert("Contato Próximo cadastrado com sucesso!");
         reset();
@@ -209,21 +207,20 @@ export const Quest = () => {
         console.log(nascimento, diagnostico, inicioSintomas);
         const updates = {};
 
-        updates['/RespostasQuestionario3/' + cpf + '/objetoDados/nascimento'] = nascimento;
-        updates['/RespostasQuestionario3/' + cpf + '/objetoDados/dataDiagnostico'] = diagnostico;
-        updates['/RespostasQuestionario3/' + cpf + '/objetoDados/inicioSintomas'] = inicioSintomas;
+        updates['/RespostasQuestionario3/' + objPrimeiraParte.cpf + '/objetoDados/nascimento'] = nascimento;
+        updates['/RespostasQuestionario3/' + objPrimeiraParte.cpf + '/objetoDados/dataDiagnostico'] = diagnostico;
+        updates['/RespostasQuestionario3/' + objPrimeiraParte.cpf + '/objetoDados/inicioSintomas'] = inicioSintomas;
 
-        context.changeData(updates);
+        await context.changeData(updates);
 
         await dadosConfirmado();
 
         await context.addQtdEntrevistaConfirmado(cpf);
     }
 
-    const dadosConfirmado = () => {
+    const dadosConfirmado = async () => {
         context.changeSituation(objPrimeiraParte.cpf);
-        const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
-
+        const dataHorarioAgora = (new Date().setHours(0,0,0) / 1000).toFixed(0);
         const date = new Date();
 
         const email = contextUser.user.email;
@@ -233,12 +230,12 @@ export const Quest = () => {
             objSegundaParte.condicao04 == "sim" || objSegundaParte.condicao05 == "sim" || objSegundaParte.condicao06 == "sim" ||
             objSegundaParte.condicao07 == "sim" || objSegundaParte.condicao08 == "sim" || objSegundaParte.condicao09 == "sim" ||
             objSegundaParte.condicao10 == "sim" || objSegundaParte.condicao11 == "sim"){
-                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 86400;
+                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 86400;
                 updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
                 updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
             }
         else{
-            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = dataHorarioAgora + 172800;
+            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 172800;
         }
 
 
@@ -247,9 +244,10 @@ export const Quest = () => {
 
         updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/entrevistador/'] = email;
         updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/tipoTeste/'] = objSegundaParte.testeRealizado;
+        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/sexo/'] = objPrimeiraParte.genero;
 
         updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/log/'] = `${email} entrevistou em ${date}`;
-        context.changeData(objPrimeiraParte.cpf, updates);
+        await context.changeData(updates);
 
     }
 
@@ -304,8 +302,18 @@ export const Quest = () => {
             tipoTeste: null
         }
 
-        context.registerCloseContacts(objContatoProximo);
+        await context.registerCloseContacts(objContatoProximo);
     }
+
+    // FUNCOES QUE VOLTAM PARA A PARTE ANTERIOR DO QUESTIONARIO
+
+    // const returnFirstPart = () => {
+    //     setPrimeiraParte(false);
+    // }
+
+    // const returnSecondPart = () => {
+    //     setSegundaParte(false);
+    // }
 
     return (
 
@@ -326,7 +334,7 @@ export const Quest = () => {
                     
                     <div >
                         <div className="AlinhamentoQuestionarioUm">
-                            <input className="inputquest"{...register1("nome", {required: true})} type = "text" placeholder = "Nome"/>
+                            <input className="inputquest"{...register1("nome", {required: true})} value = {nome}type = "text" placeholder = "Nome"/>
                             <input className="inputquest" {...register1("cpf")} value = {cpf} type = "number" placeholder = "CPF"/>
                             <select className='inputquest' {...register1("raca")} >
                                 <option value="">Cor</option>
@@ -506,7 +514,6 @@ export const Quest = () => {
                                 <div className="tipoTeste">
                                     <select {...register2("testeRealizado")}>
                                         <option value="">Teste Realizado</option>
-                                        <option value="anticorpo">Teste Rápido - Anticorpo</option>
                                         <option value="antigeno">Teste Rápido - Antigeno</option>
                                         <option value="sorologico">Sorológico</option>
                                         <option value="pcr">PCR</option>
@@ -527,7 +534,7 @@ export const Quest = () => {
                                 </div>
                             </div>
                             <div className="sintomas">
-                                Sintomas
+                                Você apresenta algum desses sintomas?
                                 <div className="inputSintomas">
                                     <div className="espacamento">
                                         <div className="espacamentointerior"><input {...register2("sintoma01")} type="checkbox" /> Febre &nbsp;</div>
@@ -557,7 +564,7 @@ export const Quest = () => {
 
 
                             <div className="condicoes">
-                                Condições
+                                Você apresenta alguma dessas condições?
                                 <div className="inputCondicoes">
                                     <div className="espacamento">
                                     {/* <input {...register2("condicoes")} type="checkbox" value="obesidade" />  CALCULO DEVE SER FEITO*/}
@@ -603,7 +610,7 @@ export const Quest = () => {
                             </div>
 
                             <div className="estado">
-                                Algum sintoma Grave?
+                                Algum desses outros sintomas?
                                 <div className="inputEstado">
                                     <div className="espacamentoEstado">
                                             <div className="espacamentointerior"><input {...register2("sintomasGrave1")} type="checkbox" /> Falta de ar &nbsp; </div>
@@ -619,6 +626,7 @@ export const Quest = () => {
                             </div>
 
                         </form>
+                        {/* <button className="btn-start1" onClick = {returnFirstPart}>Voltar</button>a */}
                     </div>
                 }
                 { primeiraParte && segundaParte && !terceiraParte &&
@@ -691,6 +699,9 @@ export const Quest = () => {
                             <div className="realinharBotao">
                                 <button onClick={finishQuest} className="btn-finalizar" >Finalizar</button>
                             </div>
+                            {/* <div className="realinharBotao">
+                                <button onClick={returnSecondPart} className="btn-finalizar" >Voltar</button>
+                            </div> */}
                         </div>
                     </div>
                 }
