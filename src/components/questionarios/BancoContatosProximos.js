@@ -18,7 +18,7 @@ export const BancoContatosProximos = (props) => {
     const [seExpirado, setSeExpirado] = useState(false);
     const [situacao, setSituacao] = useState("naoContato");
     const [tentativas, setTentativas] = useState(0);
-    const monitorarAte = (props.contatoProximo.objetoDados.dataUltimoContato + 1209600).toFixed(0) ;
+    const monitorarAte = (props.contatoProximo.objetoDados.dataUltimoContato + 864000).toFixed(0) ;
 
 
     const [nome, setNome] = useState("");

@@ -9,6 +9,8 @@ import './Banco.css'
 
 export const BancoMonitoramentoContProximos = (props) => {
 
+    console.log(props);
+
     const navigate = useNavigate();
 
     const context = useInterviewed();
