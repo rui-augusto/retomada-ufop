@@ -94,9 +94,10 @@
 .optionProf{
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content:center;
 
 }
+
 .inputEstudante input{
     background-color: rgb(241, 239, 239);
     border-radius:20px;

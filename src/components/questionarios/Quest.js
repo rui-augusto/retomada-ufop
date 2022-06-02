@@ -409,7 +409,7 @@ export const Quest = () => {
                                     </select>
                                 </div>
                                 {/* FAZER O CSS DESSA DIV ABAIXO */}
-                                <div>
+                                <div className="optionProf">
                                     <select {...register1("localAtividade")}>
                                         <option value="">Local de Atividade</option>
                                         <option value="ouroPreto">Ouro Preto</option>
