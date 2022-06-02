@@ -310,13 +310,13 @@ export const Quest = () => {
 
     // FUNCOES QUE VOLTAM PARA A PARTE ANTERIOR DO QUESTIONARIO
 
-    // const returnFirstPart = () => {
-    //     setPrimeiraParte(false);
-    // }
+    const returnFirstPart = () => {
+        setPrimeiraParte(false);
+    }
 
-    // const returnSecondPart = () => {
-    //     setSegundaParte(false);
-    // }
+    const returnSecondPart = () => {
+        setSegundaParte(false);
+    }
 
     return (
 
@@ -403,7 +403,6 @@ export const Quest = () => {
                                         <option value="estudante">Estudante</option>
                                         <option value="docente">Docente</option>
                                         <option value="tecnicoAdm">Técnico Admnistrativo em Educação</option>
-                                        <option value="tecnicoLab">Técnico de Laboratório</option>
                                         <option value="prestadorServico">Prestador de serviços</option>
                                         <option value="outro">Outro</option>
                                     </select>
@@ -469,7 +468,8 @@ export const Quest = () => {
                                         <input {...register1("vacinado")} type="radio" value="primeira" /> Primeira dose &nbsp;
                                         <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> Primeira e segunda dose&nbsp;
                                         <input {...register1("vacinado")} type="radio" value="doseUnica" /> Dose única &nbsp; 
-                                        <input {...register1("vacinado")} type="radio" value="reforco3Dose" /> Reforço terceira dose &nbsp;
+                                        <input {...register1("vacinado")} type="radio" value="terceiraDose" /> Terceira dose &nbsp;
+                                        <input {...register1("vacinado")} type="radio" value="reforco4Dose" /> Reforço quarta dose &nbsp;
                                         <input {...register1("vacinado")} type="radio" value="naoVacinado" /> Não é vacinado &nbsp;
                                     </div>
                                 </div>
@@ -641,7 +641,7 @@ export const Quest = () => {
                             </div>
 
                         </form>
-                        {/* <button className="btn-start1" onClick = {returnFirstPart}>Voltar</button>a */}
+                        <button className="btn-start1" onClick = {returnFirstPart}>Voltar</button>
                     </div>
                 }
                 { primeiraParte && segundaParte && !terceiraParte &&
@@ -714,9 +714,9 @@ export const Quest = () => {
                             <div className="realinharBotao">
                                 <button onClick={finishQuest} className="btn-finalizar" >Finalizar</button>
                             </div>
-                            {/* <div className="realinharBotao">
+                            <div className="realinharBotao">
                                 <button onClick={returnSecondPart} className="btn-finalizar" >Voltar</button>
-                            </div> */}
+                            </div>
                         </div>
                     </div>
                 }
