@@ -138,7 +138,7 @@ export function InterviewedProvider({children}){
     async function getRefFromDataBase(referencia){
         const databaseInfo = await get(child(ref(database), referencia));
         if (databaseInfo){
-            setInterviewed(databaseInfo.val());
+            await setInterviewed(databaseInfo.val());
             return databaseInfo.val();
         } else{
             console.log("Deu merda");
@@ -201,7 +201,7 @@ export function InterviewedProvider({children}){
 
     async function refusalQuest(cpf, objRecusa){
         try{
-            set(ref(database, 'Recusas/' + cpf), {
+            await set(ref(database, 'Recusas/' + cpf), {
                 objetoDados: objRecusa
             });
         }catch(error){
@@ -217,7 +217,7 @@ export function InterviewedProvider({children}){
 
     async function refusalQuestCP(id, objRecusa){
         try{
-            set(ref(database, 'Recusas/' + id), {
+            await set(ref(database, 'Recusas/' + id), {
                 objetoDados: objRecusa
             });
         }catch(error){

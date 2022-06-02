@@ -32,7 +32,15 @@ export const RoteiroQ1 = () => {
 
 
     const mudaPagina = () => {
-        navigate(`../questionario/${cpf}/${nome}`);
+        var novoCpf = cpf.toString();
+        const novoZero = "0";
+        console.log(novoCpf);
+        while (novoCpf.length != 11){
+            novoCpf = novoZero.concat(cpf);
+        }
+        console.log("CPF como veio: " + cpf);
+        console.log("CPF certo: " + novoZero);
+        navigate(`../questionario/${novoCpf}/${nome}`);
     }
 
     const contextUser = useUser();

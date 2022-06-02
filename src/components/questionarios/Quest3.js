@@ -98,8 +98,8 @@ export const Quest3 = () => {
             statusMelhora: data.situacaoSintomas
         }
 
-        context.registerMonitoringConfirmedCase(obj, where);
-        context.addQtdEntrevistaConfirmado(cpf);
+        await context.registerMonitoringConfirmedCase(obj, where);
+        await context.addQtdEntrevistaConfirmado(cpf);
 
         if (seContato){
             setPrimeiraParte(true);

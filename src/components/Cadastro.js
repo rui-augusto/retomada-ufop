@@ -33,7 +33,7 @@ export const Cadastro = () => {
             contTentativas: 0,
             cpf: data.cpf,
             dataInclusaoBanco: horarioAgora,
-            dataInicioSintomas: inicioSintomas,
+            // dataInicioSintomas: inicioSintomas,
             dataNascimento: nascimento,
             dataProximaEntrevista: 0,
             dataTeste: diagnostico,
@@ -53,19 +53,21 @@ export const Cadastro = () => {
             tipoTeste: data.tipoTeste
         }
         console.log(objetoDados);
-        // context.registerConfirmedCase(objetoDados, data.cpf);
+        context.registerConfirmedCase(objetoDados, data.cpf);
     }
 
     return(
         
-        <div className = "fullContentArea">
-            <div className = "headerArea"> {/* title */} 
-                Cadastro de novos usuários ao banco de confirmados
+        <div className = "fullscreenAreaCadastro">
+
+            <div className = "headerAreaQuadrado"> {/* title */} 
+                <div className = "headerArea">Cadastro de novos usuários ao banco de confirmados</div>
             </div>
             
-            <div> {/* register area*/}
+            <div className='RegisterArea'> {/* register area*/}
                 <form onSubmit = {handleSubmit(testing)}>
-                    <input {...register("nome", {
+                    
+                    <input className='infoCadastro'{...register("nome", {
                         required: true})} 
                         type = "text" 
                         placeholder = "Nome.."
@@ -77,43 +79,43 @@ export const Cadastro = () => {
                         placeholder = "Ocupacao na UFOP..."
                     /><br/> */}
 
-                    <input {...register("cpf", {
+                    <input  className='infoCadastro' {...register("cpf", {
                         required: true})}
                         type = "number"
                         placeholder = "CPF..."
                     /><br/>
 
-                    <input {...register("telefone", {
+                    <input  className='infoCadastro' {...register("telefone", {
                         required: true})}
                         type = "number"
                         placeholder = "Telefone..."
                     /><br/>
 
-                    <div>
-                        Data de início de sintomas: <br/>
-                        <input {...register("dtInicioSintomas", {
+                    {/* <div>
+                        <div className='descricaoCadastro'>data de início dos sintomas</div> 
+                        <input className='infoDatas'{...register("dtInicioSintomas", {
                             required: true})}
                             type = "date"
                             /><br/>
-                    </div>
+                    </div> */}
 
                     <div>
-                        Data de nascimento: <br/>
-                        <input {...register("dtNascimento", {
-                            required: true})}
-                            type = "date"
-                            /><br/>
-                    </div>
-
-                    <div>
-                        Data do diagnóstico: <br/>
-                        <input {...register("dtTeste", {
+                        <div className='descricaoCadastro'>data de nascimento </div>
+                        <input className='infoDatas'{...register("dtNascimento", {
                             required: true})}
                             type = "date"
                         /><br/>
                     </div>
 
-                    <select {...register("tipoTeste", {
+                    <div>
+                        <div className='descricaoCadastro'>data do diagnóstico</div>
+                        <input className='infoDatas'{...register("dtTeste", {
+                            required: true})}
+                            type = "date"
+                        /><br/>
+                    </div>
+
+                    <select className='infoTeste'{...register("tipoTeste", {
                         required: true
                     })}>
                         <option value = "">Teste realizado...</option>
@@ -122,44 +124,53 @@ export const Cadastro = () => {
                         <option value = "PCR">RT-PCR</option>
                     </select>
 
-                    <div>
-                        Masculino
-                        <input {...register("sexo", {
-                            required: true
-                        })}
-                        type = "radio"
-                        value = "masculino"
-                        />
-                        Feminino
-                        <input {...register("sexo", {
-                            required: true
-                        })}
-                        type = "radio"
-                        value = "feminino"
-                        />
-                        Outro
-                        <input {...register("sexo", {
-                            required: true
-                        })}
-                        type = "radio"
-                        value = "outro"
-                        />
+                    <div className='inputCadastro'>
+                        <div className='inputCadastro'>
+                            <input  {...register("sexo", {
+                                required: true
+                            })}
+                            type = "radio"
+                            value = "masculino"
+                            /> 
+                            <div className='descricaoInput'>Masculino</div>
+                        </div>
+                        
+                        <div className='inputCadastro'>
+                            <input {...register("sexo", {
+                                required: true
+                            })}
+                            type = "radio"
+                            value = "feminino"
+                            />
+                            <div className='descricaoInput'>Feminino</div>
+                            
+                        </div>
+
+                        <div className='inputCadastro'>
+                            <input {...register("sexo", {
+                                required: true
+                            })}
+                            type = "radio"
+                            value = "outro"
+                            />
+                            <div className='descricaoInput'>Outro</div>
+                        </div>
                     </div>
-                    <div>
-                        Não Contato
+                    <div className='inputCadastro'>
                         <input {...register("situacao", {
                             required: true
                         })}
                         type = "radio"
                         value = "naoContato"
                         />
-                        Expirado
+                        Não Contato <h></h><h></h><h></h><h></h>
                         <input {...register("situacao", {
                             required: true
                         })}
                         type = "radio"
                         value = "expirado"
                         />
+                        Expirado
                     </div>
                     {/* <div>
                         <br/><hr/>
@@ -177,7 +188,7 @@ export const Cadastro = () => {
                         </ul>
                         <br/><hr/>
                     </div> */}
-                    <button type = "submit">Cadastrar</button>
+                    <div className='buttonCadastroEspaco'><button className="buttonCadastro" type = "submit">Cadastrar</button></div>
                 </form>
             </div>
 

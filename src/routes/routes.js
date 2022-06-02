@@ -24,7 +24,7 @@ export const MainRoutes = () => {
         {path: 'roteiroQuestionarioConfirmados/:cpf/:nome', element: <RoteiroQ1 />},
         {path: 'roteiroQuestionarioContatosProximos/:id', element: <RoteiroQ2 />},
         {path: 'roteiroQuestionarioMonitoramentoConfirmados/:cpf', element: <RoteiroQ3 />},
-        {path: 'teste', element: <TesteQuestionario />},
+        {path: 'teste', element: <Quest />},
         {path: 'cadastro', element: <Cadastro />}
         // {path: '*', element: <Register />}
     ]);

@@ -213,41 +213,44 @@ export const Quest = () => {
 
         await context.changeData(updates);
 
+        // atualizar dados confirmado
+
+        
         await dadosConfirmado();
 
         await context.addQtdEntrevistaConfirmado(cpf);
     }
 
     const dadosConfirmado = async () => {
-        context.changeSituation(objPrimeiraParte.cpf);
+        await context.changeSituation(objPrimeiraParte.cpf);
         const dataHorarioAgora = (new Date().setHours(0,0,0) / 1000).toFixed(0);
         const date = new Date();
 
         const email = contextUser.user.email;
 
-        const updates = {};
+        const updatesC = {};
         if (objSegundaParte.condicao01 == "sim" || objSegundaParte.condicao02 == "sim" || objSegundaParte.condicao03 == "sim" ||
             objSegundaParte.condicao04 == "sim" || objSegundaParte.condicao05 == "sim" || objSegundaParte.condicao06 == "sim" ||
             objSegundaParte.condicao07 == "sim" || objSegundaParte.condicao08 == "sim" || objSegundaParte.condicao09 == "sim" ||
             objSegundaParte.condicao10 == "sim" || objSegundaParte.condicao11 == "sim"){
-                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 86400;
-                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
-                updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
+                updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 86400;
+                updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
+                updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
             }
         else{
-            updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 172800;
+            updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 172800;
         }
 
 
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/contTentativas/'] = 0;
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataUltimaMudancaSituacao/'] = dataHorarioAgora;
+        updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/contTentativas/'] = 0;
+        updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataUltimaMudancaSituacao/'] = dataHorarioAgora;
 
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/entrevistador/'] = email;
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/tipoTeste/'] = objSegundaParte.testeRealizado;
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/sexo/'] = objPrimeiraParte.genero;
+        updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/entrevistador/'] = email;
+        updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/tipoTeste/'] = objSegundaParte.testeRealizado;
+        updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/sexo/'] = objPrimeiraParte.genero;
 
-        updates['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/log/'] = `${email} entrevistou em ${date}`;
-        await context.changeData(updates);
+        updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/log/'] = `${email} entrevistou em ${date}`;
+        await context.changeData(updatesC);
 
     }
 
@@ -334,7 +337,7 @@ export const Quest = () => {
                     
                     <div >
                         <div className="AlinhamentoQuestionarioUm">
-                            <input className="inputquest"{...register1("nome", {required: true})} value = {nome}type = "text" placeholder = "Nome"/>
+                            <input className="inputquest"{...register1("nome", {required: true})} value = {nome} type = "text" placeholder = "Nome"/>
                             <input className="inputquest" {...register1("cpf")} value = {cpf} type = "number" placeholder = "CPF"/>
                             <select className='inputquest' {...register1("raca")} >
                                 <option value="">Cor</option>
@@ -398,8 +401,20 @@ export const Quest = () => {
                                     <select {...register1("ocupacao")} onChange = {analyzeOccupation}>
                                         <option value="">Ocupação</option>
                                         <option value="estudante">Estudante</option>
+                                        <option value="docente">Docente</option>
                                         <option value="tecnicoAdm">Técnico Admnistrativo em Educação</option>
+                                        <option value="tecnicoLab">Técnico de Laboratório</option>
                                         <option value="prestadorServico">Prestador de serviços</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                </div>
+                                {/* FAZER O CSS DESSA DIV ABAIXO */}
+                                <div>
+                                    <select {...register1("localAtividade")}>
+                                        <option value="">Local de Atividade</option>
+                                        <option value="ouroPreto">Ouro Preto</option>
+                                        <option value="mariana">Mariana</option>
+                                        <option value="joaoMonlevade">João Monlevade</option>
                                     </select>
                                 </div>
                             </div>

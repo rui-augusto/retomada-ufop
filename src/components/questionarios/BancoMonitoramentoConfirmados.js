@@ -16,15 +16,10 @@ export const BancoMonitoramentoConfirmados =  (props) => {
     const [seExpirado, setSeExpirado] = useState(false);
     const [proximaEntrevista, setProximaEntrevista] = useState(0);
 
-    if (props.confirmado.objetoDados.dataInicioSintomas == undefined)
-    {
-        console.log(props);
-    }
-
-    const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000).toFixed(0);
+    const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000);
     useEffect(() => {
-        console.log(props);
         if (props.confirmado.objetoDados.situacao == "andamento"){
+            console.log(props.confirmado.objetoDados.cpf);
             setShowConfirmado(true);
         }
         setProximaEntrevista(props.confirmado.objetoDados.dataProximaEntrevista);

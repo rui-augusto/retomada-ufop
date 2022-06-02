@@ -15,9 +15,9 @@ export const BancoConfirmados = (props) => {
     const contextInterviewed = useInterviewed();
     const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
 
-    if (props.confirmado.objetoDados.dataInicioSintomas == undefined){
-        console.log(props);
-    }
+    // if (props.confirmado.objetoDados.situacao == "andamento"){
+    //     console.log(props.confirmado.objetoDados.cpf);
+    // }
 
     // console.log (props.confirmado.objetoDados.cpf);
     // console.log(" + ");
@@ -25,7 +25,7 @@ export const BancoConfirmados = (props) => {
 
     // if (props.confirmado.objetoDados.dataInicioSintomas == undefined){
     // }
-    const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000).toFixed(0);
+    const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000);
     // const dataMonitorarAte =  new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
     // new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit'}).format(dataISintomas);
     // console.log("INICIO SINTOMAS TIMESTAMP + 10" ,dataISintomas);
@@ -56,6 +56,8 @@ export const BancoConfirmados = (props) => {
             setSeExpirado(true);
         }
 
+        console.log(props.confirmado);
+        
         setTentativas(props.confirmado.objetoDados.contTentativas);
 
     }, []);
