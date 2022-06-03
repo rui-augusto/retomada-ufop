@@ -34,7 +34,6 @@ export const RoteiroQ1 = () => {
     const mudaPagina = () => {
         var novoCpf = cpf.toString();
         const novoZero = "0";
-        console.log(novoCpf);
         while (novoCpf.length != 11){
             novoCpf = novoZero.concat(cpf);
         }

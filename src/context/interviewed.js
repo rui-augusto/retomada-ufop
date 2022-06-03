@@ -160,7 +160,7 @@ export function InterviewedProvider({children}){
 
         const updates = {};
         updates['/' + where + '/' + cpf + '/objetoDados/contTentativas'] = tentativas;
-        if (tentativas + 1 == "3"){
+        if (tentativas == "3"){
             updates['/' + where + '/' + cpf + '/objetoDados/situacao'] = "contatoSemSucesso";
         }
 
