@@ -109,3 +109,20 @@
     overflow-y: auto;
     height: 400px;
 }
+
+.buttonsHome{
+    border: none;
+    margin: 10px;
+    height: 20px;
+    width: 70px;
+    background-color: rgb(237, 239, 241);
+    border-radius: 15px;
+    font-size:12px;
+    -webkit-transition: 0.3s ease-in;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.buttonsHome:hover{
+    color: aliceblue;
+    background-color: rgb(133, 22, 33);
+}

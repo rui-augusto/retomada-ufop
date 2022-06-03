@@ -122,6 +122,7 @@ export const Cadastro = () => {
                         <option value = "rapidoAntigeno">Teste rápido (antígeno)</option>
                         <option value = "swabNasofaringe">Swab de Nasofaringe</option>
                         <option value = "PCR">RT-PCR</option>
+                        <option value = "naoSabe">Não Sabe</option>
                     </select>
 
                     <div className='inputCadastro'>

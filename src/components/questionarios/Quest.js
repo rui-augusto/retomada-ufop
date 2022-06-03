@@ -441,6 +441,7 @@ export const Quest = () => {
                                         <option value="dirRelacoesInternacionais">Diretoria de relações internacionais</option>
                                         <option value="dirTecnologia">Diretoria de tecnologia e informação</option>
                                         <option value="dirBiblioteca">Diretoria de bibliotecas e informação</option>
+                                        <option value="laboratorio">Laboratório</option>
                                         <option value=""></option>
                                     </select>
                                 
@@ -465,12 +466,14 @@ export const Quest = () => {
                                 <div className="grauVacina">
                                 Vacina: 
                                     <div className="inputvacina">
+                                        <input {...register1("vacinado")} type="radio" value="doseUnica" /> Dose única &nbsp;
                                         <input {...register1("vacinado")} type="radio" value="primeira" /> Primeira dose &nbsp;
-                                        <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> Primeira e segunda dose&nbsp;
-                                        <input {...register1("vacinado")} type="radio" value="doseUnica" /> Dose única &nbsp; 
-                                        <input {...register1("vacinado")} type="radio" value="terceiraDose" /> Terceira dose &nbsp;
-                                        <input {...register1("vacinado")} type="radio" value="reforco4Dose" /> Reforço quarta dose &nbsp;
-                                        <input {...register1("vacinado")} type="radio" value="naoVacinado" /> Não é vacinado &nbsp;
+                                        <input {...register1("vacinado")} type="radio" value="primeiraSegunda" /> Primeira e segunda dose&nbsp; <br></br>
+                                        <div className="inputvacina2">
+                                            <input {...register1("vacinado")} type="radio" value="terceiraDose" /> Terceira dose &nbsp;
+                                            <input {...register1("vacinado")} type="radio" value="reforco4Dose" /> Reforço quarta dose &nbsp;
+                                            <input {...register1("vacinado")} type="radio" value="naoVacinado" /> Não é vacinado &nbsp;
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -637,11 +640,11 @@ export const Quest = () => {
                             </div>  
 
                             <div className="btn-starquest">
+                                <button className="btn-start1" onClick = {returnFirstPart}>Voltar</button>
                                 <button className="btn-start1" type = "submit">Próximo</button>
                             </div>
 
                         </form>
-                        <button className="btn-start1" onClick = {returnFirstPart}>Voltar</button>
                     </div>
                 }
                 { primeiraParte && segundaParte && !terceiraParte &&
@@ -712,10 +715,10 @@ export const Quest = () => {
                                 }
                             
                             <div className="realinharBotao">
+                                <button onClick={returnSecondPart} className="btn-finalizar" >Voltar</button>
                                 <button onClick={finishQuest} className="btn-finalizar" >Finalizar</button>
                             </div>
                             <div className="realinharBotao">
-                                <button onClick={returnSecondPart} className="btn-finalizar" >Voltar</button>
                             </div>
                         </div>
                     </div>

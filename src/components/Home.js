@@ -1,8 +1,7 @@
 import { useUser } from "../context/user";
 import { useInterviewed } from "../context/interviewed";
 import React, { useEffect} from 'react';
-import { useNavigate } from 'react-router-dom'
-
+import { useNavigate } from 'react-router-dom';
 
 import { BancoConfirmados } from "./questionarios/BancoConfirmados";
 import { BancoContatosProximos } from "./questionarios/BancoContatosProximos"
@@ -10,6 +9,8 @@ import { BancoMonitoramentoConfirmados } from "./questionarios/BancoMonitorament
 import { BancoMonitoramentoContProximos } from "./questionarios/BancoMonitoramentoContProximos";
 
 import "./style/Home.css"
+import "./questionarios/Banco.css";
+import { reload } from "firebase/auth";
 
 
 export const Home = () => {
@@ -32,7 +33,7 @@ export const Home = () => {
 
     const updateData = async () => {
         await contextInterviewed.getInfoFromDatabase();
-        window.location.reload();
+        window.location.reload(false);
     }
 
     return (
@@ -42,8 +43,8 @@ export const Home = () => {
             
                 <div className="titulo">
                     <h2>Bem-vindo(a), {contextUser.user.name}.</h2>
-                    <button onClick = {logout}>Sair</button>
-                    <button onClick = {updateData}>Atualizar</button>
+                    <button className = "buttonsHome" onClick = {logout}>Sair</button>
+                    <button className = "buttonsHome" onClick = {updateData}>Atualizar</button>
                     </div>
                 
                 <div className="titulo"> 
