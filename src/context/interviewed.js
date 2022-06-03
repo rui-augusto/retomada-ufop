@@ -110,7 +110,7 @@ export function InterviewedProvider({children}){
         if (entrevistasRealizadas == quantidadeEntrevistas){
             updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "recuperado";
         }
-        updates['/Confirmados/' + cpf + '/objetoDados/dataProximaEntrevista'] = frequencia * 86400 + proxEntrevista;
+        // updates['/Confirmados/' + cpf + '/objetoDados/dataProximaEntrevista'] = frequencia * 86400 + proxEntrevista;
 
         // database.ref(`/Confirmados/${cpf}/objetoDados/`).update(alteracao);
         await update(ref(database), updates);

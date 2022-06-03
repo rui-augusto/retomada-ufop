@@ -441,7 +441,7 @@ export const Quest = () => {
                                         <option value="dirTecnologia">Diretoria de tecnologia e informação</option>
                                         <option value="dirBiblioteca">Diretoria de bibliotecas e informação</option>
                                         <option value="laboratorio">Laboratório</option>
-                                        <option value=""></option>
+                                        <option value="outros">Outra</option>
                                     </select>
                                 
                                     <select {...register1("setor")}>

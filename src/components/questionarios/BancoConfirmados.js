@@ -55,6 +55,7 @@ export const BancoConfirmados = (props) => {
         else if (dataHorarioAgora > dtMonitorarAte){
             setSeExpirado(true);
         }
+        setTentativas(props.confirmado.objetoDados.contTentativas);
     }, []);
 
     const startQuest = () => {
