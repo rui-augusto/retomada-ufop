@@ -34,7 +34,7 @@ export const BlocoContProximo = () => {
                                 <div className="TextAreaInfo"> 
                                     <br/>
 
-                                    {/* 3,1 aparecer somente se ?? */}
+                                    {/* 3.1 aparecer somente se ?? */}
                                     <div className="Vermelho">
                                         <h3>3.1 </h3><br/><li>Buscar um atendimento na UBS! Faça isso o mais rápido possível. </li><br/>
                                     </div>

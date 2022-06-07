@@ -187,7 +187,7 @@ export function InterviewedProvider({children}){
         
         const situacaoInfo = await getInfoOfConfirmedCase(cpf, "situacao");
         // const inicioSintomasInfo = await getInfoOfConfirmedCase(cpf, "dataInicioSintomas");
-        if (situacaoInfo == "expirado" || situacaoInfo == "expiradoInterno" || dataHorarioAgora >= inicioSintomasInfo){
+        if (situacaoInfo == "expirado" || situacaoInfo == "expiradoInterno" || dataHorarioAgora >= inicioSintomasInfo + 864000){
             updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "encerrado";
             updates['/Confirmados/' + cpf + '/objetoDados/obs'] = "expirado interno";
             if (situacaoInfo == "expirado") { updates['Confirmados/' + cpf + '/objetoDados/obs'] = "expirado"; }
