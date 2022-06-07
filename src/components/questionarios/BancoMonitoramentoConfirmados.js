@@ -19,7 +19,6 @@ export const BancoMonitoramentoConfirmados =  (props) => {
     const dtMonitorarAte = (props.confirmado.objetoDados.dataInicioSintomas + 864000);
     useEffect(() => {
         if (props.confirmado.objetoDados.situacao == "andamento"){
-            console.log(props.confirmado.objetoDados.cpf);
             setShowConfirmado(true);
         }
         setProximaEntrevista(props.confirmado.objetoDados.dataProximaEntrevista);

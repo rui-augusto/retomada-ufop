@@ -86,7 +86,7 @@ export const Quest = () => {
     }
 
     // AO FINALIZAR A PRIMEIRA PARTE DO QUESTIONARIO, O IMC EH CALCULADO
-    useEffect(() => {
+    useEffect(async () => {
         if (height != 0 && weight != 0){
             let imc = weight / (height * height);
             if (imc > 40){

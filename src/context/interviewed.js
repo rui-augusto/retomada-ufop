@@ -180,11 +180,17 @@ export function InterviewedProvider({children}){
     }
 
     async function changeSituation(cpf){
+        const inicioSintomasInfo = await getInfoOfConfirmedCase(cpf, "dataInicioSintomas");
+        const dataHorarioAgora = (new Date().setHours(0,0,0) / 1000).toFixed(0);
+
         const updates = {};
         
         const situacaoInfo = await getInfoOfConfirmedCase(cpf, "situacao");
-        if (situacaoInfo == "expirado" || situacaoInfo == "expiradoInterno"){
+        // const inicioSintomasInfo = await getInfoOfConfirmedCase(cpf, "dataInicioSintomas");
+        if (situacaoInfo == "expirado" || situacaoInfo == "expiradoInterno" || dataHorarioAgora >= inicioSintomasInfo){
             updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "encerrado";
+            updates['/Confirmados/' + cpf + '/objetoDados/obs'] = "expirado interno";
+            if (situacaoInfo == "expirado") { updates['Confirmados/' + cpf + '/objetoDados/obs'] = "expirado"; }
         }
         else{
             updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "andamento";
@@ -233,7 +239,7 @@ export function InterviewedProvider({children}){
 
 
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts, refusalQuest, changeData, registerMonitoringConfirmedCase, addQtdEntrevistaConfirmado, addQtdEntrevistaContatoProximo, getInfoOfClosedContact, refusalQuestCP}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts, refusalQuest, changeData, registerMonitoringConfirmedCase, addQtdEntrevistaConfirmado, addQtdEntrevistaContatoProximo, getInfoOfClosedContact, refusalQuestCP, getInfoOfConfirmedCase}}>
             {children}
         </InterviewedContext.Provider>
     )
