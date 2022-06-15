@@ -26,14 +26,14 @@ export const Cadastro = () => {
     const testing = (data) => {
         // console.log(data);
         const horarioAgora = (new Date().setHours(0,0,0) / 1000).toFixed(0);
-        const inicioSintomas = (new Date(data.dtInicioSintomas).setHours(27,0,0) / 1000).toFixed(0);
+        // const inicioSintomas = (new Date(data.dtInicioSintomas).setHours(27,0,0) / 1000).toFixed(0);
         const nascimento = (new Date(data.dtNascimento).setHours(27,0,0) / 1000).toFixed(0);
         const diagnostico = (new Date(data.dtTeste).setHours(27,0,0) / 1000).toFixed(0);
         const objetoDados = {
             contTentativas: 0,
             cpf: data.cpf,
             dataInclusaoBanco: horarioAgora,
-            // dataInicioSintomas: inicioSintomas,
+            dataInicioSintomas: parseInt(data.dtInicioSintomas),
             dataNascimento: nascimento,
             dataProximaEntrevista: 0,
             dataTeste: diagnostico,
@@ -91,13 +91,13 @@ export const Cadastro = () => {
                         placeholder = "Telefone..."
                     /><br/>
 
-                    {/* <div>
+                    <div>
                         <div className='descricaoCadastro'>data de início dos sintomas</div> 
                         <input className='infoDatas'{...register("dtInicioSintomas", {
                             required: true})}
-                            type = "date"
+                            type = "number"
                             /><br/>
-                    </div> */}
+                    </div>
 
                     <div>
                         <div className='descricaoCadastro'>data de nascimento </div>
