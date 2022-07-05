@@ -1,5 +1,5 @@
 import "./Roteiro.css"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from "../../context/user";
 import { useInterviewed } from "../../context/interviewed";
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,7 +30,6 @@ export const RoteiroQ1 = () => {
     // const [dataHoje, setDataHoje] = useState(new Date());
     // const [horarioAgora, setHorarioAgora] = useState();
 
-
     const mudaPagina = () => {
         var novoCpf = cpf.toString();
         const novoZero = "0";
@@ -46,6 +45,7 @@ export const RoteiroQ1 = () => {
     const context = useInterviewed();
 
     const [recusa, setRecusa] = useState(false);
+    const [desfecho, setDesfecho] = useState(false);
 
     const recusaEntrevista = (event) => {
         if (event.target.checked == true){
@@ -54,6 +54,16 @@ export const RoteiroQ1 = () => {
             setRecusa(false);
         }
     };
+
+    const desfechoEntrevista = (event) =>{
+        if (event.target.checked === true){
+            setDesfecho(true);
+        } else{
+            setDesfecho(false);
+        }
+        const data = new Date();
+        console.log(data);
+    }
 
     const enviaRecusa = async (data) => {
         console.log(data);
@@ -74,8 +84,29 @@ export const RoteiroQ1 = () => {
             origem: origem,
             telefone: telefone
         }   
-        context.refusalQuest(cpf, obj);
+        await context.refusalQuest(cpf, obj);
         navigate(`/home/${contextUser.user.uid}`);
+    }
+
+    const enviaDesfecho = async (data) => {
+        var novoCpf = cpf.toString();
+        const novoZero = "0";
+        while (novoCpf.length != 11){
+            novoCpf = novoZero.concat(cpf);
+        }
+        
+        const updates = {};
+        
+        var entrevistador = contextUser.user.email;
+        var dataAgora = new Date();
+
+        updates['/Confirmados/' + novoCpf + '/objetoDados/situacao'] = data.desfecho;
+        updates['/Confirmados/' + novoCpf + '/objetoDados/entrevistador'] = entrevistador;
+        updates['/Confirmados/' + novoCpf + '/objetoDados/logSituacao'] = `${entrevistador} alterou a situação para ${data.desfecho} em ${dataAgora}`;
+        updates['/Confirmados/' + novoCpf + '/objetoDados/obs'] = data.obs;
+
+        await context.changeData(updates);
+
     }
 
     return( 
@@ -171,9 +202,35 @@ export const RoteiroQ1 = () => {
                                     </form>
                                 </div>
                             }
+
+                            <label className="internedCheckArea-btn">
+                            <input 
+                                type='checkbox' 
+                                name='recusa' 
+                                value='recusa'
+                                onClick={desfechoEntrevista}
+                                />  
+                                &nbsp; Dar desfecho
+                            </label>
+                            {desfecho &&
+                                <div className = "recusa">
+                                    <form onSubmit = {handleSubmit(enviaDesfecho)}>
+                                        <select {...register("desfecho")} className='inputquest' >
+                                            <option value="">Desfecho...</option>
+                                            <option value="recuperado">Recuperado</option>
+                                            <option value="encerrado">Encerrado</option>
+                                            <option value="obito">Óbito</option>
+                                            <option value="perdaSegmento">Perda de Segmento</option>
+                                        </select>
+                                        <input className="inputObs"{...register("obs")} type = "textArea" placeholder="Observação.."/>
+                                        <div className="btn">
+                                        <button className="btn-finalizar">Finalizar</button></div>
+                                    </form>
+                                </div>
+                            }
                     
                     </div>
-                    {!recusa &&
+                    {!recusa && !desfecho &&
                     <div className="btn-startArea"> 
                         <button 
                             className="btn-start" 

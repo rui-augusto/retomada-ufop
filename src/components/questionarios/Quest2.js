@@ -70,7 +70,7 @@ export const Quest2 = () => {
         }
     }
 
-    const submitData = (data) => {
+    const submitData = async (data) => {
         console.log(data);
 
         var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
@@ -97,26 +97,31 @@ export const Quest2 = () => {
 
         console.log(context.getInfoOfClosedContact(id, "nome"));
         console.log(objContatoProximo);
-        context.registerMonitoringCloseContacts(objFinalDados, where);
-        context.addQtdEntrevistaContatoProximo(id);
+        await context.registerMonitoringCloseContacts(objFinalDados, where);
+        await context.addQtdEntrevistaContatoProximo(id);
 
-        dadosContatoProximo();
+        await dadosContatoProximo();
         setEntrevistado(true);
     }
 
-    const dadosContatoProximo = () => {
+    const dadosContatoProximo = async () => {
         const updates = {};
         const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
         const email = contextUser.user.email;
         const date = new Date();
+
+        // const proxEntrevistaInfo = await getInfoOfClosedContact(id, "dataProximaEntrevista");
+        // const proxEntrevista = parseInt(proxEntrevistaInfo);
 
         updates['/ContatosProximos/' + id + '/objetoDados/situacao/'] = "andamento";
         updates['/ContatosProximos/' + id + '/objetoDados/dataUltimaMudancaSituacao/'] = dataHorarioAgora;
         updates['/ContatosProximos/' + id + '/objetoDados/contTentativas/'] = 0;
         updates['/ContatosProximos/' + id + '/objetoDados/entrevistador/'] = email;
         updates['/ContatosProximos/' + id + '/objetoDados/log/'] = `${email} entrevistou em ${date}`;
+        updates['/ContatosProximos/' + id + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 172800;
 
-        context.changeData(updates);
+        await context.changeData(updates);
+        // await context.verifyNextInterviewCC(id);
     }
 
     return (

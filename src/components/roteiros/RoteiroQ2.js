@@ -1,5 +1,5 @@
 import "./Roteiro.css"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser } from "../../context/user";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -32,12 +32,28 @@ export const RoteiroQ2 = () => {
     const context = useInterviewed();
 
     const [recusa, setRecusa] = useState(false);
+    const [desfecho, setDesfecho] = useState(false);
+    const [nomeCP, setNomeCP] = useState("");
+    
+    useEffect(async () => {
+        var contatoProximo = await context.getInfoOfClosedContact(id, "idUnicoGeradorDoContato");
+        var nome = await context.getInfoOfConfirmedCase(contatoProximo, "nome");
+        setNomeCP(nome);
+    }, []);
 
     const recusaEntrevista = (event) => {
         if (event.target.checked == true){
             setRecusa(true);
         } else{
             setRecusa(false);
+        }
+    };
+
+    const desfechoEntrevista = (event) => {
+        if (event.target.checked === true){
+            setDesfecho(true);
+        } else{
+            setDesfecho(false);
         }
     };
 
@@ -63,28 +79,18 @@ export const RoteiroQ2 = () => {
         context.refusalQuestCP(id, obj);
     }
 
-    // const enviaRecusa = async (data) => {
-    //     console.log(data);
-    //     var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
-    //     var entrevistador = contextUser.user.email;
+    const enviaDesfecho = async (data) => {
+        const updates = {};
 
-    //     var nome = await context.getRefFromDataBase(`Confirmados/${cpf}/objetoDados/nome`);
-    //     var origem = await context.getRefFromDataBase(`Confirmados/${cpf}/objetoDados/origem`);
-    //     var telefone = await context.getRefFromDataBase(`Confirmados/${cpf}/objetoDados/telefone`);
+        var entrevistador = contextUser.user.email;
+        var dataAgora = new Date();
 
-    //     const obj = {
-    //         dtInclusaoBanco: dataHorarioAgora,
-    //         entrevistador: entrevistador,
-    //         idUnico: cpf,
-    //         motivoRejeicao: data.motivoRejeicao,
-    //         nome: nome,
-    //         obs: data.obs,
-    //         origem: origem,
-    //         telefone: telefone
-    //     }   
-    //     context.refusalQuest(cpf, obj);
-    //     navigate(`/home/${contextUser.user.uid}`);
-    // }
+        updates['/ContatosProximos/' + id + '/objetoDados/situacao'] = data.desfecho;
+        updates['/ContatosProximos/' + id + '/objetoDados/entrevistador'] = entrevistador;
+        updates['/ContatosProximos/' + id + '/objetoDados/logSituacao'] = `${entrevistador} alterou a situação para ${data.desfecho} em ${dataAgora}`;
+        updates['/ContatosProximos/' + id + '/objetoDados/obs'] = data.obs;
+        await context.changeData(updates);
+    }
 
     return( 
 
@@ -141,7 +147,7 @@ export const RoteiroQ2 = () => {
                                 <br></br>
                                 Meu nome é {contextUser.user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto 
                                 e estou realizando o rastreamento e monitoramento para COVID-19 na comunidade acadêmica.<br/><br/> 
-                                Como parte das medidas de controle da transmissão da COVID-19, nós recebemos da Universidade a informação que você teve contato com alguém que testou positivo recentemente. <br/><br/>
+                                Como parte das medidas de controle da transmissão da COVID-19, nós recebemos da Universidade a informação que você teve contato com o(a) {nomeCP} que testou positivo recentemente. <br/><br/>
                                 Podemos conversar? <br/>
                                 Sua participação é muito importante. <br/>
                                 Esta conversa terá duração de aproximadamente 7 minutos.  
@@ -188,8 +194,34 @@ export const RoteiroQ2 = () => {
                                         </div>
                                     }  
                                 </div>
+
+                                <label className="internedCheckArea-btn">
+                                <input 
+                                    type='checkbox' 
+                                    name='recusa' 
+                                    value='recusa'
+                                    onClick={desfechoEntrevista}
+                                    />  
+                                    &nbsp; Dar desfecho
+                                </label>
+                                {desfecho &&
+                                    <div className = "recusa">
+                                        <form onSubmit = {handleSubmit(enviaDesfecho)}>
+                                            <select {...register("desfecho")} className='inputquest' >
+                                                <option value="">Desfecho...</option>
+                                                <option value="recuperado">Recuperado</option>
+                                                <option value="encerrado">Encerrado</option>
+                                                <option value="obito">Óbito</option>
+                                                <option value="perdaSegmento">Perda de Segmento</option>
+                                            </select>
+                                            <input className="inputObs"{...register("obs")} type = "textArea" placeholder="Observação.."/>
+                                            <div className="btn">
+                                            <button className="btn-finalizar">Finalizar</button></div>
+                                        </form>
+                                    </div>
+                                }
                                 
-                                {!recusa &&
+                                {!recusa && !desfecho &&
                                     <div className="btn-startArea"> 
                                         <button 
                                             className="btn-start" 

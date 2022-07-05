@@ -28,6 +28,7 @@ export const RoteiroQ3 = () => {
     const { cpf } = useParams();
 
     const [recusa, setRecusa] = useState(false);
+    const [desfecho, setDesfecho] = useState(false);
 
     const recusaEntrevista = (event) => {
         if (event.target.checked == true){
@@ -36,6 +37,15 @@ export const RoteiroQ3 = () => {
             setRecusa(false);
         }
     };
+
+    const desfechoEntrevista = (event) => {
+        if (event.target.checked == true){
+            setDesfecho(true);
+        } else{
+            setDesfecho(false);
+        }
+    };
+
 
     const navigate = useNavigate();
 
@@ -60,6 +70,20 @@ export const RoteiroQ3 = () => {
         }   
         context.refusalQuest(cpf, obj);
         navigate(`/home/${contextUser.user.uid}`);
+    }
+
+    const enviaDesfecho = async (data) => {
+        const updates = {};
+
+        var entrevistador = contextUser.user.email;
+        var dataAgora = new Date();
+
+        updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = data.desfecho;
+        updates['/Confirmados/' + cpf + '/objetoDados/entrevistador'] = entrevistador;
+        updates['/Confirmados/' + cpf + '/objetoDados/logSituacao'] = `${entrevistador} alterou a situação para ${data.desfecho} em ${dataAgora}`;
+        updates['/Confirmados/' + cpf + '/objetoDados/obs'] = data.obs;
+        
+        await context.changeData(updates);
     }
 
     const mudaPagina = () => {
@@ -127,7 +151,17 @@ export const RoteiroQ3 = () => {
                                 </div>
                             </div>
                               
-                            <div className="recusa">
+
+                            <div className="TextAreaInfo"> </div>
+                                <p>Agradecer e encerrar a ligação.</p>
+                                <br></br>
+                                Caso o o entrevistado concordar em realizar a entrevista:<p></p><br></br> Meu nome é {contextUser.user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto e, 
+                                conforme combinado na última ligação, estamos retornando para saber como tem passado. 
+                                Podemos conversar?
+                                <p>Irei fazer algumas perguntas novamente, mas dessa vez será mais rápido.</p>
+                                <p>Vamos começar?</p><br/>
+
+                                <div className="recusa">
                                 <div>
                                     <label className="internedCheckArea-btn">
                                     <input 
@@ -159,17 +193,35 @@ export const RoteiroQ3 = () => {
                                         </div>
                                     }  
                                 </div>
+                                <label className="internedCheckArea-btn">
+                                <input 
+                                    type='checkbox' 
+                                    name='recusa' 
+                                    value='recusa'
+                                    onClick={desfechoEntrevista}
+                                    />  
+                                    &nbsp; Dar desfecho
+                                </label>
+                                {desfecho &&
+                                    <div className = "recusa">
+                                        <form onSubmit = {handleSubmit(enviaDesfecho)}>
+                                            <select {...register("desfecho")} className='inputquest' >
+                                                <option value="">Desfecho...</option>
+                                                <option value="recuperado">Recuperado</option>
+                                                <option value="encerrado">Encerrado</option>
+                                                <option value="obito">Óbito</option>
+                                                <option value="perdaSegmento">Perda de Segmento</option>
+                                            </select>
+                                            <input className="inputObs"{...register("obs")} type = "textArea" placeholder="Observação.."/>
+                                            <div className="btn">
+                                            <button className="btn-finalizar">Finalizar</button></div>
+                                        </form>
+                                    </div>
+                                }
                             </div>
 
-                            <div className="TextAreaInfo"> </div>
-                                <p>Agradecer e encerrar a ligação.</p>
-                                <br></br>
-                                Caso o o entrevistado concordar em realizar a entrevista:<p></p><br></br> Meu nome é {contextUser.user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto e, 
-                                conforme combinado na última ligação, estamos retornando para saber como tem passado. 
-                                Podemos conversar?
-                                <p>Irei fazer algumas perguntas novamente, mas dessa vez será mais rápido.</p>
-                                <p>Vamos começar?</p>
-                            </div>
+                        </div>
+
 
                             {!recusa &&
                                 <div className="btn-startArea"> 

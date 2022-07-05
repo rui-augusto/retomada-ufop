@@ -100,6 +100,7 @@ export const Quest3 = () => {
 
         await context.registerMonitoringConfirmedCase(obj, where);
         await context.addQtdEntrevistaConfirmado(cpf);
+        await context.verifyNextInterview(cpf);
 
         if (seContato){
             setPrimeiraParte(true);
@@ -114,7 +115,7 @@ export const Quest3 = () => {
         console.log("DADOS CONTATO PROXIMO: ", data);
         var dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
         var dataUltimoContato = new Date(data.dataUltimoContato).setHours(27,0,0) / 1000;
-        var proxEntrevista = (dataUltimoContato).toFixed(0) + 172800;
+        var proxEntrevista = 172800;
         if (data.telefone2 == ""){
             data.telefone2 = null;
         }
@@ -125,7 +126,7 @@ export const Quest3 = () => {
             contTentativas: 0,
             dataInclusaoBanco: dataHorarioAgora,
             dataNascimento: 0,
-            dataProximaEntrevista: proxEntrevista,
+            dataProximaEntrevista: 0,
             dataUltimaMudancaSituacao: dataHorarioAgora,
             dataUltimoContato: dataUltimoContato,
             entrevistador: contextUser.user.email,

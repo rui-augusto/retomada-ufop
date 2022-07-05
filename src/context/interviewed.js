@@ -116,20 +116,44 @@ export function InterviewedProvider({children}){
         await update(ref(database), updates);
     }
 
+    async function verifyNextInterview(cpf){
+        const updates = {};
+
+        const frequenciaInfo = await getInfoOfConfirmedCase(cpf, "frequenciaDiasMonitoramento");
+        const frequencia = frequenciaInfo;
+        const proxEntrevistaInfo = await getInfoOfConfirmedCase(cpf, "dataProximaEntrevista");
+        const proxEntrevista = proxEntrevistaInfo;
+        if (frequencia == 2){
+            updates['/Confirmados/' + cpf + '/objetoDados/dataProximaEntrevista'] = proxEntrevista + (86400 * 2);
+        } else if (frequencia == 1){
+            updates['/Confirmados/' + cpf + '/objetoDados/dataProximaEntrevista'] = proxEntrevista + 86400;
+        }
+        await update(ref(database), updates);
+    }
+
+    async function verifyNextInterviewCC(id){
+        const updates = {};
+
+        const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
+        const horarioAgora = parseInt(dataHorarioAgora);
+
+        const proxEntrevista = horarioAgora + 172800;
+
+        updates['/ContatosProximos/' + id + '/objetoDados/dataProximaEntrevista/'] = proxEntrevista;
+
+
+        await update(ref(database), updates);
+    }
+
     async function addQtdEntrevistaContatoProximo(id){
         const entrevistasRealizadasInfo = await getInfoOfClosedContact(id, "entrevistasRealizadas");
         const entrevistasRealizadas = entrevistasRealizadasInfo + 1;
         const quantidadeEntrevistasInfo = await getInfoOfClosedContact(id, "quantidadeEntrevistas");
         const quantidadeEntrevistas = quantidadeEntrevistasInfo;
-        const proxEntrevistaInfo = await getInfoOfClosedContact(id, "dataProximaEntrevista");
-        const proxEntrevista = proxEntrevistaInfo;
-
-        console.log(proxEntrevista);
 
         const updates = {};
-        updates['/ContatosProximos/' + id + '/objetoDados/dataProximaEntrevista'] = proxEntrevista + 172800;
         updates['/ContatosProximos/' + id + '/objetoDados/entrevistasRealizadas'] = entrevistasRealizadas;
-        if (entrevistasRealizadas == quantidadeEntrevistas){
+        if (entrevistasRealizadas >= quantidadeEntrevistas){
             updates['/ContatosProximos/' + id + '/objetoDados/situacao'] = "recuperado";
         }
         await update(ref(database), updates);
@@ -217,6 +241,7 @@ export function InterviewedProvider({children}){
 
         const updates = {};
         updates['/Confirmados/' + cpf + '/objetoDados/situacao'] = "recusa";
+        updates['/Confirmados/' + cpf + '/objetoDados/obs'] = objRecusa.obs;
         await update(ref(database), updates);
 
     }
@@ -239,7 +264,7 @@ export function InterviewedProvider({children}){
 
 
     return (
-        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts, refusalQuest, changeData, registerMonitoringConfirmedCase, addQtdEntrevistaConfirmado, addQtdEntrevistaContatoProximo, getInfoOfClosedContact, refusalQuestCP, getInfoOfConfirmedCase}}>
+        <InterviewedContext.Provider value={{interviewed, registerPositiveInterviewed, registerConfirmedCase, registerCloseContacts, registerMonitoringCloseContacts, getRefFromDataBase, addTryIn, changeSituation, lstConfirmados, lstContProximos, getInfoFromDatabase, countingCloseContacts, refusalQuest, changeData, registerMonitoringConfirmedCase, addQtdEntrevistaConfirmado, addQtdEntrevistaContatoProximo, getInfoOfClosedContact, refusalQuestCP, getInfoOfConfirmedCase, verifyNextInterview, verifyNextInterviewCC}}>
             {children}
         </InterviewedContext.Provider>
     )

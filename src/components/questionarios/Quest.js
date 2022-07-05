@@ -257,22 +257,23 @@ export const Quest = () => {
     const dadosContatoProximo = async (data) => {
         console.log("DADOS CONTATO PROXIMO: ", data);
         const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
-        var dataUltimoContato = new Date(data.dataUltimoContato).setHours(27,0,0) / 1000;
-        var proxEntrevista = (dataHorarioAgora) + 172800;
+        var proxEntrevista = parseInt(dataHorarioAgora);
         if (data.telefone2 == ""){
             data.telefone2 = null;
         }
+
+        console.log("A PROXIVA ENTREVISTA EH EM " + proxEntrevista);
 
         const contadorContatosProximos = await context.countingCloseContacts();
         console.log(contadorContatosProximos);
 
         const objContatoProximo = {
             contTentativas: 0,
-            dataInclusaoBanco: dataHorarioAgora,
+            dataInclusaoBanco: parseInt(dataHorarioAgora),
             dataNascimento: 0,
-            dataProximaEntrevista: proxEntrevista,
-            dataUltimaMudancaSituacao: dataHorarioAgora,
-            dataUltimoContato: dataUltimoContato,
+            dataProximaEntrevista: parseInt(dataHorarioAgora),
+            dataUltimaMudancaSituacao: parseInt(dataHorarioAgora),
+            dataUltimoContato: parseInt(dataHorarioAgora),
             entrevistador: contextUser.user.email,
             fezTeste: "NULL",
             idUnicoGeradorDoContato: objPrimeiraParte.cpf,
@@ -598,10 +599,10 @@ export const Quest = () => {
                                     <div className="espacamento">
                                         <div className="espacamentointerior"><input {...register2("condicao08")} type="checkbox" value = "sim" /> Doença cardíaca &nbsp; </div>
                                         <div className="espacamentointerior"><input {...register2("condicao09")} type="checkbox" value = "sim" /> Doença pulmonar &nbsp; </div> 
-                                        <div className="espacamentointerior"><input {...register2("condicao10")} type="checkbox" value = "sim" /> Tranplante de órgão &nbsp; </div>  
+                                        <div className="espacamentointerior"><input {...register2("condicao10")} type="checkbox" value = "sim" /> Transplante de órgão &nbsp; </div>  
                                     </div>
                                     <div className="espacamento">
-                                        <div className="espacamentointerior"><input {...register2("condicao11")} type="checkbox" value = "sim" /> Doença cerebro vascular &nbsp; </div>
+                                        <div className="espacamentointerior"><input {...register2("condicao11")} type="checkbox" value = "sim" /> Doença cérebro vascular &nbsp; </div>
                                     </div>
                                 </div>
                             </div>
