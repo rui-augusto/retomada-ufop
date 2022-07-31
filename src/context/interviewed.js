@@ -189,7 +189,11 @@ export function InterviewedProvider({children}){
         }
 
         // database.ref(`/Confirmados/${cpf}/objetoDados/`).update(alteracao);
-        await update(ref(database), updates);
+        try{
+            await update(ref(database), updates);
+        } catch {
+            alert("Erro ao adicionar Contato sem Sucesso! Tente novamente");
+        };
     }
 
 

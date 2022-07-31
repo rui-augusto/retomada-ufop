@@ -23,6 +23,10 @@ export const RoteiroQ2 = () => {
 
     const {register, handleSubmit} = useForm();
 
+    const {
+        register: register2,
+        handleSubmit: handleSubmit2
+    } = useForm();
 
     const navigate = useNavigate();
     const {id} = useParams();
@@ -33,6 +37,8 @@ export const RoteiroQ2 = () => {
 
     const [recusa, setRecusa] = useState(false);
     const [desfecho, setDesfecho] = useState(false);
+    const [contatoProximo, setContatoProximo] = useState(false);
+    const [outraRelacao, setOutraRelacao] = useState(false);
     const [nomeCP, setNomeCP] = useState("");
     
     useEffect(async () => {
@@ -90,6 +96,21 @@ export const RoteiroQ2 = () => {
         updates['/ContatosProximos/' + id + '/objetoDados/logSituacao'] = `${entrevistador} alterou a situação para ${data.desfecho} em ${dataAgora}`;
         updates['/ContatosProximos/' + id + '/objetoDados/obs'] = data.obs;
         await context.changeData(updates);
+    }
+
+    const seContatoProximo = (event) => {
+        setContatoProximo(event.target.checked);
+        console.log(event.target.checked);
+    }
+
+    const analyzeRelation = (event) => {
+        if (event.target.value == "outro"){
+            setOutraRelacao(true);
+        }
+    }
+
+    const cadastraCP = async (data) => {
+        console.log(data);
     }
 
     return( 
@@ -220,8 +241,51 @@ export const RoteiroQ2 = () => {
                                         </form>
                                     </div>
                                 }
-                                
-                                {!recusa && !desfecho &&
+                                <label className="internedCheckArea-btn">
+                                <input 
+                                    type='checkbox' 
+                                    name='contatoProximo' 
+                                    value='contatoProximo'
+                                    onClick={seContatoProximo}
+                                    />  
+                                    &nbsp; Teve contato com alguém da UFOP?
+                                </label>
+                                {contatoProximo && 
+                                    <div>
+                                        <form className='formquestcontato' onSubmit = {handleSubmit2(cadastraCP)}>
+                                            <div className="vinculoUFOP">
+                                                Possui vínculo com a UFOP? &nbsp; <input {...register2("vinculoUFOP")} type = "checkbox" required/> &nbsp; Sim
+                                            </div>
+                                            <input {...register2("nome")} type = "text" placeholder = "nome do contato"/>
+                                            <input {...register2("telefone1")} type = "number" placeholder = "telefone de contato 1" required/>
+                                            <input {...register2("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
+                                            <select {...register2("relacao")} onClick = {analyzeRelation}>
+                                                <option value="">Relação com o caso...</option>
+                                                <option value="domiciliar">Domiciliar</option>
+                                                <option value="familiar">Familiar (extradomiciliar)</option>
+                                                <option value="laboral">Laboral</option>
+                                                <option value="estudantil">Estudantil</option>
+                                                <option value="eventoSocial">Evento social</option>
+                                                <option value="outro">Outro</option>
+                                            </select>
+                                            { outraRelacao &&
+                                                <div className="relacao">
+                                                    <input {...register2("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                                </div>
+                                            }
+                                            <div className="dataContato">
+                                                Data do último contato com o caso confirmado
+                                                <div className="inputDataContato">
+                                                    <input {...register2("dataUltimoContato")} type = "date"/>
+                                                </div>
+                                            </div>
+                                            <div className="btns">
+                                                <button type = "submit" className="btn-finalizar">Cadastrar</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                }    
+                                {!recusa && !desfecho && !contatoProximo &&
                                     <div className="btn-startArea"> 
                                         <button 
                                             className="btn-start" 
