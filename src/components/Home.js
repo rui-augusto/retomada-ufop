@@ -31,7 +31,6 @@ export const Home = () => {
         window.location.reload(false);
     }
 
-    // ? CAN I REFACTOR 'getNumberOfCases' FUNCTION TO BE USEFUL IN EVERY CASE?
     const getNumberOfCases= (listName, inProgress = false) => {
         var visibleCases = [];
         // * inProgress is a flag
