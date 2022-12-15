@@ -10,8 +10,6 @@ import { BancoMonitoramentoContProximos } from "./questionarios/BancoMonitoramen
 
 import "./style/Home.css"
 import "./questionarios/Banco.css";
-import { reload } from "firebase/auth";
-
 
 export const Home = () => {
 
@@ -24,9 +22,6 @@ export const Home = () => {
         await contextUser.getUserInfo(localStorage.getItem("id"));
     }, []);
 
-    // console.log(contextInterviewed.lstConfirmados);
-    // console.log(contextInterviewed.lstContProximos);
-
     const logout = async () => {
         await contextUser.userLogout(navigate);
     }
@@ -34,6 +29,25 @@ export const Home = () => {
     const updateData = async () => {
         await contextInterviewed.getInfoFromDatabase();
         window.location.reload(false);
+    }
+
+    // ? CAN I REFACTOR 'getNumberOfCases' FUNCTION TO BE USEFUL IN EVERY CASE?
+    const getNumberOfCases= (listName, inProgress = false) => {
+        var visibleCases = [];
+        // * inProgress is a flag
+        // * if false, return all occurrences of 'naoContato' situation
+        // * if true, return only 'andamento' occurrences
+        if (!inProgress){
+            visibleCases = contextInterviewed[listName].filter(
+                confirmed => confirmed.objetoDados.situacao === "naoContato"
+            );
+        } else{
+            visibleCases = contextInterviewed[listName].filter(
+                confirmed => confirmed.objetoDados.situacao === "andamento"
+            );
+        }
+        return visibleCases.length;
+
     }
 
     return (
@@ -45,7 +59,7 @@ export const Home = () => {
                     <h2>Bem-vindo(a), {contextUser.user.name}.</h2>
                     <button className = "buttonsHome" onClick = {logout}>Sair</button>
                     <button className = "buttonsHome" onClick = {updateData}>Atualizar</button>
-                    </div>
+                </div>
                 
                 <div className="titulo"> 
                     <select>
@@ -62,7 +76,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Banco de Confirmados</h3></div>
-                    <div className="divisaolinhas">Total de {contextInterviewed.lstConfirmados.length} pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {getNumberOfCases("lstConfirmados")} pessoas visíveis no banco</div> 
 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
@@ -88,7 +102,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Banco de Contatos Próximos</h3></div>
-                    <div className="divisaolinhas">Total de {contextInterviewed.lstContProximos.length - 1} pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {getNumberOfCases("lstContProximos")} pessoas visíveis no banco</div> 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
 
@@ -112,7 +126,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Monitoramento Confirmados</h3></div>
-                    <div className="divisaolinhas">Total de ---- pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {getNumberOfCases("lstConfirmados", true)} pessoas visíveis no banco</div> 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
 
@@ -137,7 +151,7 @@ export const Home = () => {
 
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Monitoramento Contatos Próximos</h3></div>
-                    <div className="divisaolinhas">Total de ---- pessoas visíveis no banco</div> 
+                    <div className="divisaolinhas">Total de {getNumberOfCases("lstContProximos", true)} pessoas visíveis no banco</div> 
                     <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
                 </div>
 
