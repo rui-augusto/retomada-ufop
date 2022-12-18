@@ -9,7 +9,7 @@ import './Banco.css'
 
 
 export const BancoConfirmados = (props) => {
-    
+
     const navigate = useNavigate();
     
     const contextInterviewed = useInterviewed();
@@ -39,15 +39,15 @@ export const BancoConfirmados = (props) => {
     const [tentativas, setTentativas] = useState(0);
 
     useEffect(() => {
-        if (props.confirmado.objetoDados.situacao == "expirado"){
+        if (props.confirmado.objetoDados.situacao === "expirado"){
             setShowConfirmado(true);
             setSeExpirado(true);
         }
-        else if (props.confirmado.objetoDados.situacao == "naoContato"){
+        else if (props.confirmado.objetoDados.situacao === "naoContato"){
             setSituacao("Não Contato");
             setShowConfirmado(true);
         }
-        else if (props.confirmado.objetoDados.situacao == "expiradoInterno"){
+        else if (props.confirmado.objetoDados.situacao === "expiradoInterno"){
             setSituacao("Expirado Interno");
             setShowConfirmado(true);
             setSeExpirado(true);

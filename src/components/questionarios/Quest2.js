@@ -7,7 +7,7 @@ import { useUser } from "../../context/user";
 import { BlocoContProximo } from "../orientacoes/BlocoContProximo";
 import { useNavigate, useParams } from 'react-router-dom';
 
-import "./Quest2.css";
+import "../style/questionarios/Quest2.css";
 
 export const Quest2 = () => {
 

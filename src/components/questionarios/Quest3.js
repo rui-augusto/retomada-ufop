@@ -6,8 +6,7 @@ import { useInterviewed } from "../../context/interviewed";
 import { useUser } from "../../context/user";
 import { useNavigate, useParams } from 'react-router-dom';
 
-import "./Quest3.css";
-import { BancoContatosProximos } from './BancoContatosProximos';
+import "../style/questionarios/Quest3.css";
 
 export const Quest3 = () => {
     

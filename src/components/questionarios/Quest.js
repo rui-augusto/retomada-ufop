@@ -6,7 +6,7 @@ import { useUser } from "../../context/user";
 // componentes
 import { Bloco } from "../orientacoes/Bloco";
 
-import "./Quest.css";
+import "../style/questionarios/Quest.css";
 import { useParams } from "react-router-dom";
 
 export const Quest = () => {
