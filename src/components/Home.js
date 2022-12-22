@@ -17,9 +17,42 @@ export const Home = () => {
     const contextUser = useUser();
     const contextInterviewed = useInterviewed();
 
+    // * search filter states
+
     const [search, setSearch] = useState(""); // used for searching filter
     const [searchesMatched, setSearchesMatched] = useState([]);
     const [showFilteredCases, setShowFilteredCases] = useState(false);
+
+    /*
+        * QUATRO BANCOS DIFERENTES, 
+        * CADA UM POSSUI UM INPUT FILTER DIFERENTE
+        * CADA VEZ QUE UM EH ALTERADO, USEEFFECT TEM QUE SER CHAMADO
+        * OU. . .
+        * O SEARCHSTATE PODE SER ALTERADO E UMA FUNÇAO SER CHAMADA, PASSANDO A VARIAVEL E QUAL BANCO DEVE SER ATUALIZADO
+        * PARA CONTROLAR O APARECIMENTO DE CADA BANCO, DEVE HAVER UM BOOLEAN STATE PARA CADA
+    */
+
+    // * states that controll the visibility of the databases
+    // * confirmed cases
+    const [confirmedSearch, setConfirmedSearch] = useState("");
+    const [confirmedSearchesMatched, setConfirmedSearchesMatched] = useState([]);
+    const [showConfirmedFilteredCases, setShowConfirmedFilteredCases] = useState(false);
+    // * monitoring confirmed cases
+    const [monitoringConfirmedSearch, setMonitoringConfirmedSearch] = useState("");
+    const [monitoringConfirmedSearchesMatched, setMonitoringConfirmedSearchesMatched] = useState([]);
+    const [showMonitoringConfirmedFilteredCases, setShowMonitoringConfirmedFilteredCases] = useState(false);
+    // * closed contacts cases
+    const [closedContactsSearch, setClosedContactsContactsSearch] = useState("");
+    const [closedContactsSearchesMatched, setClosedContactsSearchesMatched] = useState([]);
+    const [showClosedContactsFilteredCases, setShowClosedContactsFilteredCases] = useState(false);
+    // * monitoring closed contacts cases
+    const [monitoringClosedContactsSearch, setMonitoringClosedContactsSearch] = useState("");
+    const [monitoringClosedContactsSearchesMatched, setMonitoringClosedContactsSearchesMatched] = useState([]);
+    const [showMonitoringClosedContactsFilteredCases, setShowMonitoringClosedContactsFilteredCases] = useState(false);
+
+    // * input filter states
+    const [input, setInput] = useState("");
+
 
     // ? CAN I CREATE A NEW STATE FOR REFACTOR THE FILTER SEARCHING FOR WORKKING IN ALL DATABASES ?
 
@@ -49,9 +82,25 @@ export const Home = () => {
     }, []);
 
     // * should control searching cases input
+    // useEffect(() => {
+    //     searchFilterConfirmedCases();
+    // }, [search])
+
     useEffect(() => {
-        searchFilterConfirmedCases();
-    }, [search])
+        searchConfirmedFilterCases();
+    }, [confirmedSearch]);
+
+    useEffect(() => {
+        searchMonitoringConfirmedFilterCases();
+    }, [monitoringConfirmedSearch]);
+    
+    useEffect(() => {
+        searchClosedContactsFilterCases();
+    }, [closedContactsSearch]);
+
+    useEffect(() => {
+        searchMonitoringClosedContactsFilterCases();
+    }, [monitoringClosedContactsSearch]);
 
     const logout = async () => {
         await contextUser.userLogout(navigate);
@@ -60,10 +109,6 @@ export const Home = () => {
     const updateData = async () => {
         await contextInterviewed.getInfoFromDatabase();
         window.location.reload(false);
-    }
-
-    const showData = () => {
-        console.log(searchesMatched);
     }
 
     const getListOfCases = (listName, inProgress = false) => {
@@ -86,48 +131,77 @@ export const Home = () => {
 
     // * TRYING TO REFACTOR THE 'searchFilterCases' FUNCTION
     // * THE NEW FUNCTION SHOULD BE USEFUL FOR ALL DATABASES
-    const searchFilterCases = (nameOfListCases) => {
-        switch(nameOfListCases){
-            case 'lstConfirmados':
-                setSearchesMatched(nameOfListCases = contextInterviewed[nameOfListCases]?.filter(
-                    pacient => pacient.objetoDados.nome.startsWith(newSearch[nameOfListCases])
-                )); // erro na filtragem. parece que tenho que ver se a contextInterviewed[nameOfListCases] eh definido antes de filtrar
-                console.log("lst confirmados");
-                break;
-            case 'lstContProximos':
-                contextInterviewed[nameOfListCases] ? setSearchesMatched(nameOfListCases = contextInterviewed[nameOfListCases]?.filter(
-                    pacient => pacient.objetoDados.nome.startsWith(newSearch[nameOfListCases])
-                )) : console.log("nothing");
-                console.log("lst contProximos");
-                break;
-            case 'lstMonitorandoConfirmados':
-                console.log("lst monitorando confirmados");
-                break;
-            case 'lstMonitorandoContProximos':
-            console.log("lst monitorando contProximos");
-        }
-        var newList = []
-        if (true){
-            newList = contextInterviewed[nameOfListCases].filter(
-                pacient => pacient.objetoDados.nome.startsWith(search)
-            );
-            setShowFilteredCases(true);
+
+    // const searchFilterCases = (searchString, lstName) => {
+    //     switch(lstName){
+    //         case "lstConfirmados":
+    //             break;
+    //         case "lstMonitorandoConfirmados":
+    //             break;
+    //         case "lstContProximos":
+    //             break;
+    //         case "lstMonitorandoContProximos":
+    //     }
+    // }
+
+    // only works with 'naoContato' confirmed cases 
+    const searchConfirmedFilterCases = () => {
+        if (confirmedSearch){
+            setConfirmedSearchesMatched(contextInterviewed.lstConfirmados.filter(
+                confirmed => confirmed.objetoDados.nome.startsWith(confirmedSearch)
+            ))
+            // * PUSH MATCH CASES INTO searchesMatched
+            setShowConfirmedFilteredCases(true);
+        } else {
+            // * setting initial default values 
+            setShowConfirmedFilteredCases(false);
+            setConfirmedSearchesMatched([]);
         }
     }
 
-    // only works with 'naoContato' confirmed cases 
-    const searchFilterConfirmedCases = () => {
-        if (search){
-            setSearchesMatched(contextInterviewed.lstConfirmados.filter(
-                confirmed => confirmed.objetoDados.nome.startsWith(search)
+    const searchMonitoringConfirmedFilterCases = () => {
+        console.log(monitoringConfirmedSearchesMatched)
+        if (monitoringConfirmedSearch){
+            setMonitoringConfirmedSearchesMatched(contextInterviewed.lstConfirmados.filter(
+                confirmed => confirmed.objetoDados.nome.startsWith(monitoringConfirmedSearch)
+            ))
+            setShowMonitoringConfirmedFilteredCases(true);
+        } else {
+            setShowMonitoringConfirmedFilteredCases(false);
+            setMonitoringConfirmedSearchesMatched([]);
+        }
+    }
+
+    const searchClosedContactsFilterCases = () => {
+        console.log(closedContactsSearchesMatched);
+        if (closedContactsSearch){
+            setClosedContactsSearchesMatched(contextInterviewed.lstContProximos.filter(
+                closedContact => closedContact.objetoDados.nome.startsWith(closedContactsSearch)
             ))
             // * PUSH MATCH CASES INTO searchesMatched
-            setShowFilteredCases(true);
+            setShowClosedContactsFilteredCases(true);
         } else {
             // * setting initial default values 
-            setShowFilteredCases(false);
-            setSearchesMatched([]);
+            setShowClosedContactsFilteredCases(false);
+            setClosedContactsSearchesMatched([]);
         }
+    }
+
+    const searchMonitoringClosedContactsFilterCases = () => {
+        console.log(monitoringClosedContactsSearchesMatched);
+        if (monitoringClosedContactsSearch){
+            setMonitoringClosedContactsSearchesMatched(contextInterviewed.lstContProximos.filter(
+                closedContacts => closedContacts.objetoDados.nome.startsWith(monitoringClosedContactsSearch)
+            ))
+            setShowMonitoringClosedContactsFilteredCases(true);
+        } else {
+            setShowMonitoringClosedContactsFilteredCases(false);
+            setMonitoringClosedContactsSearchesMatched([]);
+        }
+    }
+
+    const inputFilterConfirmedCases = () => {
+
     }
 
     return (
@@ -139,7 +213,6 @@ export const Home = () => {
                     <h2>Bem-vindo(a), {contextUser.user.name}.</h2>
                     <button className = "buttonsHome" onClick = {logout}>Sair</button>
                     <button className = "buttonsHome" onClick = {updateData}>Atualizar</button>
-                    <button className = "buttonsHome" onClick = {showData}>Exibir</button>
                 </div>
                 
                 <div className="titulo"> 
@@ -167,7 +240,7 @@ export const Home = () => {
                         // TODO:}
                     */}
                         <input onChange = {(event) => {
-                            setSearch(event.target.value);
+                            setConfirmedSearch(event.target.value);
                         }} placeholder="Procurar por paciente" type="search" />
                     </div>
                 </div>
@@ -179,15 +252,15 @@ export const Home = () => {
                     <div className="infoSituacao">Situação</div>
                 </div>
                 <div className="chatNomes">
-                    {!showFilteredCases &&
+                    {!showConfirmedFilteredCases &&
                         contextInterviewed.lstConfirmados.map((item, key)=>(
                         <BancoConfirmados
                             confirmado={item}
                             key={key}
                         />
                     ))}
-                    {showFilteredCases && 
-                        searchesMatched?.map((item, key) => (
+                    {showConfirmedFilteredCases && 
+                        confirmedSearchesMatched?.map((item, key) => (
                         <BancoConfirmados 
                             confirmado={item}
                             key={key}
@@ -204,8 +277,7 @@ export const Home = () => {
                     <div className="divisaolinhas">Total de {getListOfCases("lstContProximos").length} pessoas visíveis no banco</div> 
                     <div className="divisaolinhas">
                         <input onChange = {(event) => {
-                            setNewSearch( { contProximos: event.target.value} );
-                            searchFilterCases("lstContProximos");
+                            setClosedContactsContactsSearch(event.target.value);
                         }} placeholder="Procurar por paciente" type="search"></input>
                     </div>
                 </div>
@@ -217,9 +289,17 @@ export const Home = () => {
                     <div className="infoSituacao">Situação</div>
                 </div>
                 <div className="chatNomes">
-                    {contextInterviewed.lstContProximos.map((item, key)=>(
+                    {!showClosedContactsFilteredCases && 
+                        contextInterviewed.lstContProximos.map((item, key)=>(
                         <BancoContatosProximos
                             contatoProximo={item} 
+                            key={key}
+                        />
+                    ))}
+                    {showClosedContactsFilteredCases && 
+                        closedContactsSearchesMatched?.map((item, key) => (
+                        <BancoConfirmados 
+                            confirmado={item}
                             key={key}
                         />
                     ))}
@@ -231,7 +311,11 @@ export const Home = () => {
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Monitoramento Confirmados</h3></div>
                     <div className="divisaolinhas">Total de {getListOfCases("lstConfirmados", true).length} pessoas visíveis no banco</div> 
-                    <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search" /></div>
+                    <div className="divisaolinhas">
+                        <input onChange = { (event) => {
+                            setMonitoringConfirmedSearch(event.target.value);
+                        }} placeholder="Procurar por paciente" type="search" />
+                    </div>
                     {/* onChange = {(event) => {setSearch(event.target.value)}} */}
                 </div>
 
@@ -243,19 +327,20 @@ export const Home = () => {
                     <div className="infoSituacaoEntrevista">Situação Entrevistas</div>
                 </div>
                 <div className="chatNomes">
-                    {contextInterviewed.lstConfirmados.map((item, key)=>(
+                    {!showMonitoringConfirmedFilteredCases && 
+                    contextInterviewed.lstConfirmados.map((item, key)=>(
                         <BancoMonitoramentoConfirmados
                             confirmado={item}
                             key={key}
                         />
                     ))}
-                    {/* {showFilteredCases && 
-                        searchesMatched?.map((item, key) => (
-                        <BancoMonitoramentoConfirmados 
+                    {showMonitoringConfirmedFilteredCases && 
+                        monitoringConfirmedSearchesMatched?.map((item, key) => (
+                        <BancoConfirmados 
                             confirmado={item}
                             key={key}
                         />
-                    ))} */}
+                    ))}
                 </div>
             </div>
 
@@ -264,7 +349,11 @@ export const Home = () => {
                 <div className="primeiraLinha">
                     <div className="divisaolinhas"><h3>Monitoramento Contatos Próximos</h3></div>
                     <div className="divisaolinhas">Total de {getListOfCases("lstContProximos", true).length} pessoas visíveis no banco</div> 
-                    <div className="divisaolinhas"><input placeholder="Procurar por paciente" type="search"></input></div>
+                    <div className="divisaolinhas">
+                        <input onChange = {(event) => {
+                            setMonitoringClosedContactsSearch(event.target.value);
+                        }}placeholder="Procurar por paciente" type="search"></input>
+                    </div>
                 </div>
 
                 <div className="segundaLinha">
@@ -275,9 +364,17 @@ export const Home = () => {
                     <div className="infoSituacaoEntrevista">Situação Entrevistas</div>
                 </div>
                 <div className="chatNomes">
-                    {contextInterviewed.lstContProximos.map((item, key)=>(
+                    {!showMonitoringClosedContactsFilteredCases && 
+                    contextInterviewed.lstContProximos.map((item, key)=>(
                         <BancoMonitoramentoContProximos
                             contatoProximo={item}
+                            key={key}
+                        />
+                    ))}
+                    {showMonitoringClosedContactsFilteredCases && 
+                        monitoringClosedContactsSearchesMatched?.map((item, key) => (
+                        <BancoConfirmados 
+                            confirmado={item}
                             key={key}
                         />
                     ))}
