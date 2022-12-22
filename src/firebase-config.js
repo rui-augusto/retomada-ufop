@@ -3,11 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"; 
 import { getDatabase } from "firebase/database";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// firebase configuration
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -18,9 +14,10 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-// Initialize Firebase
+// initialize firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app); NÃO ESTAVA SENDO USADO, COMENTADO POR HORA
+
+// const analytics = getAnalytics(app); 
 
 export const auth = getAuth(app);
 export const database = getDatabase(app);
