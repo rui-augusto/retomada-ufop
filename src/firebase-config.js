@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth"; 
 import { getDatabase } from "firebase/database";
 
@@ -9,13 +9,13 @@ import { getDatabase } from "firebase/database";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDvtn3jq_74g1342kiIFkOmaXIitNSGKn8",
-  authDomain: "retomada-ufop-fc15b.firebaseapp.com",
-  projectId: "retomada-ufop-fc15b",
-  storageBucket: "retomada-ufop-fc15b.appspot.com",
-  messagingSenderId: "403622635258",
-  appId: "1:403622635258:web:8cdf80deb6fda181120b43",
-  measurementId: "G-DDED77N8C0"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
 // Initialize Firebase
