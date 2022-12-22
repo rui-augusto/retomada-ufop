@@ -1,10 +1,10 @@
-import React from "react";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { useInterviewed } from "../../context/interviewed";
 import { useUser } from "../../context/user";
-import { useNavigate } from 'react-router-dom'
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
-import './Banco.css'
+
+import '../style/Banco.css'
 
 
 export const BancoMonitoramentoContProximos = (props) => {

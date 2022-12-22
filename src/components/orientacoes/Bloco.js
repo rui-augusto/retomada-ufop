@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { RoteiroFinalQ1 } from "../roteiros/RoteiroFinalQ1"
+import { RoteiroFinalQ1 } from "../roteiros/fim/RoteiroFinalQ1"
 import "./Orientacao.css";
 import "../roteiros/Roteiro.css";
 

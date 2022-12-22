@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { useUser } from "../../context/user";
 import { useInterviewed } from "../../context/interviewed";
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
-import './Banco.css'
 
+import '../style/Banco.css'
 
 export const BancoContatosProximos = (props) => {
 

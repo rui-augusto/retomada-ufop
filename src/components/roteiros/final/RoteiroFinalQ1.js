@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useUser } from "../../context/user";
+import { useUser } from "../../../context/user";
 import { useNavigate } from 'react-router-dom';
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
 import { useEffect } from 'react/cjs/react.production.min';

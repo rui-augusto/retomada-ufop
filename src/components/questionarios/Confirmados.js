@@ -6,7 +6,7 @@ import { useUser } from "../../context/user";
 // componentes
 import { Bloco } from "../orientacoes/Bloco";
 
-import "../style/questionarios/Quest.css";
+import "../style/questionarios/Confirmados.css";
 import { useParams } from "react-router-dom";
 
 export const Quest = () => {
@@ -14,8 +14,6 @@ export const Quest = () => {
     const context = useInterviewed();
     const contextUser = useUser();
     const { cpf, nome } = useParams();
-    console.log(cpf, nome);
-    // DEFINICAO DO useForm
     useForm({
         mode: 'onSubmit',
         reValidateMode: 'onChange',
@@ -50,7 +48,6 @@ export const Quest = () => {
     const [estudante, setEstudante] = useState(false);
     const [docente, setDocente] = useState(false);
     const [pSaude, setPSaude] = useState(false);
-    const [foiVacinado, setFoiVacinado] = useState(false);
     const [outraRelacao, setOutraRelacao] = useState(false);
     const [houveContato, setHouveContato] = useState(false);
 
@@ -119,14 +116,6 @@ export const Quest = () => {
     const analyzeRelation = (event) => {
         if (event.target.value == "outro"){
             setOutraRelacao(true);
-        }
-    }
-
-    const analyzeVaccine = (event) => {
-        if (event.target.value == "sim"){
-            setFoiVacinado(true);
-        }else{
-            setFoiVacinado(false);
         }
     }
 

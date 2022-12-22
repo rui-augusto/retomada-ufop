@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useUser } from "../context/user";
 import { useInterviewed } from "../context/interviewed";
+import { useNavigate } from 'react-router-dom';
 
-import { BancoConfirmados } from "../components/bancos/BancoConfirmados";
-import { BancoContatosProximos } from "../components/bancos/BancoContatosProximos"
-import { BancoMonitoramentoConfirmados } from "../components/bancos/BancoMonitoramentoConfirmados";
-import { BancoMonitoramentoContProximos } from "../components/bancos/BancoMonitoramentoContProximos";
+import { BancoConfirmados } from "../bancos/BancoConfirmados";
+import { BancoContatosProximos } from "../bancos/BancoContatosProximos"
+import { BancoMonitoramentoConfirmados } from "../bancos/BancoMonitoramentoConfirmados";
+import { BancoMonitoramentoContProximos } from "../bancos/BancoMonitoramentoContProximos";
 
-import "../components/style/Home.css"
-import "../components/style/Banco.css";
+import "./style/Home.css"
+import "./questionarios/Banco.css";
 
 export const Home = () => {
 

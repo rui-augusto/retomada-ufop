@@ -1,7 +1,7 @@
 import "./Roteiro.css"
 import { useState, useEffect } from 'react';
-import { useUser } from "../../context/user";
-import { useInterviewed } from "../../context/interviewed";
+import { useUser } from "../../../context/user";
+import { useInterviewed } from "../../../context/interviewed";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 

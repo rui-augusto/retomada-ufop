@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { useInterviewed } from '../../context/interviewed';
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
-import './Banco.css'
 
+import '../style/Banco.css'
 
 export const BancoMonitoramentoConfirmados =  (props) => {
 
