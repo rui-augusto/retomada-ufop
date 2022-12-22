@@ -1,20 +1,20 @@
-import "./Roteiro.css"
+import "../../style/Roteiros.css"
 import { useState } from 'react';
 import { useUser } from "../../context/user";
 import { useNavigate } from 'react-router-dom';
 
 
 
-export const RoteiroFinalQ2 = () => {
+export const RoteiroFinalMonitoramentoConfirmados = () => {
 
     const navigate = useNavigate();
 
-    
-    const { user } = useUser();
-    
     const mudaPagina = () => {
-        navigate(`/home/${user.uid}`);
+        navigate("../orientacoesBloco3");
     }
+
+    const { user } = useUser();
+
     const [pageState, setPageState] = useState(true);
 
     const[formValues, setFormValues] = useState({});
@@ -56,7 +56,7 @@ export const RoteiroFinalQ2 = () => {
                         </div>
 
                         <div className="Info">
-                            <p>Monitoramento de Contato Próximos</p>
+                            <p>Monitoramento de casos confirmados para o COVID-19</p>
                             <p>Questionário telefônico</p>
                         </div>
                    
@@ -64,23 +64,8 @@ export const RoteiroFinalQ2 = () => {
                             <div className="TextAreaInfo1">
                                 <br/>Agradecemos a sua atenção e pedimos que fique atento(a), pois entraremos em contato novamente.<br></br>
                                 Reforçamos que as medidas de afastamento social, proteção individual e higiene das mãos são extremamente importância para prevenirmos a disseminação do vírus no município.<br/><br/>
-                                Como você teve contato com um caso positivo para COVID-19, é importante que você faça o exame para diagnóstico de COVID-19.<br/><br/>
                                 Gostaria de dizer algo ou tem alguma dúvida?<br/><br/>
                                 Um abraço!<br/><br/>
-
-                                                
-                    
-                                Assinale se a alternativa se enquadra ao entrevistado: &nbsp;
-                                    <label className="internedCheckArea-btn">
-                                    <input 
-                                        type='checkbox' 
-                                        name='novocontato' 
-                                        value='novocontato'
-                                        onChange={handleInputChange}
-                                        />  
-                                        &nbsp; Será feito novo contato <br/><br/>
-                                    </label>
-
                                 Anote aqui informações relatas pelo entrevistado que julgar importante:<br/><br/>
                             </div>
 

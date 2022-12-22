@@ -1,12 +1,13 @@
-import "./Roteiro.css"
 import { useEffect, useState } from 'react';
-import { useUser } from "../../context/user";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useInterviewed } from "../../context/interviewed";
 
+import { useUser } from "../../../context/user";
+import { useInterviewed } from "../../../context/interviewed";
 
-export const RoteiroQ2 = () => {
+import "../../style/Roteiros.css"
+
+export const RoteiroContatosProximos = () => {
     
     useForm({
         mode: 'onSubmit',

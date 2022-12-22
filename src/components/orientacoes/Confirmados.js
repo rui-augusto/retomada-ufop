@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { RoteiroFinalQ1 } from "../roteiros/fim/RoteiroFinalQ1"
-import "./Orientacao.css";
-import "../roteiros/Roteiro.css";
+import { RoteiroFinalConfirmados } from "../roteiros/final/Confirmados";
+
+import "../style/Orientacoes.css";
+import "../style/Roteiros.css";
 
 export const Bloco = (props) => {
 
@@ -77,7 +78,7 @@ export const Bloco = (props) => {
                 </form>
             }
             {alerted &&
-                <RoteiroFinalQ1 cpf={props.cpf} ehCritico={props.ehCritico}/>
+                <RoteiroFinalConfirmados cpf={props.cpf} ehCritico={props.ehCritico}/>
             }
         </div>
     

@@ -9,9 +9,9 @@ import { QuestionarioConfirmados } from "../components/questionarios/Confirmados
 import { QuestionarioContatosProximos } from "../components/questionarios/ContatosProximos";
 import { QuestionarioMonitorandoConfirmados } from "../components/questionarios/MonitoramentoConfirmados";
 
-import {RoteiroConfirmados} from "../components/roteiros/inicio/RoteiroQ1";
-import {RoteiroContatosProximos} from "../components/roteiros/RoteiroQ2";
-import {RoteiroMonitoramentoConfirmados} from "../components/roteiros/RoteiroQ3";
+import { RoteiroConfirmados } from "../components/roteiros/inicio/Confirmados";
+import { RoteiroContatosProximos } from "../components/roteiros/inicio/ContatosProximos";
+import { RoteiroMonitoramentoConfirmados } from "../components/roteiros/inicio/MonitoramentoConfirmados";
 
 export const MainRoutes = () => {
     return useRoutes([

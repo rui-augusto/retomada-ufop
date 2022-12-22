@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import "../style/questionarios/MonitorandoConfirmados.css";
 
-export const Quest3 = () => {
+export const QuestionarioMonitorandoConfirmados = () => {
     
     const navigate = useNavigate();
 

@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
-import "./Orientacao.css"
-// import { useNavigate } from 'react-router-dom';
-import { RoteiroFinalQ2 } from "../roteiros/RoteiroFinalQ2";
+import { RoteiroFinalContatosProximos } from "../roteiros/final/ContatosProximos";
 
+import "../style/Orientacoes.css"
 
 export const BlocoContProximo = () => {
 
@@ -74,7 +73,7 @@ export const BlocoContProximo = () => {
                     }
                 {alertado &&
                     <div>
-                        <RoteiroFinalQ2 />
+                        <RoteiroFinalContatosProximos />
                     </div>
                 }
             </body>

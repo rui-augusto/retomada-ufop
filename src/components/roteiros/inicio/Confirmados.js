@@ -1,4 +1,4 @@
-import "./Roteiro.css"
+import "../../style/Roteiros.css"
 import { useState, useEffect } from 'react';
 import { useUser } from "../../../context/user";
 import { useInterviewed } from "../../../context/interviewed";
@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 
 
 
-export const RoteiroQ1 = () => {
+export const RoteiroConfirmados = () => {
 
     useForm({
         mode: 'onSubmit',

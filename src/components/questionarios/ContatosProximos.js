@@ -4,12 +4,12 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { useInterviewed } from "../../context/interviewed";
 import { useUser } from "../../context/user";
-import { BlocoContProximo } from "../orientacoes/BlocoContProximo";
+import { BlocoContProximo } from "../orientacoes/ContatosProximos";
 import { useNavigate, useParams } from 'react-router-dom';
 
 import "../style/questionarios/ContatosProximos.css";
 
-export const Quest2 = () => {
+export const QuestionarioContatosProximos = () => {
 
     const context = useInterviewed();
     const contextUser = useUser();

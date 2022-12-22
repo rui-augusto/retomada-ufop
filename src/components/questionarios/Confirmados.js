@@ -4,12 +4,12 @@ import { useInterviewed } from "../../context/interviewed";
 import { useUser } from "../../context/user";
 
 // componentes
-import { Bloco } from "../orientacoes/Bloco";
+import { Bloco as Orientacoes } from "../orientacoes/Confirmados";
 
 import "../style/questionarios/Confirmados.css";
 import { useParams } from "react-router-dom";
 
-export const Quest = () => {
+export const QuestionarioConfirmados = () => {
 
     const context = useInterviewed();
     const contextUser = useUser();
@@ -714,7 +714,7 @@ export const Quest = () => {
                 }
                 { terceiraParte &&
                     <div>
-                        <Bloco cpf = {objPrimeiraParte.cpf} orientacao={orientacaoEspecifica}/>
+                        <Orientacoes cpf = {objPrimeiraParte.cpf} orientacao={orientacaoEspecifica}/>
                     </div>
                 }
         </div>

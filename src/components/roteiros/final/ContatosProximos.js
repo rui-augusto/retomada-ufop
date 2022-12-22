@@ -1,24 +1,23 @@
-
+import "../../style/Roteiros.css"
 import { useState } from 'react';
 import { useUser } from "../../../context/user";
 import { useNavigate } from 'react-router-dom';
-import SimpleDateTime  from 'react-simple-timestamp-to-date';
-import { useEffect } from 'react/cjs/react.production.min';
 
 
 
-
-export const RoteiroFinalQ1 = (props) => {
+export const RoteiroFinalContatosProximos = () => {
 
     const navigate = useNavigate();
 
+    
     const { user } = useUser();
-    const backToHome = () => {
-        navigate(`../home/${user.uid}`);
+    
+    const mudaPagina = () => {
+        navigate(`/home/${user.uid}`);
     }
+    const [pageState, setPageState] = useState(true);
 
     const[formValues, setFormValues] = useState({});
-    const [quandoRetorna, setQuandoRetorna] = useState("depois de amanhã");
 
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
@@ -41,15 +40,12 @@ export const RoteiroFinalQ1 = (props) => {
     
     };
 
-    useState( () => {
-        if (props.ehCritico){
-            setQuandoRetorna("amanhã");
-        }
-    })
 
     return( 
 
         <div>
+
+            {pageState &&
 
             <body className="fullscreenArea-questions" onSubmit={handleSubmit}> 
                 <form className="content-questions" >
@@ -60,18 +56,20 @@ export const RoteiroFinalQ1 = (props) => {
                         </div>
 
                         <div className="Info">
-                            <p>Monitoramento de casos confirmados para o COVID-19 </p>
+                            <p>Monitoramento de Contato Próximos</p>
                             <p>Questionário telefônico</p>
                         </div>
                    
                         <div className="textArea">   
                             <div className="TextAreaInfo1">
-                                <br/>Agradecemos a sua atenção e pedimos que fique atento(a), pois entraremos em contato novamente {quandoRetorna}.<br></br>
+                                <br/>Agradecemos a sua atenção e pedimos que fique atento(a), pois entraremos em contato novamente.<br></br>
                                 Reforçamos que as medidas de afastamento social, proteção individual e higiene das mãos são extremamente importância para prevenirmos a disseminação do vírus no município.<br/><br/>
+                                Como você teve contato com um caso positivo para COVID-19, é importante que você faça o exame para diagnóstico de COVID-19.<br/><br/>
                                 Gostaria de dizer algo ou tem alguma dúvida?<br/><br/>
                                 Um abraço!<br/><br/>
 
-                                               
+                                                
+                    
                                 Assinale se a alternativa se enquadra ao entrevistado: &nbsp;
                                     <label className="internedCheckArea-btn">
                                     <input 
@@ -106,14 +104,17 @@ export const RoteiroFinalQ1 = (props) => {
                                 <button 
                                     className="btn-start" 
                                     type="submit"
-                                    onClick={backToHome}>                               
+                                    onClick={mudaPagina}>                               
                                     Finalizar
                                 </button>
                             </div>
                     </div>
                     </div>
+
                 </form>
             </body> 
+            }
+
         </div>
     
     );
