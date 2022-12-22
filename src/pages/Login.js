@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from "../context/user";
 
-import { AiOutlineUser } from 'react-icons/ai';
-import { AiOutlineLock } from 'react-icons/ai';
-import "./style/Login.css";
+import { AiOutlineUser, AiOutlineLock } from 'react-icons/ai';
+import "../components/style/Login.css";
 
 export const Login = () => {
     const navigate = useNavigate();

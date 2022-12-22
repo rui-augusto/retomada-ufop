@@ -2,8 +2,8 @@
 import { useForm } from 'react-hook-form';
 import { useInterviewed } from "../context/interviewed" 
 
+import "../components/style/Cadastro.css"; 
 
-import "./style/Cadastro.css"; 
 export const Cadastro = () => {
 
     const context = useInterviewed();

@@ -1,9 +1,8 @@
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom'
 import { useUser } from "../context/user";
-import { useNavigate } from 'react-router-dom'
 
-import { Link } from 'react-router-dom'
-import "./style/Register.css"
+import "../components/style/Register.css"
 
 
 export const Register = () => {
