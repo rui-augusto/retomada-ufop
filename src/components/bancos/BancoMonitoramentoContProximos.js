@@ -4,7 +4,7 @@ import { useInterviewed } from "../../context/interviewed";
 import { useUser } from "../../context/user";
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
 
-import '../style/Banco.css'
+import '../style/Bancos.css'
 
 
 export const BancoMonitoramentoContProximos = (props) => {

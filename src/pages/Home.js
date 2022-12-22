@@ -9,8 +9,8 @@ import { BancoContatosProximos } from "../components/bancos/BancoContatosProximo
 import { BancoMonitoramentoConfirmados } from "../components/bancos/BancoMonitoramentoConfirmados";
 import { BancoMonitoramentoContProximos } from "../components/bancos/BancoMonitoramentoContProximos";
 
-import "../components/style/Home.css"
-import "../components/style/Banco.css";
+import "../components/style/pages/Home.css"
+import "../components/style/Bancos.css";
 
 export const Home = () => {
 

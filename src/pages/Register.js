@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'
 import { useUser } from "../context/user";
 
-import "../components/style/Register.css"
+import "../components/style/pages/Register.css"
 
 
 export const Register = () => {

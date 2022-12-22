@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from "../context/user";
 
 import { AiOutlineUser, AiOutlineLock } from 'react-icons/ai';
-import "../components/style/Login.css";
+import "../components/style/pages/Login.css";
 
 export const Login = () => {
     const navigate = useNavigate();

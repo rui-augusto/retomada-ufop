@@ -4,7 +4,7 @@ import { useInterviewed } from "../../context/interviewed";
 import { useNavigate } from 'react-router-dom'
 import SimpleDateTime  from 'react-simple-timestamp-to-date';
 
-import '../style/Banco.css'
+import '../style/Bancos.css'
 
 export const BancoConfirmados = (props) => {
 
