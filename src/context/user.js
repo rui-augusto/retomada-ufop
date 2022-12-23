@@ -23,6 +23,15 @@ export function UserProvider({children}){
         });
     }, []);
 
+    async function isUserLogged(){
+        onAuthStateChanged(auth, (user) => {
+            if (user){
+                return user;
+            }
+            return false;
+        })
+    }
+
     async function registerUser(name, email, password, role, navigate){
         try {
             const res = await createUserWithEmailAndPassword(
@@ -78,7 +87,9 @@ export function UserProvider({children}){
     }
     
       return (
-        <UserContext.Provider value={{user, userID, registerUser, loginUser, userLogout, getUserInfo}}>
+        <UserContext.Provider value={
+            {user, userID, registerUser, loginUser, userLogout, getUserInfo, isUserLogged}
+        }>
             {children}
         </UserContext.Provider>
     )

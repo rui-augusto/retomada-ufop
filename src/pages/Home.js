@@ -104,8 +104,6 @@ export const Home = () => {
 
     // only works with 'naoContato' confirmed cases 
     const searchFilterCases = () => {
-        console.log(process.env);
-        console.log(process.env.REACT_APP_API_KEY);
         if (search){
             setSearchesMatched(contextInterviewed.lstConfirmados.filter(
                 confirmed => confirmed.objetoDados.nome.startsWith(search)
