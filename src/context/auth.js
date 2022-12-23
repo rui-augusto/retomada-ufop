@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext, useContext } from 'react';
 
 import { useUser } from "./user";
 
-import { Register } from "../pages/Register";
+// import { Register } from "../pages/Register";
 
 const AuthContext = createContext({});
 
