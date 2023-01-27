@@ -51,7 +51,7 @@ export const QuestionarioConfirmados = () => {
     const [outraRelacao, setOutraRelacao] = useState(false);
     const [houveContato, setHouveContato] = useState(false);
 
-    // OBJETOS QUE GUARDAM CADA PARTE DO QUESTIONARIO
+    // OBJETOS QUE GUARDAM RESPOTAS DE CADA PARTE DO QUESTIONARIO
     // false ---> NÃO CONCLÚIDO
     // true  ---> CONCLUÍDO
     const [primeiraParte, setPrimeiraParte] = useState(false);
@@ -66,10 +66,7 @@ export const QuestionarioConfirmados = () => {
     const [height, setHeight] = useState(0);
     const [weight, setWeight] = useState(0);
 
-    // CONTROLE DE DADOS FIREBASE
-    const [frequencia, setFrequencia] = useState(2);
-    const [qtdEntrevistas, setQtdEntrevistas] = useState(3);
-    const [situacaoCritica, setSituacaoCritica] = useState(false);
+    // CONTROLA ORIENTAÇÃO AO FIM DA ENTREVISTA
     const [orientacaoEspecifica, setOrientacaoEspecifica] = useState(false);
 
 
@@ -84,18 +81,17 @@ export const QuestionarioConfirmados = () => {
 
     // AO FINALIZAR A PRIMEIRA PARTE DO QUESTIONARIO, O IMC EH CALCULADO
     useEffect(async () => {
-        if (height != 0 && weight != 0){
+        if (height !== 0 && weight !== 0){
             let imc = weight / (height * height);
             if (imc > 40){
                 setIsObese(true);
             }
-            console.log("imc = ", imc);
         }
     }, [objPrimeiraParte]);
 
     // FUNCOES QUE ANALISAM AS RESPOSTAS E DITAM A SEQUÊNCIA DO QUESTIONARIO
     const analyzeOccupation = (event) => {
-        if (event.target.value == "estudante"){
+        if (event.target.value === "estudante"){
             setDocente(false);
             setEstudante(true);
         }
@@ -106,7 +102,7 @@ export const QuestionarioConfirmados = () => {
     }
 
     const analyzeProfession = (event) =>{
-        if (event.target.value == "sim"){
+        if (event.target.value === "sim"){
             setPSaude(true);
         }else{
             setPSaude(false);
@@ -114,13 +110,13 @@ export const QuestionarioConfirmados = () => {
     }
 
     const analyzeRelation = (event) => {
-        if (event.target.value == "outro"){
+        if (event.target.value === "outro"){
             setOutraRelacao(true);
         }
     }
 
     const analyzeGender = (event) => {
-        if (event.target.value == "feminino"){
+        if (event.target.value === "feminino"){
             setFemaleGender(true);
         }else{
             setFemaleGender(false);
@@ -129,7 +125,7 @@ export const QuestionarioConfirmados = () => {
 
     const analyzeCloseContact = (event) => {
         console.log(event.target.checked);
-        if (event.target.checked == true){
+        if (event.target.checked === true){
             setHouveContato(true);
         }else{
             setHouveContato(false);
@@ -137,17 +133,17 @@ export const QuestionarioConfirmados = () => {
     }
 
     const analyzeGuidance = () => {
-        if (objSegundaParte.situacaoSintomas == "piora"){
+        if (objSegundaParte.situacaoSintomas === "piora"){
             setOrientacaoEspecifica(true);
         }
     }
 
     // FUNCOES QUE ANALISAM A FREQUENCIA DAS ENTREVISTAS
     function analyzeFrequency(){
-        if (objSegundaParte.condicao01 == "sim" || objSegundaParte.condicao02 == "sim" || objSegundaParte.condicao03 == "sim" ||
-            objSegundaParte.condicao04 == "sim" || objSegundaParte.condicao05 == "sim" || objSegundaParte.condicao06 == "sim" ||
-            objSegundaParte.condicao07 == "sim" || objSegundaParte.condicao08 == "sim" || objSegundaParte.condicao09 == "sim" ||
-            objSegundaParte.condicao10 == "sim" || objSegundaParte.condicao11 == "sim"){
+        if (objSegundaParte.condicao01 === "sim" || objSegundaParte.condicao02 === "sim" || objSegundaParte.condicao03 === "sim" ||
+            objSegundaParte.condicao04 === "sim" || objSegundaParte.condicao05 === "sim" || objSegundaParte.condicao06 === "sim" ||
+            objSegundaParte.condicao07 === "sim" || objSegundaParte.condicao08 === "sim" || objSegundaParte.condicao09 === "sim" ||
+            objSegundaParte.condicao10 === "sim" || objSegundaParte.condicao11 === "sim"){
                 return true;
             }
         }
@@ -218,10 +214,10 @@ export const QuestionarioConfirmados = () => {
         const email = contextUser.user.email;
 
         const updatesC = {};
-        if (objSegundaParte.condicao01 == "sim" || objSegundaParte.condicao02 == "sim" || objSegundaParte.condicao03 == "sim" ||
-            objSegundaParte.condicao04 == "sim" || objSegundaParte.condicao05 == "sim" || objSegundaParte.condicao06 == "sim" ||
-            objSegundaParte.condicao07 == "sim" || objSegundaParte.condicao08 == "sim" || objSegundaParte.condicao09 == "sim" ||
-            objSegundaParte.condicao10 == "sim" || objSegundaParte.condicao11 == "sim"){
+        if (objSegundaParte.condicao01 === "sim" || objSegundaParte.condicao02 === "sim" || objSegundaParte.condicao03 === "sim" ||
+            objSegundaParte.condicao04 === "sim" || objSegundaParte.condicao05 === "sim" || objSegundaParte.condicao06 === "sim" ||
+            objSegundaParte.condicao07 === "sim" || objSegundaParte.condicao08 === "sim" || objSegundaParte.condicao09 === "sim" ||
+            objSegundaParte.condicao10 === "sim" || objSegundaParte.condicao11 === "sim"){
                 updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/dataProximaEntrevista/'] = parseInt(dataHorarioAgora) + 86400;
                 updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/quantidadeEntrevistas/'] = 5;
                 updatesC['/Confirmados/' + objPrimeiraParte.cpf + '/objetoDados/frequenciaDiasMonitoramento/'] = 1;
@@ -244,17 +240,13 @@ export const QuestionarioConfirmados = () => {
     }
 
     const dadosContatoProximo = async (data) => {
-        console.log("DADOS CONTATO PROXIMO: ", data);
         const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
         var proxEntrevista = parseInt(dataHorarioAgora);
-        if (data.telefone2 == ""){
+        if (data.telefone2 === ""){
             data.telefone2 = null;
         }
 
-        console.log("A PROXIVA ENTREVISTA EH EM " + proxEntrevista);
-
         const contadorContatosProximos = await context.countingCloseContacts();
-        console.log(contadorContatosProximos);
 
         const objContatoProximo = {
             contTentativas: 0,
@@ -297,18 +289,7 @@ export const QuestionarioConfirmados = () => {
         await context.registerCloseContacts(objContatoProximo);
     }
 
-    // FUNCOES QUE VOLTAM PARA A PARTE ANTERIOR DO QUESTIONARIO
-
-    const returnFirstPart = () => {
-        setPrimeiraParte(false);
-    }
-
-    const returnSecondPart = () => {
-        setSegundaParte(false);
-    }
-
     return (
-
         <div className="fullArea">
             { !primeiraParte &&
                 <div className="formArea" id="formAreaid">
@@ -371,9 +352,9 @@ export const QuestionarioConfirmados = () => {
                             <div className="colunaSaudeGenero">
                                     <div className="gender">
                                         Com qual gênero se identifica? &nbsp; 
-                                            <input {...register1("genero")} type="radio" value="masculino" onClick = {analyzeGender}/>&nbsp;  M &nbsp; 
-                                            <input {...register1("genero")} type="radio" value="feminino" onClick = {analyzeGender}/>&nbsp;  F &nbsp; 
-                                            <input {...register1("genero")} type="radio" value="outro" onClick = {analyzeGender}/>&nbsp;  Outro 
+                                            <input {...register1("genero")} type="radio" value="masculino" onClick = { analyzeGender }/>&nbsp;  M &nbsp; 
+                                            <input {...register1("genero")} type="radio" value="feminino" onClick = { analyzeGender }/>&nbsp;  F &nbsp; 
+                                            <input {...register1("genero")} type="radio" value="outro" onClick = { analyzeGender }/>&nbsp;  Outro 
                                     </div>
                                     
                                     <div className="profsaude">
@@ -629,7 +610,7 @@ export const QuestionarioConfirmados = () => {
                             </div>  
 
                             <div className="btn-starquest">
-                                <button className="btn-start1" onClick = {returnFirstPart}>Voltar</button>
+                                <button className="btn-start1" onClick = {() => { setPrimeiraParte(false) }}>Voltar</button>
                                 <button className="btn-start1" type = "submit">Próximo</button>
                             </div>
 
@@ -704,8 +685,8 @@ export const QuestionarioConfirmados = () => {
                                 }
                             
                             <div className="realinharBotao">
-                                <button onClick={returnSecondPart} className="btn-finalizar" >Voltar</button>
-                                <button onClick={finishQuest} className="btn-finalizar" >Finalizar</button>
+                                <button onClick={() => { setSegundaParte(false) }} className="btn-finalizar" >Voltar</button>
+                                <button onClick={ finishQuest } className="btn-finalizar" >Finalizar</button>
                             </div>
                             <div className="realinharBotao">
                             </div>

@@ -14,6 +14,9 @@ import "../components/style/Bancos.css";
 
 export const Home = () => {
 
+    // TODO: fix quiz pages
+    // TODO: show date and time
+
     const navigate = useNavigate();
     const contextUser = useUser();
     const contextInterviewed = useInterviewed();
@@ -24,29 +27,23 @@ export const Home = () => {
     const [searchesMatched, setSearchesMatched] = useState([]);
     const [showFilteredCases, setShowFilteredCases] = useState(false);
 
-    // * input filter states
-    const [input, setInput] = useState("");
-
-
     // ? CAN I CREATE A NEW STATE FOR REFACTOR THE FILTER SEARCHING FOR WORKKING IN ALL DATABASES ?
 
-    // const [newSearch, setNewSearch] = useState({name: "", listName: "" }); // * OBJECT LIST THAT CONTAINS:
-    //                                                                           * A name THAT REPRESENTS THE STRING THAT WILL BE SEARCHED
-    //                                                                           * A listName THAT // WHICH DATABASE WILL BE USED                                                 
-
+    // TODO: new search filter states
+    // * search filter states                                        
     const [newSearch, setNewSearch] = useState({
-        casosConfirmados: "",
-        contProximos: "",
-        monitorandoCasosConfirmados: "",
-        monitorandoContProximos: ""
-    })
+        search: "", // * STRING THAT WILL BE SEARCHED
+        lstName: "" // * WHICH DATABASE WILL BE USED  
+    });
 
-    const [newSearchesMatched, setNewSearchesMatched] = useState({
-        casosConfirmados: [],
-        contProximos: [],
-        monitorandoCasosConfirmados: [],
-        monitorandoContProximos: []
-    })
+    const [newSearchesMatched, setNewSearchesMatched] = useState([])
+
+    const [newShowFilteredCases, setNewShowFilteredCases] = useState({
+        lstConfirmados: false,
+        lstMonitorandoConfirmados: false,
+        lstContProximos: false,
+        lstMonitorandoContProximos: false
+    });
 
     // ? END OF DEFINITIONS
 
@@ -89,36 +86,39 @@ export const Home = () => {
 
     // * TRYING TO REFACTOR THE 'searchFilterCases' FUNCTION
     // * THE NEW FUNCTION SHOULD BE USEFUL FOR ALL DATABASES
-
-    // const searchFilterCases = (searchString, lstName) => {
-    //     switch(lstName){
-    //         case "lstConfirmados":
-    //             break;
-    //         case "lstMonitorandoConfirmados":
-    //             break;
-    //         case "lstContProximos":
-    //             break;
-    //         case "lstMonitorandoContProximos":
-    //     }
-    // }
+    const newSearchFilterCases = () => {
+        switch(newSearch.lstName){
+            case "lstConfirmados":
+                setNewSearchesMatched(contextInterviewed[newSearch.lstName].filter(
+                    confirmed => confirmed.objetoDados.nome.startsWith(newSearch.search)
+                ));
+                setShowFilteredCases(true, false, false, false);
+                break;
+            case "lstMonitorandoConfirmados":
+                setNewSearchesMatched(contextInterviewed[newSearch.lstName].filter(
+                    confirmed => confirmed.objetoDados.nome.startsWith(newSearch.search)
+                ));
+                setShowFilteredCases(true, false, false, false);
+                break;
+            case "lstContProximos":
+                break;
+            case "lstMonitorandoContProximos":
+        }
+    }
 
     // only works with 'naoContato' confirmed cases 
     const searchFilterCases = () => {
         if (search){
             setSearchesMatched(contextInterviewed.lstConfirmados.filter(
                 confirmed => confirmed.objetoDados.nome.startsWith(search)
-            ))
+            ));
             // * PUSH MATCH CASES INTO searchesMatched
             setShowFilteredCases(true);
-        } else {
+        } else{
             // * setting initial default values 
             setShowFilteredCases(false);
             setSearchesMatched([]);
         }
-    }
-
-    const inputFilterConfirmedCases = () => {
-
     }
 
     return (
