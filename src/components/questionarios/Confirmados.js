@@ -352,9 +352,9 @@ export const QuestionarioConfirmados = () => {
                             <div className="colunaSaudeGenero">
                                     <div className="gender">
                                         Com qual gênero se identifica? &nbsp; 
-                                            <input {...register1("genero")} type="radio" value="masculino" onClick = { analyzeGender }/>&nbsp;  M &nbsp; 
-                                            <input {...register1("genero")} type="radio" value="feminino" onClick = { analyzeGender }/>&nbsp;  F &nbsp; 
-                                            <input {...register1("genero")} type="radio" value="outro" onClick = { analyzeGender }/>&nbsp;  Outro 
+                                            <input {...register1("genero")} type="radio" value="masculino" onClick = {analyzeGender}/>&nbsp;  M &nbsp; 
+                                            <input {...register1("genero")} type="radio" value="feminino" onClick = {analyzeGender}/>&nbsp;  F &nbsp; 
+                                            <input {...register1("genero")} type="radio" value="outro" onClick = {analyzeGender}/>&nbsp;  Outro 
                                     </div>
                                     
                                     <div className="profsaude">
@@ -686,7 +686,7 @@ export const QuestionarioConfirmados = () => {
                             
                             <div className="realinharBotao">
                                 <button onClick={() => { setSegundaParte(false) }} className="btn-finalizar" >Voltar</button>
-                                <button onClick={ finishQuest } className="btn-finalizar" >Finalizar</button>
+                                <button onClick={finishQuest} className="btn-finalizar" >Finalizar</button>
                             </div>
                             <div className="realinharBotao">
                             </div>
