@@ -9,36 +9,58 @@ import { useForm } from 'react-hook-form';
 
 export const RoteiroConfirmados = () => {
 
-    useForm({
-        mode: 'onSubmit',
-        reValidateMode: 'onChange',
-        defaultValues: {},
-        resolver: undefined,
-        context: undefined,
-        criteriaMode: "firstError",
-        shouldFocusError: true,
-        shouldUnregister: false,
-        shouldUseNativeValidation: false,
-        delayError: undefined
-    });
-
     const {register, handleSubmit} = useForm();
 
     const navigate = useNavigate();
     const {cpf, nome} = useParams();
 
-    // const [dataHoje, setDataHoje] = useState(new Date());
+    // TODO: CHANGE 'cpf' TO 'cpfByParams'
+    // TODO: CREATE A STATE TO RECEIVE FULL CPF
+    // TODO: UPDATES BEFORE USING
+    // const [cpf, setCpf] = useState("");
     // const [horarioAgora, setHorarioAgora] = useState();
 
-    const mudaPagina = () => {
-        var novoCpf = cpf.toString();
-        const novoZero = "0";
-        while (novoCpf.length != 11){
-            novoCpf = novoZero.concat(cpf);
+    const getTodayDate = () => {
+        const todayDate = new Date();
+        const format = "aaaa-mm-dd";
+
+        const map = {
+            aaaa: (todayDate.getFullYear()).toString(),
+            mm: (todayDate.getMonth() + 1).toString(),
+            dd: (todayDate.getDate()).toString(),
         }
-        console.log("CPF como veio: " + cpf);
-        console.log("CPF certo: " + novoZero);
-        navigate(`../questionario/${novoCpf}/${nome}`);
+
+        // * verifying if the month and day are complete
+        if (map.mm.length !== 2){
+            map.mm = "0".concat(map.mm);
+        } if (map.dd.length !== 2){
+            map.dd = "0".concat(map.dd);
+        }
+
+        return format.replace(/aaaa|mm|dd/gi, matched => map[matched]);
+    }
+
+    const getTodayHour = () => {
+        const todayDate = new Date();
+        const format = "hh:mm";
+
+        const map = {
+            hh: (todayDate.getHours()).toString(),
+            mm: (todayDate.getMinutes()).toString(),
+        }
+
+        if (map.hh.length != 2){
+            map.hh = "0".concat(map.hh);
+        } if (map.mm.length != 2){
+            map.mm = "0".concat(map.mm);
+        }
+
+        return format.replace(/hh|mm/gi, matched => map[matched]);
+    }
+
+    const mudaPagina = () => {
+        const auxCpf = getNewCpf();
+        navigate(`../questionario/${auxCpf}/${nome}`);
     }
 
     const contextUser = useUser();
@@ -48,7 +70,7 @@ export const RoteiroConfirmados = () => {
     const [desfecho, setDesfecho] = useState(false);
 
     const recusaEntrevista = (event) => {
-        if (event.target.checked == true){
+        if (event.target.checked === true){
             setRecusa(true);
         } else{
             setRecusa(false);
@@ -61,8 +83,6 @@ export const RoteiroConfirmados = () => {
         } else{
             setDesfecho(false);
         }
-        const data = new Date();
-        console.log(data);
     }
 
     const enviaRecusa = async (data) => {
@@ -89,11 +109,7 @@ export const RoteiroConfirmados = () => {
     }
 
     const enviaDesfecho = async (data) => {
-        var novoCpf = cpf.toString();
-        const novoZero = "0";
-        while (novoCpf.length != 11){
-            novoCpf = novoZero.concat(cpf);
-        }
+        const novoCpf = getNewCpf();
         
         const updates = {};
         
@@ -106,13 +122,34 @@ export const RoteiroConfirmados = () => {
         updates['/Confirmados/' + novoCpf + '/objetoDados/obs'] = data.obs;
 
         await context.changeData(updates);
-
     }
 
+    const getNewCpf = () => {
+        var auxCpf = cpf.toString();
+        const missingZero = "0";
+        while (auxCpf.length !== 11){
+            auxCpf = missingZero.concat(cpf);
+        }
+        return auxCpf;
+    }
+
+    useForm({
+        mode: 'onSubmit',
+        reValidateMode: 'onChange',
+        defaultValues: {},
+        resolver: undefined,
+        context: undefined,
+        criteriaMode: "firstError",
+        shouldFocusError: true,
+        shouldUnregister: false,
+        shouldUseNativeValidation: false,
+        delayError: undefined
+    });
+
+    useEffect(() => {
+    }, []);
+
     return( 
-
-        //TIRAR ESSE FORM EXTERNO
-
         <div>
             <body className="fullscreenArea-questions"> 
                 <div className="DescriptionArea">
@@ -124,7 +161,7 @@ export const RoteiroConfirmados = () => {
                                 <input 
                                 type="text"
                                 name="nome"
-                                value={contextUser.user.name}
+                                defaultValue={contextUser.user.name}
                                 placeholder="Nome do Entrevistador"
                                 />
                             </div>
@@ -133,6 +170,8 @@ export const RoteiroConfirmados = () => {
                                 <input
                                 type="date"
                                 name="data"
+                                // "2023-01-30"
+                                defaultValue={getTodayDate()}
                                 placeholder="Data"
                                 />
                             </div>
@@ -141,6 +180,8 @@ export const RoteiroConfirmados = () => {
                                 <input
                                 type="time"
                                 name="hora"
+                                // "18:15"
+                                defaultValue={getTodayHour()}
                                 placeholder="Hora"
                                 />
                             </div>

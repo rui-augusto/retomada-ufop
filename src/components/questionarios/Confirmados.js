@@ -241,7 +241,6 @@ export const QuestionarioConfirmados = () => {
 
     const dadosContatoProximo = async (data) => {
         const dataHorarioAgora = new Date().setHours(0,0,0) / 1000;
-        var proxEntrevista = parseInt(dataHorarioAgora);
         if (data.telefone2 === ""){
             data.telefone2 = null;
         }
