@@ -4,8 +4,10 @@ import { useForm } from 'react-hook-form';
 
 import { useUser } from "../../../context/user";
 import { useInterviewed } from "../../../context/interviewed";
+import { useUtils } from "../../../context/utils";
 
 import "../../style/Roteiros.css"
+import UtilsContext from '../../../context/utils';
 
 export const RoteiroContatosProximos = () => {
     
@@ -35,6 +37,7 @@ export const RoteiroContatosProximos = () => {
 
     const contextUser = useUser();
     const context = useInterviewed();
+    const utils = useUtils();
 
     const [recusa, setRecusa] = useState(false);
     const [desfecho, setDesfecho] = useState(false);
@@ -115,190 +118,186 @@ export const RoteiroContatosProximos = () => {
     }
 
     return( 
-
         <div>
-
-            <body className="fullscreenArea-questions" onSubmit={handleSubmit}> 
-            
-            <div className="content-questions" >
-                            <div className="InputArea">
-
-                                <div className='line-questions'>
-                                    <div className='input-questions'>
-                                        <input 
-                                        type="text"
-                                        name="nome"
-                                        value={contextUser.user.name}
-                                        placeholder="Nome do Entrevistador"
-                                        />
-                                    </div>
-
-                                    <div className='input-questions'>
-                                        <input
-                                        type="date"
-                                        name="data"
-                                        placeholder="Data"
-                                        />
-                                    </div>
-                                
-                                    <div className='input-questions'>
-                                        <input
-                                        type="time"
-                                        name="hora"
-                                        placeholder="Hora"
-                                        />
-                                    </div>
-                                </div>
+            <body className="fullscreenArea-questions"> 
+                <div className="content-questions">
+                    <div className="InputArea">
+                        <div className='line-questions'>
+                            <div className='input-questions'>
+                                <input 
+                                type="text"
+                                name="nome"
+                                value={contextUser.user.name}
+                                placeholder="Nome do Entrevistador"
+                                />
+                            </div>
+                            <div className='input-questions'>
+                                <input
+                                type="date"
+                                name="data"
+                                defaultValue={utils.getTodayDate()}
+                                placeholder="Data"
+                                />
+                            </div>
+                            <div className='input-questions'>
+                                <input
+                                type="time"
+                                name="hora"
+                                defaultValue={utils.getTodayHour()}
+                                placeholder="Hora"
+                                />
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                    <div className="DescriptionArea">
-                        <div className="Description">
-                            <h3>APÊNDICE D</h3> <p>Instrumento da Pesquisa</p>                       
+                <div className="DescriptionArea">
+                    <div className="Description">
+                        <h3>APÊNDICE D</h3> <p>Instrumento da Pesquisa</p>                       
+                    </div>
+
+                    <div className="Info">
+                        <p>Monitoramento e Ratreamento de Contato Próximos </p>
+                        <p>Questionário telefônico</p>
+                    </div>
+                
+                    <div className="textArea">   
+                        <p className="pTextArea">Bom dia/Boa tarde! </p><hr/>
+
+                        <div className="TextAreaInfo"> </div>
+                            <br></br>
+                            Meu nome é {contextUser.user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto 
+                            e estou realizando o rastreamento e monitoramento para COVID-19 na comunidade acadêmica.<br/><br/> 
+                            Como parte das medidas de controle da transmissão da COVID-19, nós recebemos da Universidade a informação que você teve contato com o(a) {nomeCP} que testou positivo recentemente. <br/><br/>
+                            Podemos conversar? <br/>
+                            Sua participação é muito importante. <br/>
+                            Esta conversa terá duração de aproximadamente 7 minutos.  
+                            <p>Gostaríamos de lhe fazer algumas perguntas. </p><br/>
+                            <p> As informações dadas pelo(a) Sr.(a) não serão divulgadas, manteremos sigilo de todas as informações prestadas aqui, tudo bem?!</p>  
+                            <p>Vamos começar?</p>
                         </div>
 
-                        <div className="Info">
-                            <p>Monitoramento e Ratreamento de Contato Próximos </p>
-                            <p>Questionário telefônico</p>
+                        <div className="internedcheckArea">
+                            <div>Caso o entrevistado não queira ser entrevistado,
+                            assinalar: &nbsp;                     
+                            </div>
                         </div>
-                   
-                        <div className="textArea">   
-                            <p className="pTextArea">Bom dia/Boa tarde! </p><hr/>
-
-                            <div className="TextAreaInfo"> </div>
-                                <br></br>
-                                Meu nome é {contextUser.user.name}, sou entrevistador(a) da Universidade Federal de Ouro Preto 
-                                e estou realizando o rastreamento e monitoramento para COVID-19 na comunidade acadêmica.<br/><br/> 
-                                Como parte das medidas de controle da transmissão da COVID-19, nós recebemos da Universidade a informação que você teve contato com o(a) {nomeCP} que testou positivo recentemente. <br/><br/>
-                                Podemos conversar? <br/>
-                                Sua participação é muito importante. <br/>
-                                Esta conversa terá duração de aproximadamente 7 minutos.  
-                                <p>Gostaríamos de lhe fazer algumas perguntas. </p><br/>
-                                <p> As informações dadas pelo(a) Sr.(a) não serão divulgadas, manteremos sigilo de todas as informações prestadas aqui, tudo bem?!</p>  
-                                <p>Vamos começar?</p>
-                            </div>
-
-                            <div className="internedcheckArea">
-                                <div>Caso o entrevistado não queira ser entrevistado,
-                                assinalar: &nbsp;                     
-                                </div>
-                            </div>
-                              
-                            <div className="recusa">
-                                <div>
-                                    <label className="internedCheckArea-btn">
-                                    <input 
-                                        type='checkbox' 
-                                        name='recusa' 
-                                        value='recusa'
-                                        onClick = {recusaEntrevista}
-                                        />  
-                                        &nbsp; Recusa
-                                    </label>
-                                </div>
-
-                                <div className="selectRecusa">
-                                    {recusa &&
-                                        <div>
-                                            <form onSubmit = {handleSubmit(enviaRecusa)}>
-                                                <select {...register("motivoRejeicao")} className='inputquest' >
-                                                    <option value="">Motivo rejeicao...</option>
-                                                    <option value="naoEntendeu">Não entendeu a proposta do questionário</option>
-                                                    <option value="pessoaInadequada">Pessoa inadequada para responder o questionário</option>
-                                                    <option value="Horário incoveniente">Horário incoveniente</option>
-                                                    <option value="ofendido">Sentiu-se ofendido</option>
-                                                    <option value="recusaDados">Recusa passar dados</option>
-                                                    <option value="outro">Outro</option>
-                                                </select>
-                                                <input className="observacao"{...register("obs")} type = "textArea" placeholder="Observação"/>
-                                                <button className="btnRecusa">Finalizar</button>
-                                            </form>
-                                        </div>
-                                    }  
-                                </div>
-
+                            
+                        <div className="recusa">
+                            <div>
                                 <label className="internedCheckArea-btn">
                                 <input 
                                     type='checkbox' 
                                     name='recusa' 
                                     value='recusa'
-                                    onClick={desfechoEntrevista}
+                                    onClick = {recusaEntrevista}
                                     />  
-                                    &nbsp; Dar desfecho
+                                    &nbsp; Recusa
                                 </label>
-                                {desfecho &&
-                                    <div className = "recusa">
-                                        <form onSubmit = {handleSubmit(enviaDesfecho)}>
-                                            <select {...register("desfecho")} className='inputquest' >
-                                                <option value="">Desfecho...</option>
-                                                <option value="recuperado">Recuperado</option>
-                                                <option value="encerrado">Encerrado</option>
-                                                <option value="obito">Óbito</option>
-                                                <option value="perdaSegmento">Perda de Segmento</option>
-                                            </select>
-                                            <input className="inputObs"{...register("obs")} type = "textArea" placeholder="Observação.."/>
-                                            <div className="btn">
-                                            <button className="btn-finalizar">Finalizar</button></div>
-                                        </form>
-                                    </div>
-                                }
-                                <label className="internedCheckArea-btn">
-                                <input 
-                                    type='checkbox' 
-                                    name='contatoProximo' 
-                                    value='contatoProximo'
-                                    onClick={seContatoProximo}
-                                    />  
-                                    &nbsp; Teve contato com alguém da UFOP?
-                                </label>
-                                {contatoProximo && 
+                            </div>
+
+                            <div className="selectRecusa">
+                                {recusa &&
                                     <div>
-                                        <form className='formquestcontato' onSubmit = {handleSubmit2(cadastraCP)}>
-                                            <div className="vinculoUFOP">
-                                                Possui vínculo com a UFOP? &nbsp; <input {...register2("vinculoUFOP")} type = "checkbox" required/> &nbsp; Sim
-                                            </div>
-                                            <input {...register2("nome")} type = "text" placeholder = "nome do contato"/>
-                                            <input {...register2("telefone1")} type = "number" placeholder = "telefone de contato 1" required/>
-                                            <input {...register2("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
-                                            <select {...register2("relacao")} onClick = {analyzeRelation}>
-                                                <option value="">Relação com o caso...</option>
-                                                <option value="domiciliar">Domiciliar</option>
-                                                <option value="familiar">Familiar (extradomiciliar)</option>
-                                                <option value="laboral">Laboral</option>
-                                                <option value="estudantil">Estudantil</option>
-                                                <option value="eventoSocial">Evento social</option>
+                                        <form onSubmit = {handleSubmit(enviaRecusa)}>
+                                            <select {...register("motivoRejeicao")} className='inputquest' >
+                                                <option value="">Motivo rejeicao...</option>
+                                                <option value="naoEntendeu">Não entendeu a proposta do questionário</option>
+                                                <option value="pessoaInadequada">Pessoa inadequada para responder o questionário</option>
+                                                <option value="Horário incoveniente">Horário incoveniente</option>
+                                                <option value="ofendido">Sentiu-se ofendido</option>
+                                                <option value="recusaDados">Recusa passar dados</option>
                                                 <option value="outro">Outro</option>
                                             </select>
-                                            { outraRelacao &&
-                                                <div className="relacao">
-                                                    <input {...register2("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
-                                                </div>
-                                            }
-                                            <div className="dataContato">
-                                                Data do último contato com o caso confirmado
-                                                <div className="inputDataContato">
-                                                    <input {...register2("dataUltimoContato")} type = "date"/>
-                                                </div>
-                                            </div>
-                                            <div className="btns">
-                                                <button type = "submit" className="btn-finalizar">Cadastrar</button>
-                                            </div>
+                                            <input className="observacao"{...register("obs")} type = "textArea" placeholder="Observação"/>
+                                            <button className="btnRecusa">Finalizar</button>
                                         </form>
                                     </div>
-                                }    
-                                {!recusa && !desfecho && !contatoProximo &&
-                                    <div className="btn-startArea"> 
-                                        <button 
-                                            className="btn-start" 
-                                            type="submit"
-                                            onClick={mudaPagina}>                               
-                                            Próximo
-                                        </button>
-                                    </div>
-                                }
-                                
+                                }  
                             </div>
-                    </div>
+
+                            <label className="internedCheckArea-btn">
+                            <input 
+                                type='checkbox' 
+                                name='recusa' 
+                                value='recusa'
+                                onClick={desfechoEntrevista}
+                                />  
+                                &nbsp; Dar desfecho
+                            </label>
+                            {desfecho &&
+                                <div className = "recusa">
+                                    <form onSubmit = {handleSubmit(enviaDesfecho)}>
+                                        <select {...register("desfecho")} className='inputquest' >
+                                            <option value="">Desfecho...</option>
+                                            <option value="recuperado">Recuperado</option>
+                                            <option value="encerrado">Encerrado</option>
+                                            <option value="obito">Óbito</option>
+                                            <option value="perdaSegmento">Perda de Segmento</option>
+                                        </select>
+                                        <input className="inputObs"{...register("obs")} type = "textArea" placeholder="Observação.."/>
+                                        <div className="btn">
+                                        <button className="btn-finalizar">Finalizar</button></div>
+                                    </form>
+                                </div>
+                            }
+                            <label className="internedCheckArea-btn">
+                            <input 
+                                type='checkbox' 
+                                name='contatoProximo' 
+                                value='contatoProximo'
+                                onClick={seContatoProximo}
+                                />  
+                                &nbsp; Teve contato com alguém da UFOP?
+                            </label>
+                            {contatoProximo && 
+                                <div>
+                                    <form className='formquestcontato' onSubmit = {handleSubmit2(cadastraCP)}>
+                                        <div className="vinculoUFOP">
+                                            Possui vínculo com a UFOP? &nbsp; <input {...register2("vinculoUFOP")} type = "checkbox" required/> &nbsp; Sim
+                                        </div>
+                                        <input {...register2("nome")} type = "text" placeholder = "nome do contato"/>
+                                        <input {...register2("telefone1")} type = "number" placeholder = "telefone de contato 1" required/>
+                                        <input {...register2("telefone2")} type = "number" placeholder = "telefone de contato 2"/>
+                                        <select {...register2("relacao")} onClick = {analyzeRelation}>
+                                            <option value="">Relação com o caso...</option>
+                                            <option value="domiciliar">Domiciliar</option>
+                                            <option value="familiar">Familiar (extradomiciliar)</option>
+                                            <option value="laboral">Laboral</option>
+                                            <option value="estudantil">Estudantil</option>
+                                            <option value="eventoSocial">Evento social</option>
+                                            <option value="outro">Outro</option>
+                                        </select>
+                                        { outraRelacao &&
+                                            <div className="relacao">
+                                                <input {...register2("outraRelacao")} type = "text" placeholder = "tipo de relação"/>
+                                            </div>
+                                        }
+                                        <div className="dataContato">
+                                            Data do último contato com o caso confirmado
+                                            <div className="inputDataContato">
+                                                <input {...register2("dataUltimoContato")} type = "date"/>
+                                            </div>
+                                        </div>
+                                        <div className="btns">
+                                            <button type = "submit" className="btn-finalizar">Cadastrar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            }    
+                            {!recusa && !desfecho && !contatoProximo &&
+                                <div className="btn-startArea"> 
+                                    <button 
+                                        className="btn-start" 
+                                        type="submit"
+                                        onClick={mudaPagina}>                               
+                                        Próximo
+                                    </button>
+                                </div>
+                            }
+                            
+                        </div>
+                </div>
 
             </body> 
         </div>

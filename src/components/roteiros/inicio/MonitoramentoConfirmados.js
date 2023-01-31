@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { useUser } from "../../../context/user";
 import { useInterviewed } from "../../../context/interviewed";
+import { useUtils } from "../../../context/utils";
 
 import "../../style/Roteiros.css"
 
@@ -26,6 +27,7 @@ export const RoteiroMonitoramentoConfirmados = () => {
 
     const contextUser = useUser();
     const context = useInterviewed();
+    const utils = useUtils();
 
     const { cpf } = useParams();
 
@@ -116,6 +118,7 @@ export const RoteiroMonitoramentoConfirmados = () => {
                                         <input
                                         type="date"
                                         name="data"
+                                        defaultValue={utils.getTodayDate()}
                                         placeholder="Data"
                                         />
                                     </div>
@@ -124,6 +127,7 @@ export const RoteiroMonitoramentoConfirmados = () => {
                                         <input
                                         type="time"
                                         name="hora"
+                                        defaultValue={utils.getTodayHour()}
                                         placeholder="Hora"
                                         />
                                     </div>

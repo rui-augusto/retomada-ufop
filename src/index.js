@@ -6,14 +6,17 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { UserProvider } from './context/user'
 import { InterviewedProvider } from './context/interviewed';
+import { UtilsProvider } from './context/utils';
 
 ReactDOM.render(
   <React.StrictMode>
     <UserProvider>
       <InterviewedProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <UtilsProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </UtilsProvider>
       </InterviewedProvider>
     </UserProvider>
   </React.StrictMode>,

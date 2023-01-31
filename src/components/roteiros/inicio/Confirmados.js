@@ -2,6 +2,7 @@ import "../../style/Roteiros.css"
 import { useState, useEffect } from 'react';
 import { useUser } from "../../../context/user";
 import { useInterviewed } from "../../../context/interviewed";
+import { useUtils } from "../../../context/utils";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
@@ -25,43 +26,6 @@ export const RoteiroConfirmados = () => {
     // * 
     // TODO: TRY TO CHANGE THE LAYOUT OF THE BEGINNING SCRIPTS
     // TODO: PATTERNYZE ALL OF THEM
-    const getTodayDate = () => {
-        const todayDate = new Date();
-        const format = "aaaa-mm-dd";
-
-        const map = {
-            aaaa: (todayDate.getFullYear()).toString(),
-            mm: (todayDate.getMonth() + 1).toString(),
-            dd: (todayDate.getDate()).toString(),
-        }
-
-        // * verifying if the month and day are complete
-        if (map.mm.length !== 2){
-            map.mm = "0".concat(map.mm);
-        } if (map.dd.length !== 2){
-            map.dd = "0".concat(map.dd);
-        }
-
-        return format.replace(/aaaa|mm|dd/gi, matched => map[matched]);
-    }
-
-    const getTodayHour = () => {
-        const todayDate = new Date();
-        const format = "hh:mm";
-
-        const map = {
-            hh: (todayDate.getHours()).toString(),
-            mm: (todayDate.getMinutes()).toString(),
-        }
-
-        if (map.hh.length != 2){
-            map.hh = "0".concat(map.hh);
-        } if (map.mm.length != 2){
-            map.mm = "0".concat(map.mm);
-        }
-
-        return format.replace(/hh|mm/gi, matched => map[matched]);
-    }
 
     const mudaPagina = () => {
         const auxCpf = getNewCpf();
@@ -70,6 +34,8 @@ export const RoteiroConfirmados = () => {
 
     const contextUser = useUser();
     const context = useInterviewed();
+    const utils = useUtils();
+    console.log("utils: ", utils);
 
     const [recusa, setRecusa] = useState(false);
     const [desfecho, setDesfecho] = useState(false);
@@ -158,39 +124,38 @@ export const RoteiroConfirmados = () => {
         <div>
             <body className="fullscreenArea-questions"> 
                 <div className="DescriptionArea">
-                <form className="content-questions" >
-                    <div className="InputArea">
+                    <form className="content-questions" >
+                        <div className="InputArea">
+                            <div className='line-questions'>
+                                <div className='input-questions'>
+                                    <input 
+                                    type="text"
+                                    name="nome"
+                                    defaultValue={contextUser.user.name}
+                                    placeholder="Nome do Entrevistador"
+                                    />
+                                </div>
 
-                        <div className='line-questions'>
-                            <div className='input-questions'>
-                                <input 
-                                type="text"
-                                name="nome"
-                                defaultValue={contextUser.user.name}
-                                placeholder="Nome do Entrevistador"
-                                />
-                            </div>
-
-                            <div className='input-questions'>
-                                <input
-                                type="date"
-                                name="data"
-                                defaultValue={getTodayDate()}
-                                placeholder="Data"
-                                />
-                            </div>
-                        
-                            <div className='input-questions'>
-                                <input
-                                type="time"
-                                name="hora"
-                                defaultValue={getTodayHour()}
-                                placeholder="Hora"
-                                />
+                                <div className='input-questions'>
+                                    <input
+                                    type="date"
+                                    name="data"
+                                    defaultValue={utils.getTodayDate()}
+                                    placeholder="Data"
+                                    />
+                                </div>
+                            
+                                <div className='input-questions'>
+                                    <input
+                                    type="time"
+                                    name="hora"
+                                    defaultValue={utils.getTodayHour()}
+                                    placeholder="Hora"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
                 <div className="Description">
                     <h3>APÊNDICE D</h3> <p>Instrumento da Pesquisa</p>                       
                 </div>
