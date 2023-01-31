@@ -20,6 +20,11 @@ export const RoteiroConfirmados = () => {
     // const [cpf, setCpf] = useState("");
     // const [horarioAgora, setHorarioAgora] = useState();
 
+    // TODO: CREATE NEW FILE TO GUARD 'getTodayDate' and 'getTodayHour' functions
+    // TODO: REUSE THUS FUNCTIONS IN ALL BEGINNING SCRIPTS
+    // * 
+    // TODO: TRY TO CHANGE THE LAYOUT OF THE BEGINNING SCRIPTS
+    // TODO: PATTERNYZE ALL OF THEM
     const getTodayDate = () => {
         const todayDate = new Date();
         const format = "aaaa-mm-dd";
@@ -170,7 +175,6 @@ export const RoteiroConfirmados = () => {
                                 <input
                                 type="date"
                                 name="data"
-                                // "2023-01-30"
                                 defaultValue={getTodayDate()}
                                 placeholder="Data"
                                 />
@@ -180,7 +184,6 @@ export const RoteiroConfirmados = () => {
                                 <input
                                 type="time"
                                 name="hora"
-                                // "18:15"
                                 defaultValue={getTodayHour()}
                                 placeholder="Hora"
                                 />

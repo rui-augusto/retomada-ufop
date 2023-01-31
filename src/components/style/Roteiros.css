@@ -28,14 +28,14 @@
 }
 
 .input-questions{
-    background-color: rgb(255, 255, 255);
     height: 35px;
     display: flex;
     border-radius: 20px;
     margin-right: 10px;
-    
+    background-color: rgb(167, 29, 75);;
 }
 .input-questions input{  
+    color: rgb(255, 255, 255);
     flex: 1;
     border: 0;
     outline: 0;
